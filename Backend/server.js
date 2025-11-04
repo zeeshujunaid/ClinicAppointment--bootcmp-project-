@@ -17,7 +17,6 @@ app.use(
 );
 
 
-
 connectDB(); 
 
 app.use("/api/v1/auth", authroutes);

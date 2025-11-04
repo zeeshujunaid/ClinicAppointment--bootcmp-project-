@@ -140,3 +140,46 @@ exports.getAllUsers = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+
+// ✅ Create Admin (for one-time setup)
+exports.createAdmin = async (req, res) => {
+  try {
+    const { fullname, email, password, phone } = req.body;
+
+    if (!fullname || !email || !password || !phone) {
+      return res.status(400).json({ message: "Please fill all required fields" });
+    }
+
+    // Check if admin already exists
+    const existingAdmin = await User.findOne({ email });
+    if (existingAdmin) {
+      return res.status(400).json({ message: "Admin with this email already exists" });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create admin user
+    const newAdmin = await User.create({
+      fullname,
+      email,
+      password: hashedPassword,
+      phone,
+      role: "admin", // Fixed role
+    });
+
+    res.status(201).json({
+      message: "Admin created successfully",
+      admin: {
+        id: newAdmin._id,
+        fullname: newAdmin.fullname,
+        email: newAdmin.email,
+        role: newAdmin.role,
+      },
+      token: generateToken(newAdmin._id, newAdmin.fullname, newAdmin.email, newAdmin.role),
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
