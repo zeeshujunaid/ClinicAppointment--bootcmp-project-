@@ -20,12 +20,11 @@ exports.registerPatient = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
       fullname,
       email,
-      password: hashedPassword,
+      password,
       phone,
       profileImgurl,
       role: "patient", // Fixed role
@@ -66,12 +65,11 @@ exports.createUserByAdmin = async (req, res) => {
       return res.status(400).json({ message: "User with this email already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
       fullname,
       email,
-      password: hashedPassword,
+      password,
       phone,
       profileImgurl,
       role, // can be doctor, staff, nurse, etc.
@@ -157,14 +155,12 @@ exports.createAdmin = async (req, res) => {
       return res.status(400).json({ message: "Admin with this email already exists" });
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create admin user
     const newAdmin = await User.create({
       fullname,
       email,
-      password: hashedPassword,
+      password,
       phone,
       role: "admin", // Fixed role
     });
