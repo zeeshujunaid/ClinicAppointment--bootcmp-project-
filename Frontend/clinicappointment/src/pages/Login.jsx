@@ -66,7 +66,7 @@ export default function Login() {
 
           <div className="text-right">
             <a
-              href="#"
+              href="/dashboard"
               className="text-sm text-blue-600 hover:underline font-medium"
             >
               Forgot Password?
