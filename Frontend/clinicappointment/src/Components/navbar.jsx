@@ -20,10 +20,10 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-6 text-gray-700 font-medium">
-          <a href="/" className="hover:text-blue-600 transition">
+          <a href="/dashboard" className="hover:text-blue-600 transition">
             Home
           </a>
-          <a href="/appointments" className="hover:text-blue-600 transition">
+          <a href="/appointment" className="hover:text-blue-600 transition">
             Appointments
           </a>
           <a href="/doctors" className="hover:text-blue-600 transition">
