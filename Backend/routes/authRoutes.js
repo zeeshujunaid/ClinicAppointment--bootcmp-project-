@@ -5,6 +5,7 @@ const {
   loginUser,
   createAdmin,
   getAllUsers,
+  getDoctors,
 } = require('../controller/authController');
 const { protect, adminOnly } = require('../middelware/authmiddelware');
 
@@ -15,6 +16,7 @@ const router = express.Router();
 router.post('/register', registerPatient);
 router.post('/login', loginUser);
 
+router.get('/doctor',protect, getDoctors);
 router.post('/createdoctor',protect, adminOnly,createUserByAdmin );
 router.get('/getUser',protect, getAllUsers);
 router.post('/createadmin', createAdmin)
