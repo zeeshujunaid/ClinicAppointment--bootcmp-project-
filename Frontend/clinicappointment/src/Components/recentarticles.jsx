@@ -24,23 +24,26 @@ export default function Recentarticle() {
   ];
 
   return (
-    <div className="px-6 py-12 bg-gray-50">
-      <h2 className="text-3xl font-bold text-center mb-10 text-blue-600">
+    <div className="bg-gray-50 py-12 px-6">
+      <h2 className="text-3xl font-bold text-center text-blue-600 mb-10">
         🩺 Recent Health Articles
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      {/* Articles Section */}
+      <div className="flex flex-wrap justify-center gap-8">
         {articles.map((article) => (
           <div
             key={article.id}
-            className="bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300"
+            className="flex flex-col bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-[300px] md:w-[320px] overflow-hidden"
           >
-            <img
-              src={article.img}
-              alt={article.title}
-              className="w-full h-40 object-contain bg-blue-50 p-4"
-            />
-            <div className="p-5">
+            <div className="flex justify-center bg-blue-50 p-4">
+              <img
+                src={article.img}
+                alt={article.title}
+                className="w-24 h-24 object-contain"
+              />
+            </div>
+            <div className="flex flex-col p-5">
               <h3 className="text-lg font-semibold text-gray-800 mb-2">
                 {article.title}
               </h3>
