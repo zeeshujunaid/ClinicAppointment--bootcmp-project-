@@ -71,7 +71,7 @@ export default function Signup() {
 
       console.log("signup successful ✅");
 
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       console.log("Error during login:", error);
     }

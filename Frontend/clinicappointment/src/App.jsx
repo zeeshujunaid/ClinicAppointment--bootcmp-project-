@@ -1,5 +1,6 @@
 import "./App.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { UserProvider } from "./context/Authcontext";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Signup";
@@ -10,7 +11,7 @@ import Appointment from "./Patients/appointments";
 
 function App() {
   return (
-    <>
+    <UserProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage />} />
@@ -21,7 +22,7 @@ function App() {
           <Route path="/appointment" element={<Appointment/>}/>
         </Routes>
       </BrowserRouter>
-    </>
+    </UserProvider>
   );
 }
 

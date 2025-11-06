@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // 👈 ye import zaroor karna
 import baseurl from "../service/config";
+import { useUser } from "../context/Authcontext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // 👈 hook initialize karo
+  const navigate = useNavigate();
+  const { saveUser } = useUser(); // 👈 use context
 
   const handleLogin = async (e) => {
     e.preventDefault(); // 👈 form reload na ho
@@ -29,11 +31,15 @@ export default function Login() {
         return;
       }
 
-      console.log("Login successful ✅", data.token);
-      localStorage.setItem("token", data.token);
+      const fullUser = {
+        ...data.user, // spread all user fields (id, fullname, email, role)
+        token: data.token, // add token
+      };
+      saveUser(fullUser);
+      console.log(fullUser);
 
-      // 👇 Navigate to dashboard
-      navigate("/dashboard");
+      navigate("/dashboard")
+
     } catch (error) {
       console.log("Error during login:", error);
     }

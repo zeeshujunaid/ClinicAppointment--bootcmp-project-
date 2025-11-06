@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema({
   fees: Number,
   age: Number,
   bloodGroup: String,
+  gender:String,
+  address:String,
   phone: String,
   profileImgurl: String,
 }, { timestamps: true });

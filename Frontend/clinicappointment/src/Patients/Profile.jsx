@@ -1,125 +1,80 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import baseurl from "../service/config";
+import React, { useContext } from "react";
+import { UserContext } from "../context/Authcontext";
+import Navbar from "../Components/navbar";
 
-export default function Profile() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await fetch(`${baseurl}/api/auth/getUser`, {
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        const data = await response.json();
-        console.log(data)
-        setUser(data);
-      } catch (error) {
-        console.log("Error fetching profile:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProfile();
-  }, []);
-
+export default function PatientProfile() {
+  const { user } = useContext(UserContext);
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
+    <div className="min-h-screen bg-gray-100">
+      {/* Navbar */}
       <Navbar />
 
-      {/* Loading Spinner */}
-      {loading ? (
-        <div className="flex items-center justify-center min-h-[80vh]">
-          <div className="flex flex-col items-center">
-            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-3"></div>
-            <h2 className="text-gray-700 text-lg font-medium">
-              Loading Profile...
-            </h2>
-          </div>
-        </div>
-      ) : (
-        <div className="max-w-4xl mx-auto px-6 py-12 mt-10">
-          {/* Card Container */}
-          <div className="bg-white/40 backdrop-blur-md shadow-2xl rounded-3xl p-10 border border-white/30 hover:shadow-blue-200 transition-all duration-300">
-            {/* Profile Header */}
-            <div className="flex flex-col items-center">
-              <img
-                src={user?.profileImgurl || "https://via.placeholder.com/150"}
-                alt="Profile"
-                className="w-32 h-32 rounded-full border-4 border-blue-500 object-cover shadow-lg mb-4"
-              />
-              <h2 className="text-3xl font-bold text-gray-800">
-                {/* {user?.fullname} */}
-                zeeshan junaid
+      {/* Page Container */}
+      <div className="flex justify-center items-center py-12 px-4">
+        <div className="bg-white shadow-lg rounded-2xl w-full max-w-md p-8 text-center">
+          {!user ? (
+            // 🔄 Loading Card
+            <div className="flex flex-col items-center justify-center h-60">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-red-500 mb-3"></div>
+              <p className="text-gray-500 text-sm">Loading user details...</p>
+            </div>
+          ) : (
+            <>
+              {/* Profile Picture */}
+              <div className="flex justify-center mb-4">
+                <img
+                  src={
+                    user.profileImage ||
+                    "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                  }
+                  alt="Profile"
+                  className="w-28 h-28 rounded-full border-4 border-red-500 object-cover"
+                />
+              </div>
+
+              {/* User Info */}
+              <h2 className="text-2xl font-semibold text-gray-800">
+                {user.fullname || "Patient Name"}
               </h2>
-              <p className="text-gray-600">{user?.email}</p>
-            </div>
+              <p className="text-gray-500 text-sm mb-2">{user.email}</p>
 
-            {/* Divider Line */}
-            <div className="my-8 border-t border-gray-300"></div>
-
-            {/* Info Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-700">
-              <div className="p-4 bg-white/70 rounded-xl shadow-sm hover:shadow-md transition">
-                <i className="fas fa-phone text-blue-600 mr-2"></i>
-                <strong>Phone:</strong> 
-                0300035893903
-                {/* {user?.phone || "N/A"} */}
+              <div className="mt-6 text-left space-y-4">
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-gray-600">Phone:</span>
+                  <span className="font-medium text-gray-800">
+                    {user.phone || "N/A"}
+                  </span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-gray-600">Age:</span>
+                  <span className="font-medium text-gray-800">
+                    {user.age || "N/A"}
+                  </span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-gray-600">Gender:</span>
+                  <span className="font-medium text-gray-800">
+                    {user.gender || "N/A"}
+                  </span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-gray-600">Address:</span>
+                  <span className="font-medium text-gray-800 text-right">
+                    {user.address || "N/A"}
+                  </span>
+                </div>
               </div>
 
-              <div className="p-4 bg-white/70 rounded-xl shadow-sm hover:shadow-md transition">
-                <i className="fas fa-envelope text-blue-600 mr-2"></i>
-                <strong>Email:</strong> 
-                junaidzeeshan@gmail.com
-                {/* {user?.email} */}
-              </div>
-
-              {user?.experience && (
-                <div className="p-4 bg-white/70 rounded-xl shadow-sm hover:shadow-md transition">
-                  <i className="fas fa-briefcase text-blue-600 mr-2"></i>
-                  <strong>Experience:</strong> 
-                  {user.experience}  yrs
+              {/* Token Display */}
+              {user.token && (
+                <div className="mt-6 bg-gray-50 p-3 rounded-lg text-xs text-gray-500 break-words">
+                  <span className="font-semibold">Token:</span> {user.token}
                 </div>
               )}
-
-              {user?.specialization && (
-                <div className="p-4 bg-white/70 rounded-xl shadow-sm hover:shadow-md transition">
-                  <i className="fas fa-user-md text-blue-600 mr-2"></i>
-                  <strong>Specialization:</strong> 
-                  {user.specialization}
-                </div>
-              )}
-
-              <div className="p-4 bg-white/70 rounded-xl shadow-sm hover:shadow-md transition sm:col-span-2">
-                <i className="fas fa-calendar text-blue-600 mr-2"></i>
-                <strong>Joined:</strong>{" "}
-                {new Date(user.createdAt).toLocaleDateString()}
-              </div>
-            </div>
-
-            {/* Buttons */}
-            <div className="mt-10 flex justify-center gap-4">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300">
-                <i className="fas fa-edit mr-2"></i>Edit Profile
-              </button>
-
-              <button
-                onClick={() => {
-                  localStorage.removeItem("token");
-                  window.location.href = "/";
-                }}
-                className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300"
-              >
-                <i className="fas fa-sign-out-alt mr-2"></i>Logout
-              </button>
-            </div>
-          </div>
+            </>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

@@ -8,9 +8,9 @@ const generateToken = (id, fullname, email, role) => {
 
 // patients signup
 exports.registerPatient = async (req, res) => {
-  const { fullname, email, password, phone, profileImgurl, age } = req.body;
+  const { fullname, email, password, phone, profileImgurl, age, gender, address } = req.body;
 
-  if (!fullname || !email || !password || !phone || !age) {
+  if (!fullname || !email || !password || !phone || !age ||!gender ||!address) {
     return res.status(400).json({ message: "Please fill all required fields" });
   }
 
@@ -29,6 +29,8 @@ exports.registerPatient = async (req, res) => {
       profileImgurl,
       role: "patient", // Fixed role
       age,
+      gender,
+      address,
     });
 
     res.status(201).json({
@@ -38,6 +40,8 @@ exports.registerPatient = async (req, res) => {
         fullname: newUser.fullname,
         email: newUser.email,
         role: newUser.role,
+        gender:newUser.gender,
+        address:newUser.address,
       },
       token: generateToken(newUser._id, newUser.fullname, newUser.email, newUser.role),
     });
@@ -116,6 +120,11 @@ exports.loginUser = async (req, res) => {
         fullname: user.fullname,
         email: user.email,
         role: user.role,
+        phone:user.phone,
+        gender:user.gender,
+        address:user.address,
+        age:user.age,
+        createdAt:user.createdAt,
       },
       token: generateToken(user._id, user.fullname, user.email, user.role),
     });
