@@ -1,36 +1,80 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
+import baseurl from "../service/config";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Signup() {
-  const [form, setForm] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    phone: "",
-    age: "",
-    profileImg: null,
-  });
+  const navigate = useNavigate();
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+  const [fullname,setFullname] = useState("");
+  const [age, setAge] = useState("");
+  const [profileImg ,setProfileImg] = useState(null)
+  const [phone, setPhone] = useState("");
   const [preview, setPreview] = useState(null);
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setForm({ ...form, profileImg: file });
-
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setProfileImg(file);
+      setPreview(URL.createObjectURL(file));
     }
   };
 
-  const handleSubmit = (e) => {
+  const handelSignup = async (e) => {
     e.preventDefault();
-    console.log("Signup Data:", form);
+    if (!email || !password || !phone || !age || !fullname) {
+      console.log("plz fill all required field");
+      return;
+    }
+
+    try {
+
+      // const data = new FormData();
+      // data.append("file", profileImg);
+      // data.append("upload_preset", "Clinicpics");
+
+      // const cloudRes = await fetch(
+      //   "https://api.cloudinary.com/v1_1/dudx3of1n/image/upload",
+      //   {
+      //     method: "POST",
+      //     body: data,
+      //   }
+      // );
+
+      // const cloudData = await cloudRes.json();
+      // console.log("Cloudinary URL:", cloudData.secure_url);
+
+
+      const response = await fetch(`${baseurl}/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password,
+          fullname,
+          age,
+          phone,
+          // profileImgurl: cloudData.secure_url,
+        }),
+      });
+
+      const resdata = await response.json();
+      console.log(resdata);
+      console.log(resdata.token);
+      localStorage.setItem("token", resdata.token);
+
+      if (!response.ok) {
+        console.log("signup failed =>", resdata.message);
+        return;
+      }
+
+      console.log("signup successful ✅");
+
+      navigate("/dashboard");
+    } catch (error) {
+      console.log("Error during login:", error);
+    }
   };
 
   return (
@@ -39,7 +83,7 @@ export default function Signup() {
         {/* Header */}
         <div className="text-center mb-2">
           <img
-            src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png"
+            src="https://img.freepik.com/premium-vector/professional-medical-logo-design-modern-healthcare-clinic-hospital-logo-template_1290800-258.jpg"
             alt="Clinic Logo"
             className="w-12 h-12 mx-auto mb-1"
           />
@@ -92,8 +136,8 @@ export default function Signup() {
 
         {/* Form */}
         <form
-          onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          onSubmit={handelSignup}
         >
           {/* Full Name */}
           <div>
@@ -103,8 +147,8 @@ export default function Signup() {
             <input
               type="text"
               name="fullName"
-              value={form.fullName}
-              onChange={handleChange}
+              value={fullname}
+              onChange={(e) => setFullname(e.target.value)}
               placeholder="John Doe"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-sm"
               required
@@ -119,8 +163,8 @@ export default function Signup() {
             <input
               type="email"
               name="email"
-              value={form.email}
-              onChange={handleChange}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-sm"
               required
@@ -135,8 +179,8 @@ export default function Signup() {
             <input
               type="password"
               name="password"
-              value={form.password}
-              onChange={handleChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-sm"
               required
@@ -151,8 +195,8 @@ export default function Signup() {
             <input
               type="tel"
               name="phone"
-              value={form.phone}
-              onChange={handleChange}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               placeholder="+92 300 1234567"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-sm"
               required
@@ -167,8 +211,8 @@ export default function Signup() {
             <input
               type="number"
               name="age"
-              value={form.age}
-              onChange={handleChange}
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
               placeholder="25"
               min="1"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-sm"

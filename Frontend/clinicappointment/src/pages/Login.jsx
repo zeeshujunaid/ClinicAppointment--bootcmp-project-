@@ -1,39 +1,62 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // 👈 ye import zaroor karna
+import baseurl from "../service/config";
 
 export default function Login() {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // 👈 hook initialize karo
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const handleLogin = async (e) => {
+    e.preventDefault(); // 👈 form reload na ho
+    if (!email || !password) {
+      console.log("Please fill in all fields");
+      return;
+    }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Login Data:", form);
+    try {
+      const response = await fetch(`${baseurl}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      if (!response.ok) {
+        console.log("Login failed =>", data.message);
+        return;
+      }
+
+      console.log("Login successful ✅", data.token);
+      localStorage.setItem("token", data.token);
+
+      // 👇 Navigate to dashboard
+      navigate("/dashboard");
+    } catch (error) {
+      console.log("Error during login:", error);
+    }
   };
 
   return (
     <div className="w-screen h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-cyan-100 overflow-hidden">
       <div className="w-[90%] sm:w-[400px] bg-white shadow-2xl rounded-3xl p-10 border border-blue-100">
-        {/* Logo / Header */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-3">
             <img
-              src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png"
+              src="https://img.freepik.com/premium-vector/professional-medical-logo-design-modern-healthcare-clinic-hospital-logo-template_1290800-258.jpg"
               alt="Clinic Logo"
-              className="w-16 h-16"
+              className="w-25 h-25"
             />
           </div>
           <h2 className="text-3xl font-extrabold text-blue-700">
             Clinic Login
           </h2>
-          <p className="text-gray-500 text-sm mt-1">
-            Access your dashboard securely
-          </p>
+          <p className="text-gray-500 text-sm mt-1">Login Securely</p>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form className="space-y-5" onSubmit={handleLogin}>
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Email Address
@@ -41,8 +64,8 @@ export default function Login() {
             <input
               type="email"
               name="email"
-              value={form.email}
-              onChange={handleChange}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-800 focus:ring-2 focus:ring-blue-400 outline-none transition"
               required
@@ -56,8 +79,8 @@ export default function Login() {
             <input
               type="password"
               name="password"
-              value={form.password}
-              onChange={handleChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-800 focus:ring-2 focus:ring-blue-400 outline-none transition"
               required
@@ -66,7 +89,7 @@ export default function Login() {
 
           <div className="text-right">
             <a
-              href="/dashboard"
+              href="#"
               className="text-sm text-blue-600 hover:underline font-medium"
             >
               Forgot Password?

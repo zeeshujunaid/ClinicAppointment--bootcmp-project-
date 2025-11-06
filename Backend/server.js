@@ -21,9 +21,9 @@ app.use(
 
 connectDB(); 
 
-app.use("/api/v1/auth", authroutes);
-app.use("/api/v1/appointment", appointmentroutes);
-app.use("/api/v1/room", docroom);
+app.use("/api/auth", authroutes);
+app.use("/api/appointment", appointmentroutes);
+app.use("/api/room", docroom);
 
 
 const PORT = process.env.PORT || 5000;
