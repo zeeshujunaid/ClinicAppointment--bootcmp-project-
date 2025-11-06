@@ -18,27 +18,27 @@ export default function FrequentlyQuestion() {
   ];
 
   return (
-    <div className="bg-gray-50 py-16 px-6 md:px-12 lg:px-20">
-      <h2 className="text-3xl font-bold text-center text-blue-600 mb-12">
+    <div className="flex flex-col items-center justify-center bg-gray-50 py-16 px-6">
+      <h2 className="text-3xl font-bold text-blue-700 mb-12 text-center">
         💬 Frequently Asked Questions
       </h2>
 
-      <div className="flex flex-col md:flex-row items-center md:items-start gap-10">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-10">
         {/* Left Side - Doctor Image */}
-        <div className="flex justify-center md:w-1/2">
+        <div className="flex justify-center">
           <img
-            src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
+            src="https://pngimg.com/d/doctor_PNG15992.png"
             alt="Doctor"
             className="w-72 h-72 object-contain rounded-2xl shadow-lg bg-white p-4"
           />
         </div>
 
         {/* Right Side - FAQs */}
-        <div className="md:w-1/2 space-y-6">
+        <div className="flex flex-col gap-6 max-w-lg">
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+              className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
             >
               <h3 className="text-lg font-semibold text-blue-700 mb-2">
                 {faq.question}

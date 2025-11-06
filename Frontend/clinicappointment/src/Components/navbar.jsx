@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-// import { FaBars, FaTimes } from "react-icons/fa";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center space-x-2">
+    <div className="w-full fixed top-0 left-0 bg-white shadow-md z-50">
+      <div className="flex items-center justify-between px-6 py-3">
+        {/* Logo Section */}
+        <div className="flex items-center gap-2">
           <img
             src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png"
             alt="Clinic Logo"
@@ -19,82 +18,66 @@ export default function Navbar() {
           </h1>
         </div>
 
-        {/* Desktop Links */}
-        <ul className="hidden md:flex space-x-6 text-gray-700 font-medium">
-          <li>
-            <a href="/" className="hover:text-blue-600 transition">
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="/appointments" className="hover:text-blue-600 transition">
-              Appointments
-            </a>
-          </li>
-          <li>
-            <a href="/doctors" className="hover:text-blue-600 transition">
-              Doctors
-            </a>
-          </li>
-          <li>
-            <a href="/profile" className="hover:text-blue-600 transition">
-              Profile
-            </a>
-          </li>
-        </ul>
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center gap-6 text-gray-700 font-medium">
+          <a href="/" className="hover:text-blue-600 transition">
+            Home
+          </a>
+          <a href="/appointments" className="hover:text-blue-600 transition">
+            Appointments
+          </a>
+          <a href="/doctors" className="hover:text-blue-600 transition">
+            Doctors
+          </a>
+          <a href="/profile" className="hover:text-blue-600 transition">
+            Profile
+          </a>
+        </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden text-blue-700 text-2xl focus:outline-none"
-        >
-          {/* {open ? <FaTimes /> : <FaBars />} */}
-        </button>
+        {/* Mobile Toggle Button */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setOpen(!open)}
+            className="text-blue-700 text-2xl focus:outline-none"
+          >
+            {open ? "✖" : "☰"}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {open && (
-        <div className="md:hidden bg-white border-t border-gray-200 shadow-md">
-          <ul className="flex flex-col items-center py-4 space-y-4 text-gray-700 font-medium">
-            <li>
-              <a
-                href="/"
-                className="hover:text-blue-600 transition"
-                onClick={() => setOpen(false)}
-              >
-                Home
-              </a>
-            </li>
-            <li>
-              <a
-                href="/appointments"
-                className="hover:text-blue-600 transition"
-                onClick={() => setOpen(false)}
-              >
-                Appointments
-              </a>
-            </li>
-            <li>
-              <a
-                href="/doctors"
-                className="hover:text-blue-600 transition"
-                onClick={() => setOpen(false)}
-              >
-                Doctors
-              </a>
-            </li>
-            <li>
-              <a
-                href="/profile"
-                className="hover:text-blue-600 transition"
-                onClick={() => setOpen(false)}
-              >
-                Profile
-              </a>
-            </li>
-          </ul>
+        <div className="flex flex-col items-center bg-white py-4 border-t border-gray-200 shadow-md md:hidden">
+          <a
+            href="/"
+            className="py-2 text-gray-700 hover:text-blue-600"
+            onClick={() => setOpen(false)}
+          >
+            Home
+          </a>
+          <a
+            href="/appointments"
+            className="py-2 text-gray-700 hover:text-blue-600"
+            onClick={() => setOpen(false)}
+          >
+            Appointments
+          </a>
+          <a
+            href="/doctors"
+            className="py-2 text-gray-700 hover:text-blue-600"
+            onClick={() => setOpen(false)}
+          >
+            Doctors
+          </a>
+          <a
+            href="/profile"
+            className="py-2 text-gray-700 hover:text-blue-600"
+            onClick={() => setOpen(false)}
+          >
+            Profile
+          </a>
         </div>
       )}
-    </nav>
+    </div>
   );
 }
