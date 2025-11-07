@@ -158,6 +158,26 @@ exports.getDoctors = async (req, res) => {
   }
 };
 
+exports.getPatients = async (req, res) => {
+  try {
+    const doctors = await User.find({ role: "patient" });
+    res.status(200).json(doctors);
+  } catch (error) {
+    console.error("Error fetching doctors:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+exports.getStaff = async (req, res) => {
+  try {
+    const doctors = await User.find({ role: "staff" });
+    res.status(200).json(doctors);
+  } catch (error) {
+    console.error("Error fetching doctors:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
 // ✅ Create Admin (for one-time setup)
 exports.createAdmin = async (req, res) => {
   try {

@@ -6,6 +6,8 @@ const {
   createAdmin,
   getAllUsers,
   getDoctors,
+  getPatients,
+  getStaff,
 } = require('../controller/authController');
 const { protect, adminOnly } = require('../middelware/authmiddelware');
 
@@ -17,6 +19,8 @@ router.post('/register', registerPatient);
 router.post('/login', loginUser);
 
 router.get('/doctor',protect, getDoctors);
+router.get('/patients',protect,getPatients);
+router.get('/staff',protect,getStaff);
 router.post('/createdoctor',protect, adminOnly,createUserByAdmin );
 router.get('/getUser',protect, getAllUsers);
 router.post('/createadmin', createAdmin)
