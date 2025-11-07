@@ -14,6 +14,8 @@ import AdminAllstaff from "./Admin/Allstaff";
 import Adminallapointment from "./Admin/Allapointment";
 import Staffallapointments from "./Staff/Allappointments";
 import Staffcreateroom from "./Staff/Createroomschedule";
+import Doctorallapointment from "./Doctor/ALLapointment";
+import Doctorallstaff from "./Doctor/Allstaff";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
             path="/Staffallapointments"
             element={<Staffallapointments />}
           />
+          <Route path="/Doctorallapointment" element={<Doctorallapointment/>}/>
+          <Route path="/Doctorallstaff" element={<Doctorallstaff/>}/>
         </Routes>
       </BrowserRouter>
     </UserProvider>

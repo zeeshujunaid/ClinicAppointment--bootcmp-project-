@@ -102,14 +102,14 @@ export default function Sidebar() {
             <span>Next Appointment</span>
           </button>
           <button
-            onClick={() => navigate("/doctor/appointments")}
+            onClick={() => navigate("/Doctorallapointment")}
             className="hover:bg-green-500 p-2 rounded-lg flex items-center space-x-2"
           >
             <i className="fas fa-calendar-alt"></i>{" "}
             <span>All Appointments</span>
           </button>
           <button
-            onClick={() => navigate("/doctor/staff")}
+            onClick={() => navigate("/Doctorallstaff")}
             className="hover:bg-green-500 p-2 rounded-lg flex items-center space-x-2"
           >
             <i className="fas fa-users"></i> <span>All Staff</span>

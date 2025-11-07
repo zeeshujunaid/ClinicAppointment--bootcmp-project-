@@ -15,7 +15,6 @@ router.post("/create", verifyUser, allowRoles("patient"), createAppointment);
 
 router.get("/all", verifyUser, allowRoles("admin", "doctor","staff"), getAllAppointments);
 
-
 router.get("/user/:id", verifyUser, allowRoles("admin", "doctor", "patient"), getUserAppointments);
 
 module.exports = router;
