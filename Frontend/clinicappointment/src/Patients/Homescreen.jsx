@@ -20,7 +20,7 @@ export default function Homescreen() {
             online — anytime, anywhere.
           </p>
           <a
-            href="/appointments"
+            href="/doctors"
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition-all duration-300"
           >
             Book Appointment
@@ -28,11 +28,7 @@ export default function Homescreen() {
         </div>
 
         <div className="flex justify-center mt-10 md:mt-0">
-          <img
-            src="/doctor.png"
-            alt="Doctor"
-            className="w-72 md:w-96"
-          />
+          <img src="/doctor.png" alt="Doctor" className="w-72 md:w-96" />
         </div>
       </section>
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Navbar from "../components/Navbar";
 import { UserContext } from "../context/Authcontext";
+import baseurl from "../service/config";
 
 export default function Appointment() {
   const [appointments, setAppointments] = useState([]);
@@ -21,8 +22,7 @@ export default function Appointment() {
       try {
         setLoading(true);
         const userId = user._id || user.id;
-        const res = await fetch(
-          `http://localhost:8080/api/appointment/user/${userId}`,
+        const res = await fetch(`${baseurl}/api/appointment/user/${userId}`,
           {
             headers: {
               "Content-Type": "application/json",
