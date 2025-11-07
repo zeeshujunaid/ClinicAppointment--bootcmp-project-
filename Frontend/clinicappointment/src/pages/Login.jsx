@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // 👈 ye import zaroor karna
+import { useNavigate } from "react-router-dom"; 
 import baseurl from "../service/config";
 import { useUser } from "../context/Authcontext";
 
@@ -7,10 +7,10 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { saveUser } = useUser(); // 👈 use context
+  const { saveUser } = useUser(); 
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // 👈 form reload na ho
+    e.preventDefault(); 
     if (!email || !password) {
       console.log("Please fill in all fields");
       return;
@@ -32,13 +32,14 @@ export default function Login() {
       }
 
       const fullUser = {
-        ...data.user, // spread all user fields (id, fullname, email, role)
-        token: data.token, // add token
+        ...data.user, 
+        token: data.token, 
       };
+      localStorage.setItem("token", data.token)
       saveUser(fullUser);
       console.log(fullUser);
 
-      navigate("/dashboard")
+      navigate("/dashboard");
 
     } catch (error) {
       console.log("Error during login:", error);

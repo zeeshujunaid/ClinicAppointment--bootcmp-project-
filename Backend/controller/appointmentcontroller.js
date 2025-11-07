@@ -1,22 +1,11 @@
 const Appointment = require("../models/appointment");
 const User = require("../models/user");
 
-//Create Appointment
+
 exports.createAppointment = async (req, res) => {
   try {
-    const { age, bloodGroup, address, phone, medicalHistory, allergies, currentMedications, emergencyContact } = req.body;
-
-    // userId from auth middleware
-    const userId = req.user.id;
-
-    // Check if user exists
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const appointment = new Appointment({
-      userId,
+    const {
+      doctorId,
       age,
       bloodGroup,
       address,
@@ -25,6 +14,34 @@ exports.createAppointment = async (req, res) => {
       allergies,
       currentMedications,
       emergencyContact,
+    } = req.body;
+
+    const userId = req.user.id;
+
+    
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    
+    const doctor = await User.findById(doctorId);
+    if (!doctor || doctor.role !== "doctor") {
+      return res.status(404).json({ message: "Doctor not found or invalid" });
+    }
+
+    const appointment = new Appointment({
+      userId,
+      doctorId,
+      age,
+      bloodGroup,
+      address,
+      phone,
+      medicalHistory,
+      allergies,
+      currentMedications,
+      emergencyContact,
+      status: "Upcoming", 
     });
 
     await appointment.save();
@@ -34,14 +51,15 @@ exports.createAppointment = async (req, res) => {
       appointment,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error creating appointment", error: error.message });
+    res.status(500).json({
+      message: "Error creating appointment",
+      error: error.message,
+    });
   }
 };
 
-//Get All Appointments (Admin,Doctor)
 exports.getAllAppointments = async (req, res) => {
   try {
-    // Check role
     if (req.user.role !== "admin" && req.user.role !== "doctor") {
       return res.status(403).json({ message: "Access denied. Only admin or doctor can view all appointments." });
     }
@@ -57,22 +75,32 @@ exports.getAllAppointments = async (req, res) => {
   }
 };
 
-//Get Appointments of a Specific User (by userId)
 exports.getUserAppointments = async (req, res) => {
   try {
     const { id } = req.params;
+    const role = req.user.role; // verifyUser middleware se user info
 
-    const appointments = await Appointment.find({ userId: id }).populate("userId", "fullname email role");
-
-    if (appointments.length === 0) {
-      return res.status(404).json({ message: "No appointments found for this user" });
+    let query = {};
+    if (role === "doctor") {
+      query = { doctorId: id }; // doctor ke appointments
+    } else {
+      query = { userId: id }; // patient ke appointments
     }
 
-    res.status(200).json({
-      message: "User appointments fetched successfully",
-      appointments,
-    });
+    const appointments = await Appointment.find(query)
+      .populate("userId", "fullname email role")
+      .populate("doctorId", "fullname specialization profileImage");
+
+    if (!appointments || appointments.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    res.status(200).json(appointments);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching user appointments", error: error.message });
+    res.status(500).json({
+      message: "Error fetching user appointments",
+      error: error.message,
+    });
   }
 };
+
