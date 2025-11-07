@@ -8,11 +8,12 @@ import Dashboards from "./pages/Dashboard";
 import Doctorscreen from "./Patients/getdoctor";
 import Profile from "./Patients/Profile";
 import Appointment from "./Patients/appointments";
-import AdminDashboard from "./Admin/Homescreen";
 import Adminalldoctors from "./Admin/Alldoctor";
 import AdminAllpatients from "./Admin/Allpatients";
 import AdminAllstaff from "./Admin/Allstaff";
 import Adminallapointment from "./Admin/Allapointment";
+import Staffallapointments from "./Staff/Allappointments";
+import Staffcreateroom from "./Staff/Createroomschedule";
 
 function App() {
   return (
@@ -25,11 +26,15 @@ function App() {
           <Route path="/doctors" element={<Doctorscreen />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/appointment" element={<Appointment />} />
-          <Route path="/AdminDashboard" element={<AdminDashboard />} />
           <Route path="/Adminalldoctors" element={<Adminalldoctors />} />
           <Route path="/AdminAllpatients" element={<AdminAllpatients />} />
           <Route path="/AdminAllstaff" element={<AdminAllstaff />} />
-          <Route path="Adminallapointment" element={<Adminallapointment/>}/>
+          <Route path="/Adminallapointment" element={<Adminallapointment />} />
+          <Route path="/Staffcreateroom" element={<Staffcreateroom />} />
+          <Route
+            path="/Staffallapointments"
+            element={<Staffallapointments />}
+          />
         </Routes>
       </BrowserRouter>
     </UserProvider>

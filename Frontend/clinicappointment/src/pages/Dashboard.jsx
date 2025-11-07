@@ -3,6 +3,7 @@ import { UserContext } from "../context/Authcontext";
 import Patientscreen from "../Patients/Homescreen";
 import Doctorscreen from "../Doctor/Homescreen";
 import Adminscreen from "../Admin/Homescreen";
+import Staffscreen from "../Staff/Homescreen";
 
 export default function Dashboard() {
   const { user } = useContext(UserContext);
@@ -14,6 +15,7 @@ export default function Dashboard() {
       if (user?.role === "patient") setScreen(<Patientscreen />);
       else if (user?.role === "doctor") setScreen(<Doctorscreen />);
       else if (user?.role === "admin") setScreen(<Adminscreen />);
+      else if (user?.role === "staff") setScreen(<Staffscreen/>);
       else setScreen(<p className="text-red-500">Role not recognized</p>);
       setLoading(false);
     }, 800);

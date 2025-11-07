@@ -153,20 +153,14 @@ export default function Sidebar() {
 
         <div className="flex flex-col space-y-4">
           <button
-            onClick={() => navigate("/staff/appointments")}
+            onClick={() => navigate("/Staffallapointments")}
             className="hover:bg-purple-500 p-2 rounded-lg flex items-center space-x-2"
           >
             <i className="fas fa-calendar-alt"></i>{" "}
             <span>All Appointments</span>
           </button>
           <button
-            onClick={() => navigate("/staff/patients")}
-            className="hover:bg-purple-500 p-2 rounded-lg flex items-center space-x-2"
-          >
-            <i className="fas fa-users"></i> <span>All Patients</span>
-          </button>
-          <button
-            onClick={() => navigate("/staff/rooms")}
+            onClick={() => navigate("/Staffcreateroom")}
             className="hover:bg-purple-500 p-2 rounded-lg flex items-center space-x-2"
           >
             <i className="fas fa-hospital"></i> <span>Manage Room</span>

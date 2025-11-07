@@ -60,7 +60,7 @@ exports.createAppointment = async (req, res) => {
 
 exports.getAllAppointments = async (req, res) => {
   try {
-    if (req.user.role !== "admin" && req.user.role !== "doctor") {
+    if (req.user.role !== "admin" && req.user.role !== "doctor" && req.user.role!== "staff") {
       return res.status(403).json({ message: "Access denied. Only admin or doctor can view all appointments." });
     }
 

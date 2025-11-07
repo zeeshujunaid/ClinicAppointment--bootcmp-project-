@@ -1,7 +1,7 @@
 const Room = require('../models/roomModels');
 const User = require('../models/user');
 
-// ✅ Staff/Admin create room + assign doctor + timing
+// ✅ Staff create room + assign doctor + timing
 exports.createRoomSchedule = async (req, res) => {
   try {
     const { doctorId, roomNumber, date, startTime, slotDuration } = req.body;
