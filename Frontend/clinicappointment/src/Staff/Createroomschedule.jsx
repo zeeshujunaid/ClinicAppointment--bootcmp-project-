@@ -9,7 +9,7 @@ export default function Createroomschedule() {
     roomNumber: "",
     date: "",
     startTime: "",
-    slotDuration: 60,
+    slotDuration: 60, // default duration in minutes
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -20,9 +20,7 @@ export default function Createroomschedule() {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(`${baseurl}/api/auth/doctor`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
         setDoctors(data.users || data);
@@ -30,7 +28,6 @@ export default function Createroomschedule() {
         console.error("Error fetching doctors:", err);
       }
     };
-
     fetchDoctors();
   }, []);
 
@@ -47,20 +44,38 @@ export default function Createroomschedule() {
 
     try {
       const token = localStorage.getItem("token");
+
+      const [hours, minutes] = formData.startTime.split(":").map(Number);
+      const dateObj = new Date(formData.date); // date only
+      dateObj.setHours(hours, minutes, 0, 0); // set time correctly
+
+      if (isNaN(dateObj.getTime())) {
+        setMessage("❌ Invalid date or time");
+        setLoading(false);
+        return;
+      }
+
+      const formattedData = {
+        doctorId: formData.doctorId,
+        roomNumber: formData.roomNumber,
+        date: formData.date,
+        startTime: formData.startTime,
+        slotDuration: Number(formData.slotDuration),
+      };
+
       const res = await fetch(`${baseurl}/api/room/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formattedData),
       });
 
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.message || "Failed to create room");
 
-      setMessage("✅ Room created successfully!");
+      setMessage("✅ Room Schedule Created Successfully!");
       setFormData({
         doctorId: "",
         roomNumber: "",
@@ -150,7 +165,7 @@ export default function Createroomschedule() {
               Start Time
             </label>
             <input
-              type="datetime-local"
+              type="time"
               name="startTime"
               value={formData.startTime}
               onChange={handleChange}
@@ -170,6 +185,8 @@ export default function Createroomschedule() {
               value={formData.slotDuration}
               onChange={handleChange}
               min="10"
+              max="180"
+              required
               className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 outline-none"
             />
           </div>
@@ -180,7 +197,7 @@ export default function Createroomschedule() {
             disabled={loading}
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300"
           >
-            {loading ? "Creating..." : "Create Room"}
+            {loading ? "Creating..." : "Create Schedule"}
           </button>
 
           {message && (

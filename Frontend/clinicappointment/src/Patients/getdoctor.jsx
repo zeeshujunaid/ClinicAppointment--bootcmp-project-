@@ -7,19 +7,85 @@ export default function Getdoctor() {
   const [loading, setLoading] = useState(true);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [slots, setSlots] = useState([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
 
   const [form, setForm] = useState({
     bloodGroup: "",
     address: "",
+    date: "",
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // 🧩 Fetch All Doctors
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`${baseurl}/api/auth/doctor`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
-    const token = localStorage.getItem("token");
-    if (!token) return alert("Login first");
+        const data = await response.json();
+        if (!response.ok) {
+          console.log("Fetch failed =>", data.message);
+          setDoctors([]);
+          return;
+        }
 
+        setDoctors(data);
+      } catch (error) {
+        console.log("Error fetching doctors:", error);
+        setDoctors([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
+
+  // 🧩 Fetch Available Slots by Doctor + Date
+  const fetchAvailableSlots = async (doctorId, date) => {
     try {
+      setLoadingSlots(true);
+
+      const res = await fetch(`${baseurl}/api/room/date/${date}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.message || "Error fetching slots");
+        setSlots([]);
+        return;
+      }
+
+      // Filter by selected doctor
+      const filteredSlots = data.slots.filter(
+        (slot) => slot.doctorId._id === doctorId
+      );
+
+      setSlots(filteredSlots || []);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to load slots");
+    } finally {
+      setLoadingSlots(false);
+    }
+  };
+
+  // 🧩 Book Selected Slot
+  const handleBookSlot = async (slot) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return alert("Please login first");
+
       const res = await fetch(`${baseurl}/api/appointment/create`, {
         method: "POST",
         headers: {
@@ -27,8 +93,10 @@ export default function Getdoctor() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
+          patientId: JSON.parse(localStorage.getItem("user"))._id,
           doctorId: selectedDoctor._id,
-          ...form,
+          roomScheduleId: slot._id,
+          reason: "General Checkup",
         }),
       });
 
@@ -40,68 +108,40 @@ export default function Getdoctor() {
       }
 
       alert("Appointment booked successfully!");
-      setShowModal(false);
-      setForm({
-        age: "",
-        bloodGroup: "",
-        address: "",
-        phone: "",
-        medicalHistory: "",
-      });
-    } catch (err) {
-      console.error(err);
+      setSlots(slots.filter((s) => s._id !== slot._id)); // remove booked slot
+      setForm({ bloodGroup: "", address: "", date: "" });
+    } catch (error) {
+      console.error(error);
       alert("Something went wrong");
     }
+  };
+
+  // 🧩 Handle Modal Open/Close
+  const handleBookClick = (doctor) => {
+    setSelectedDoctor(doctor);
+    setShowModal(true);
+    setSlots([]);
+    setForm({ bloodGroup: "", address: "", date: "" });
   };
 
   const closeModal = () => {
     setShowModal(false);
     setSelectedDoctor(null);
-    setForm({
-      bloodGroup: "",
-      address: "",
+    setForm({ bloodGroup: "", address: "", date: "" });
+    setSlots([]);
+  };
+
+  // 🧩 Format time
+  const formatTime = (dateStr) => {
+    return new Date(dateStr).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
-  const handleBookClick = (doctor) => {
-    setSelectedDoctor(doctor);
-    setShowModal(true);
-  };
-
-  useEffect(() => {
-    const fetchDoctors = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`${baseurl}/api/auth/doctor`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-
-        const doc = await response.json();
-
-        if (!response.ok) {
-          console.log("Fetch failed =>", doc.message);
-          setDoctors([]);
-          return;
-        }
-
-        setDoctors(doc);
-      } catch (error) {
-        console.log("Error fetching doctors:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDoctors();
-  }, []);
-
+  // 🧩 UI Rendering
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navbar */}
       <Navbar />
 
       {/* Clinic Timing Info */}
@@ -114,7 +154,7 @@ export default function Getdoctor() {
           <p className="text-gray-800 text-base sm:text-lg text-center sm:text-left font-medium">
             Monday - Friday:{" "}
             <span className="font-semibold">9:00 AM - 6:00 PM</span> |
-            Saturday/sunday:Closed
+            Saturday/Sunday: Closed
           </p>
         </div>
       </div>
@@ -125,7 +165,6 @@ export default function Getdoctor() {
           Our Doctors
         </h1>
 
-        {/* Loading / No doctors */}
         {loading ? (
           <p className="text-center text-gray-500 text-lg">
             Loading doctors...
@@ -139,24 +178,18 @@ export default function Getdoctor() {
                 key={doc._id}
                 className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center w-72 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
               >
-                {/* Profile Image */}
                 <img
                   src={doc.profileImgurl || "https://via.placeholder.com/150"}
                   alt={doc.fullname}
                   className="w-28 h-28 rounded-full object-cover mb-4 border-4 border-blue-400 shadow-md"
                 />
-
-                {/* Name */}
                 <h2 className="text-xl font-bold text-gray-800 mb-1 text-center">
                   {doc.fullname}
                 </h2>
-
-                {/* Specialization */}
                 <span className="text-blue-700 text-sm mb-3 px-3 py-1 bg-blue-100 rounded-full shadow-sm">
                   {doc.specialization}
                 </span>
 
-                {/* Info */}
                 <div className="w-full text-gray-700 text-sm space-y-2 mb-5">
                   <p className="flex items-center gap-2">
                     <i className="fas fa-briefcase text-blue-600"></i>
@@ -176,7 +209,6 @@ export default function Getdoctor() {
                   </p>
                 </div>
 
-                {/* Button */}
                 <button
                   onClick={() => handleBookClick(doc)}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition-all duration-300"
@@ -187,10 +219,11 @@ export default function Getdoctor() {
             ))}
           </div>
         )}
+
+        {/* Modal */}
         {showModal && selectedDoctor && (
           <div className="fixed inset-0 bg-white/30 backdrop-blur-sm flex justify-center items-center z-50">
             <div className="bg-white rounded-xl p-6 sm:p-8 w-11/12 sm:w-96 shadow-xl relative">
-              {/* Close Button */}
               <button
                 className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition"
                 onClick={closeModal}
@@ -211,36 +244,60 @@ export default function Getdoctor() {
                 </p>
               </div>
 
-              {/* User Info Form */}
-              <form onSubmit={handleSubmit} className="space-y-3">
+              {/* Date Selection */}
+              <div className="space-y-3 mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Select Date:
+                </label>
                 <input
-                  type="text"
-                  placeholder="Blood Group"
-                  value={form.bloodGroup}
-                  onChange={(e) =>
-                    setForm({ ...form, bloodGroup: e.target.value })
-                  }
-                  className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-                  required
+                  type="date"
+                  value={form.date || ""}
+                  min={new Date().toISOString().split("T")[0]} // past dates disabled
+                  onChange={(e) => {
+                    const newDate = e.target.value;
+                    setForm({ ...form, date: newDate });
+                    fetchAvailableSlots(selectedDoctor._id, newDate);
+                  }}
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                 />
-                <input
-                  type="text"
-                  placeholder="Address"
-                  value={form.address}
-                  onChange={(e) =>
-                    setForm({ ...form, address: e.target.value })
-                  }
-                  className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-                  required
-                />
+              </div>
 
-                <button
-                  type="submit"
-                  className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300"
-                >
-                  Confirm Appointment
-                </button>
-              </form>
+              {/* Available Slots */}
+              <div className="mb-5">
+                <h3 className="text-lg font-semibold mb-2 text-gray-700">
+                  Available Slots
+                </h3>
+                {loadingSlots ? (
+                  <p className="text-gray-500">Loading slots...</p>
+                ) : slots.length === 0 ? (
+                  <p className="text-gray-500">No slots available</p>
+                ) : (
+                  <div className="space-y-2 max-h-48 overflow-y-auto">
+                    {slots.map((slot) => (
+                      <div
+                        key={slot._id}
+                        className="border p-3 rounded-lg flex justify-between items-center"
+                      >
+                        <div>
+                          <p className="text-sm font-medium text-gray-700">
+                            Room {slot.roomNumber}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {formatTime(slot.startTime)} -{" "}
+                            {formatTime(slot.endTime)}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => handleBookSlot(slot)}
+                          className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md text-sm"
+                        >
+                          Book
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}

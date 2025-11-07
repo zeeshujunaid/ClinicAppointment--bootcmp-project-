@@ -4,59 +4,73 @@ const User = require("../models/user");
 
 exports.createAppointment = async (req, res) => {
   try {
-    const {
-      doctorId,
-      age,
-      bloodGroup,
-      address,
-      phone,
-      medicalHistory,
-      allergies,
-      currentMedications,
-      emergencyContact,
-    } = req.body;
+    const { patientId, doctorId, roomScheduleId, reason } = req.body;
 
-    const userId = req.user.id;
-
-    
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    if (!patientId || !doctorId || !roomScheduleId) {
+      return res.status(400).json({ message: "Missing required fields" });
     }
 
-    
-    const doctor = await User.findById(doctorId);
-    if (!doctor || doctor.role !== "doctor") {
-      return res.status(404).json({ message: "Doctor not found or invalid" });
+    // ✅ Fetch RoomSchedule
+    const roomSchedule = await Room.findById(roomScheduleId);
+    if (!roomSchedule) {
+      return res.status(404).json({ message: "Room schedule not found" });
     }
 
-    const appointment = new Appointment({
-      userId,
+    if (roomSchedule.status !== "available") {
+      return res.status(400).json({ message: "Slot already booked" });
+    }
+
+    // 🩺 Double-check doctor overlap
+    const conflict = await Appointment.findOne({
       doctorId,
-      age,
-      bloodGroup,
-      address,
-      phone,
-      medicalHistory,
-      allergies,
-      currentMedications,
-      emergencyContact,
-      status: "Upcoming", 
+      date: roomSchedule.date,
+      $or: [
+        {
+          startTime: { $lt: roomSchedule.endTime, $gte: roomSchedule.startTime },
+        },
+        {
+          endTime: { $lte: roomSchedule.endTime, $gt: roomSchedule.startTime },
+        },
+        {
+          startTime: { $lte: roomSchedule.startTime },
+          endTime: { $gte: roomSchedule.endTime },
+        },
+      ],
     });
 
-    await appointment.save();
+    if (conflict) {
+      return res
+        .status(400)
+        .json({ message: "Doctor already has an appointment in this slot" });
+    }
+
+    // ✅ Create Appointment
+    const appointment = await Appointment.create({
+      patientId,
+      doctorId,
+      roomScheduleId,
+      date: roomSchedule.date,
+      startTime: roomSchedule.startTime,
+      endTime: roomSchedule.endTime,
+      status: "pending",
+      reason,
+    });
+
+    // 🟡 Update RoomSchedule to booked
+    roomSchedule.status = "booked";
+    await roomSchedule.save();
 
     res.status(201).json({
       message: "Appointment created successfully",
       appointment,
     });
   } catch (error) {
-    res.status(500).json({
-      message: "Error creating appointment",
-      error: error.message,
-    });
+    res
+      .status(500)
+      .json({ message: "Error creating appointment", error: error.message });
   }
 };
+
 
 exports.getAllAppointments = async (req, res) => {
   try {
