@@ -1,10 +1,21 @@
 const Appointment = require("../models/appointment");
 const User = require("../models/user");
-
+const Room = require("../models/roomModels");
 
 exports.createAppointment = async (req, res) => {
   try {
-    const { patientId, doctorId, roomScheduleId, reason } = req.body;
+    console.log("Request Body:", req.body);
+    const {
+      patientId,
+      doctorId,
+      roomScheduleId,
+      reason,
+      age,
+      bloodGroup,
+      address,
+      phone,
+      emergencyContact,
+    } = req.body;
 
     if (!patientId || !doctorId || !roomScheduleId) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -26,7 +37,10 @@ exports.createAppointment = async (req, res) => {
       date: roomSchedule.date,
       $or: [
         {
-          startTime: { $lt: roomSchedule.endTime, $gte: roomSchedule.startTime },
+          startTime: {
+            $lt: roomSchedule.endTime,
+            $gte: roomSchedule.startTime,
+          },
         },
         {
           endTime: { $lte: roomSchedule.endTime, $gt: roomSchedule.startTime },
@@ -44,16 +58,20 @@ exports.createAppointment = async (req, res) => {
         .json({ message: "Doctor already has an appointment in this slot" });
     }
 
-    // ✅ Create Appointment
     const appointment = await Appointment.create({
-      patientId,
+      userId: patientId,
       doctorId,
       roomScheduleId,
       date: roomSchedule.date,
       startTime: roomSchedule.startTime,
       endTime: roomSchedule.endTime,
-      status: "pending",
+      status: "Upcoming",
       reason,
+      age,
+      bloodGroup,
+      address,
+      phone,
+      emergencyContact,
     });
 
     // 🟡 Update RoomSchedule to booked
@@ -71,21 +89,34 @@ exports.createAppointment = async (req, res) => {
   }
 };
 
-
 exports.getAllAppointments = async (req, res) => {
   try {
-    if (req.user.role !== "admin" && req.user.role !== "doctor" && req.user.role!== "staff") {
-      return res.status(403).json({ message: "Access denied. Only admin or doctor can view all appointments." });
+    if (
+      req.user.role !== "admin" &&
+      req.user.role !== "doctor" &&
+      req.user.role !== "staff"
+    ) {
+      return res
+        .status(403)
+        .json({
+          message:
+            "Access denied. Only admin or doctor can view all appointments.",
+        });
     }
 
-    const appointments = await Appointment.find().populate("userId", "fullname email");
+    const appointments = await Appointment.find().populate(
+      "userId",
+      "fullname email"
+    );
 
     res.status(200).json({
       message: "All appointments fetched successfully",
       appointments,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching appointments", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching appointments", error: error.message });
   }
 };
 
@@ -117,4 +148,3 @@ exports.getUserAppointments = async (req, res) => {
     });
   }
 };
-

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useContext} from "react";
 import baseurl from "../service/config";
 import Navbar from "../components/Navbar";
+import { UserContext } from "../context/Authcontext";
 
 export default function Getdoctor() {
   const [doctors, setDoctors] = useState([]);
@@ -9,10 +10,14 @@ export default function Getdoctor() {
   const [showModal, setShowModal] = useState(false);
   const [slots, setSlots] = useState([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
+  const { user } = useContext(UserContext);
 
   const [form, setForm] = useState({
+    age: "",
     bloodGroup: "",
     address: "",
+    phone: "",
+    emergencyContact: "",
     date: "",
   });
 
@@ -82,6 +87,7 @@ export default function Getdoctor() {
 
   // 🧩 Book Selected Slot
   const handleBookSlot = async (slot) => {
+    const userId = user._id || user.id;
     try {
       const token = localStorage.getItem("token");
       if (!token) return alert("Please login first");
@@ -93,14 +99,23 @@ export default function Getdoctor() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          patientId: JSON.parse(localStorage.getItem("user"))._id,
+          patientId: userId,
           doctorId: selectedDoctor._id,
           roomScheduleId: slot._id,
           reason: "General Checkup",
+          age: form.age,
+          bloodGroup: form.bloodGroup,
+          address: form.address,
+          phone: form.phone,
+          emergencyContact: form.emergencyContact,
+          date: slot.date, // ✅ date from slot
+          startTime: slot.startTime, // ✅ startTime from slot
+          endTime: slot.endTime, // ✅ endTime from slot
         }),
       });
 
       const data = await res.json();
+      console.log(data);
 
       if (!res.ok) {
         alert(data.message || "Error booking appointment");
@@ -108,8 +123,16 @@ export default function Getdoctor() {
       }
 
       alert("Appointment booked successfully!");
-      setSlots(slots.filter((s) => s._id !== slot._id)); // remove booked slot
-      setForm({ bloodGroup: "", address: "", date: "" });
+      setSlots(slots.filter((s) => s._id !== slot._id));
+      setForm({
+        age: "",
+        bloodGroup: "",
+        address: "",
+        phone: "",
+        emergencyContact: "",
+        date: "",
+      });
+      setShowModal(false);
     } catch (error) {
       console.error(error);
       alert("Something went wrong");
@@ -121,13 +144,27 @@ export default function Getdoctor() {
     setSelectedDoctor(doctor);
     setShowModal(true);
     setSlots([]);
-    setForm({ bloodGroup: "", address: "", date: "" });
+    setForm({
+      age: "",
+      bloodGroup: "",
+      address: "",
+      phone: "",
+      emergencyContact: "",
+      date: "",
+    });
   };
 
   const closeModal = () => {
     setShowModal(false);
     setSelectedDoctor(null);
-    setForm({ bloodGroup: "", address: "", date: "" });
+    setForm({
+      age: "",
+      bloodGroup: "",
+      address: "",
+      phone: "",
+      emergencyContact: "",
+      date: "",
+    });
     setSlots([]);
   };
 
@@ -139,7 +176,6 @@ export default function Getdoctor() {
     });
   };
 
-  // 🧩 UI Rendering
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -231,7 +267,6 @@ export default function Getdoctor() {
                 ✖
               </button>
 
-              {/* Doctor Info */}
               <div className="mb-5 text-center">
                 <h2 className="text-2xl font-semibold text-gray-800">
                   {selectedDoctor.fullname}
@@ -244,21 +279,76 @@ export default function Getdoctor() {
                 </p>
               </div>
 
-              {/* Date Selection */}
+              {/* Patient Info Form */}
               <div className="space-y-3 mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Age:
+                </label>
+                <input
+                  type="number"
+                  value={form.age}
+                  onChange={(e) => setForm({ ...form, age: e.target.value })}
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+
+                <label className="block text-sm font-medium text-gray-700">
+                  Blood Group:
+                </label>
+                <input
+                  type="text"
+                  value={form.bloodGroup}
+                  onChange={(e) =>
+                    setForm({ ...form, bloodGroup: e.target.value })
+                  }
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+
+                <label className="block text-sm font-medium text-gray-700">
+                  Address:
+                </label>
+                <input
+                  type="text"
+                  value={form.address}
+                  onChange={(e) =>
+                    setForm({ ...form, address: e.target.value })
+                  }
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+
+                <label className="block text-sm font-medium text-gray-700">
+                  Phone:
+                </label>
+                <input
+                  type="text"
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+
+                <label className="block text-sm font-medium text-gray-700">
+                  Emergency Contact:
+                </label>
+                <input
+                  type="text"
+                  value={form.emergencyContact}
+                  onChange={(e) =>
+                    setForm({ ...form, emergencyContact: e.target.value })
+                  }
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+
                 <label className="block text-sm font-medium text-gray-700">
                   Select Date:
                 </label>
                 <input
                   type="date"
-                  value={form.date || ""}
-                  min={new Date().toISOString().split("T")[0]} // past dates disabled
+                  value={form.date}
+                  min={new Date().toISOString().split("T")[0]}
                   onChange={(e) => {
-                    const newDate = e.target.value;
-                    setForm({ ...form, date: newDate });
-                    fetchAvailableSlots(selectedDoctor._id, newDate);
+                    setForm({ ...form, date: e.target.value });
+                    fetchAvailableSlots(selectedDoctor._id, e.target.value);
                   }}
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
 
