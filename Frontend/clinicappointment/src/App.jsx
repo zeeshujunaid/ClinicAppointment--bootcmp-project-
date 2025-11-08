@@ -12,6 +12,7 @@ import Adminalldoctors from "./Admin/Alldoctor";
 import AdminAllpatients from "./Admin/Allpatients";
 import AdminAllstaff from "./Admin/Allstaff";
 import Adminallapointment from "./Admin/Allapointment";
+import Adminaddstaff from "./Admin/Adddoctor";
 import Staffallapointments from "./Staff/Allappointments";
 import Staffcreateroom from "./Staff/Createroomschedule";
 import StaffHomescreen from "./Staff/Homescreen";
@@ -35,6 +36,7 @@ function App() {
           <Route path="/AdminAllstaff" element={<AdminAllstaff />} />
           <Route path="/Adminallapointment" element={<Adminallapointment />} />
           <Route path="/Staffcreateroom" element={<Staffcreateroom />} />
+          <Route path="/Adminaddstaff" element={<Adminaddstaff/>}/>
           <Route
             path="/Staffallapointments"
             element={<Staffallapointments />}
