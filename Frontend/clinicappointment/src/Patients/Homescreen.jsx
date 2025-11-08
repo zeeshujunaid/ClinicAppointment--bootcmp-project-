@@ -28,7 +28,7 @@ export default function Homescreen() {
         </div>
 
         <div className="flex justify-center mt-10 md:mt-0">
-          <img src="/doctor.png" alt="Doctor" className="w-72 md:w-96" />
+          <img src="/doctor2.png" alt="Doctor" className="w-72 md:w-96" />
         </div>
       </section>
 
@@ -41,9 +41,9 @@ export default function Homescreen() {
         <div className="flex flex-col md:flex-row justify-center items-center gap-8">
           <div className="bg-blue-50 p-6 rounded-2xl shadow-md text-center w-full md:w-1/3 hover:shadow-lg transition-all">
             <img
-              src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
+              src="/doctorteam.png"
               alt="Expert Doctors"
-              className="w-20 mx-auto mb-4"
+              className="w-30 mx-auto mb-4"
             />
             <h3 className="text-lg font-semibold text-blue-700 mb-2">
               Expert Doctors
@@ -56,7 +56,7 @@ export default function Homescreen() {
 
           <div className="bg-blue-50 p-6 rounded-2xl shadow-md text-center w-full md:w-1/3 hover:shadow-lg transition-all">
             <img
-              src="https://cdn-icons-png.flaticon.com/512/3209/3209265.png"
+              src="/appointmentbooking.png"
               alt="Easy Appointments"
               className="w-20 mx-auto mb-4"
             />
@@ -71,7 +71,7 @@ export default function Homescreen() {
 
           <div className="bg-blue-50 p-6 rounded-2xl shadow-md text-center w-full md:w-1/3 hover:shadow-lg transition-all">
             <img
-              src="https://cdn-icons-png.flaticon.com/512/2920/2920344.png"
+              src="/service.png"
               alt="24/7 Support"
               className="w-20 mx-auto mb-4"
             />

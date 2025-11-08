@@ -27,7 +27,7 @@ export default function FrequentlyQuestion() {
         {/* Left Side - Doctor Image */}
         <div className="flex justify-center">
           <img
-            src="https://pngimg.com/d/doctor_PNG15992.png"
+            src="/questiondoc.jpeg"
             alt="Doctor"
             className="w-72 h-72 object-contain rounded-2xl shadow-lg bg-white p-4"
           />

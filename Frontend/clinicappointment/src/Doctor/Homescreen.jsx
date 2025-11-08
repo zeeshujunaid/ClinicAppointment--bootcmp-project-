@@ -1,27 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../Components/sidebar";
 
 export default function Homescreen() {
   const [showModal, setShowModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
-  // Static patient data
-  const patients = [
-    {
-      id: 1,
-      name: "Ahsan",
-      email: "ahsan@gmail.com",
-      phone: "09876543",
-      previousMedications: ["Paracetamol", "Vitamin D"],
-    },
-    {
-      id: 2,
-      name: "Sara",
-      email: "sara@gmail.com",
-      phone: "012345678",
-      previousMedications: ["Ibuprofen"],
-    },
-  ];
+
+  useEffect(()=>{
+    
+  })
+
 
   const openModal = (patient) => {
     setSelectedPatient(patient);
