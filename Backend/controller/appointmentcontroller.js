@@ -134,7 +134,7 @@ exports.getUserAppointments = async (req, res) => {
 
     const appointments = await Appointment.find(query)
       .populate("userId", "fullname email role")
-      .populate("doctorId", "fullname specialization profileImage");
+      .populate("doctorId", "fullname specialization profileImage fees");
 
     if (!appointments || appointments.length === 0) {
       return res.status(200).json([]);

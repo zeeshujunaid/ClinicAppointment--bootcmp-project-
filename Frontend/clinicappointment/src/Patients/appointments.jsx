@@ -26,10 +26,10 @@ export default function Appointment() {
         });
 
         const data = await res.json();
+        console.log(data);
         localStorage.setItem("appointments", JSON.stringify(data));
 
         if (res.ok) {
-          // Ensure array is set correctly
           setAppointments(Array.isArray(data) ? data : data.appointments || []);
         } else {
           setAppointments([]);
