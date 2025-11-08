@@ -153,6 +153,12 @@ export default function Sidebar() {
 
         <div className="flex flex-col space-y-4">
           <button
+            onClick={() => navigate("/StaffHomescreen")}
+            className="hover:bg-purple-500 p-2 rounded-lg flex items-center space-x-2"
+          >
+            <i className="fas fa-hospital"></i> <span>Homescreen</span>
+          </button>
+          <button
             onClick={() => navigate("/Staffallapointments")}
             className="hover:bg-purple-500 p-2 rounded-lg flex items-center space-x-2"
           >

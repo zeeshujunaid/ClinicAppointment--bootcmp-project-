@@ -18,6 +18,6 @@ router.get("/all", verifyUser, allowRoles("admin", "doctor","staff"), getAllAppo
 
 router.get("/user/:id", verifyUser, allowRoles("admin", "doctor", "patient"), getUserAppointments);
 
-router.get("/getdoctortodayappointment" , verifyUser , allowRoles("admin", "doctor", "patient"), getPatientAndDoctorAppointments );
+router.post("/getdoctortodayappointment" , verifyUser , allowRoles("admin", "doctor", "patient"), getPatientAndDoctorAppointments );
 
 module.exports = router;

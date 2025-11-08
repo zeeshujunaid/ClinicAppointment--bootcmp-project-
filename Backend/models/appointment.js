@@ -10,9 +10,9 @@ const appointmentSchema = new mongoose.Schema({
   bloodGroup: { type: String, required: true },
   address: { type: String, required: true },
   phone: { type: String, required: true },
-  // medicalHistory: { type: String, default: "" },
-  // allergies: { type: String, default: "" },
-  // currentMedications: { type: String, default: "" },
+  medicalHistory: { type: String, default: "" },
+  allergies: { type: String, default: "" },
+  currentMedications: { type: String, default: "" },
   emergencyContact: { type: String, required: true },
 
   // Appointment info

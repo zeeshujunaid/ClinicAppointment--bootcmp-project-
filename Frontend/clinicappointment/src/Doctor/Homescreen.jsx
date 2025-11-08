@@ -1,15 +1,80 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Sidebar from "../Components/sidebar";
+import baseurl from "../service/config";
+import { UserContext } from "../context/Authcontext";
 
 export default function Homescreen() {
+  const { user } = useContext(UserContext); // logged-in doctor
+  const [patients, setPatients] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
+  // Fetch doctor's today's appointments
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      const token = localStorage.getItem("token");
+      const userId = user._id || user.id;
+      console.log(userId);
+      console.log("token=>from", token);
+      const today = new Date().toISOString().split("T")[0];
 
-  useEffect(()=>{
-    
-  })
+      try {
+        const res = await fetch(
+          `${baseurl}/api/appointment/getdoctortodayappointment`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              doctorId: userId,
+              date: today,
+            }),
+          }
+        );
 
+        const data = await res.json();
+        console.log("API Response:", data);
+
+        if (data.doctorAppointments && data.doctorAppointments.length > 0) {
+          const uniquePatients = [];
+          const map = new Map();
+
+          data.doctorAppointments.forEach((apt) => {
+            const patientId = apt.userId._id;
+
+            if (!map.has(patientId)) {
+              map.set(patientId, true);
+
+              uniquePatients.push({
+                _id: patientId,
+                name: apt.userId.fullname,
+                email: apt.userId.email,
+                phone: apt.phone || "N/A",
+                age: apt.age,
+                bloodGroup: apt.bloodGroup,
+                address: apt.address,
+                emergencyContact: apt.emergencyContact,
+                medicalHistory: apt.medicalHistory,
+                allergies: apt.allergies,
+                currentMedications: apt.currentMedications
+                  ? [apt.currentMedications]
+                  : [],
+                appointmentId: apt._id,
+              });
+            }
+          });
+
+          setPatients(uniquePatients);
+        }
+      } catch (err) {
+        console.error("Error fetching appointments:", err);
+      }
+    };
+
+   fetchAppointments();
+  }, [user]);
 
   const openModal = (patient) => {
     setSelectedPatient(patient);
@@ -41,7 +106,7 @@ export default function Homescreen() {
         <div className="flex flex-wrap gap-6">
           {patients.map((patient) => (
             <div
-              key={patient.id}
+              key={patient._id}
               className="flex flex-col justify-between bg-white p-4 rounded-lg shadow hover:shadow-lg transition w-full sm:w-[48%]"
             >
               <div>
@@ -91,11 +156,27 @@ export default function Homescreen() {
               <h2 className="text-xl font-semibold">{selectedPatient.name}</h2>
               <p className="text-gray-600">Email: {selectedPatient.email}</p>
               <p className="text-gray-600">Phone: {selectedPatient.phone}</p>
+              <p className="text-gray-600">Age: {selectedPatient.age}</p>
+              <p className="text-gray-600">
+                Blood Group: {selectedPatient.bloodGroup}
+              </p>
+              <p className="text-gray-600">
+                Address: {selectedPatient.address}
+              </p>
+              <p className="text-gray-600">
+                Emergency Contact: {selectedPatient.emergencyContact}
+              </p>
+              <p className="text-gray-600">
+                Allergies: {selectedPatient.allergies || "N/A"}
+              </p>
+              <p className="text-gray-600">
+                Medical History: {selectedPatient.medicalHistory || "N/A"}
+              </p>
 
               <div className="mt-4">
-                <h3 className="font-semibold mb-1">Previous Medications:</h3>
+                <h3 className="font-semibold mb-1">Current Medications:</h3>
                 <ul className="list-disc list-inside text-gray-700">
-                  {selectedPatient.previousMedications.map((med, index) => (
+                  {selectedPatient.currentMedications.map((med, index) => (
                     <li key={index}>{med}</li>
                   ))}
                 </ul>

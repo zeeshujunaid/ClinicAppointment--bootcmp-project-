@@ -151,17 +151,9 @@ exports.getUserAppointments = async (req, res) => {
 
 exports.getPatientAndDoctorAppointments = async (req, res) => {
   try {
-    const { patientId, doctorId, date } = req.body; // frontend se ye ayega
-    if (!patientId || !doctorId || !date) {
+    const { doctorId, date } = req.body; // frontend se ye ayega
+    if ( !doctorId || !date) {
       return res.status(400).json({ message: "Missing required fields" });
-    }
-
-    // 1️⃣ Patient details
-    const patient = await User.findById(patientId).select(
-      "fullname email phone age bloodGroup address"
-    );
-    if (!patient) {
-      return res.status(404).json({ message: "Patient not found" });
     }
 
     // 2️⃣ Doctor appointments for that day
@@ -179,7 +171,7 @@ exports.getPatientAndDoctorAppointments = async (req, res) => {
       .populate("roomScheduleId", "roomNumber");
 
     res.status(200).json({
-      patient,
+      // patient,
       doctorAppointments,
     });
   } catch (error) {
