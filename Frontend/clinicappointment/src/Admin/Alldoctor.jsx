@@ -64,7 +64,7 @@ export default function AllDoctor() {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <div className="w-1/5 bg-yellow-500">
+      <div className="w-1/5 bg-gray-100">
         <Sidebar />
       </div>
 
