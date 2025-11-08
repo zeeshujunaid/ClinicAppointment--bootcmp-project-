@@ -46,8 +46,8 @@ export default function Createroomschedule() {
       const token = localStorage.getItem("token");
 
       const [hours, minutes] = formData.startTime.split(":").map(Number);
-      const dateObj = new Date(formData.date); // date only
-      dateObj.setHours(hours, minutes, 0, 0); // set time correctly
+      const dateObj = new Date(formData.date);
+      dateObj.setHours(hours, minutes, 0, 0);
 
       if (isNaN(dateObj.getTime())) {
         setMessage("❌ Invalid date or time");
@@ -92,12 +92,10 @@ export default function Createroomschedule() {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
-      <div className="w-1/5 bg-blue-600">
+      <div className="w-1/5 bg-gray-100">
         <Sidebar />
       </div>
 
-      {/* Main Content */}
       <div className="w-4/5 p-8 bg-gray-100 overflow-y-auto">
         <h1 className="text-3xl font-bold text-blue-700 mb-8 text-center">
           Create Room Schedule
@@ -128,20 +126,25 @@ export default function Createroomschedule() {
             </select>
           </div>
 
-          {/* Room Number */}
+          {/* Room Number Dropdown */}
           <div>
             <label className="block text-gray-700 font-semibold mb-2">
               Room Number
             </label>
-            <input
-              type="text"
+            <select
               name="roomNumber"
               value={formData.roomNumber}
               onChange={handleChange}
-              placeholder="Enter Room No."
               required
               className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 outline-none"
-            />
+            >
+              <option value="">-- Select Room --</option>
+              {[1, 2, 3, 4].map((r) => (
+                <option key={r} value={r}>
+                  Room {r}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Date */}
@@ -174,24 +177,29 @@ export default function Createroomschedule() {
             />
           </div>
 
-          {/* Slot Duration */}
+          {/* Slot Duration Dropdown */}
           <div>
             <label className="block text-gray-700 font-semibold mb-2">
               Slot Duration (minutes)
             </label>
-            <input
-              type="number"
+            <select
               name="slotDuration"
               value={formData.slotDuration}
               onChange={handleChange}
-              min="10"
-              max="180"
               required
               className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 outline-none"
-            />
+            >
+              {[...Array(9)].map((_, i) => {
+                const val = (i + 1) * 10; // 10,20,...,90
+                return (
+                  <option key={val} value={val}>
+                    {val} min
+                  </option>
+                );
+              })}
+            </select>
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={loading}

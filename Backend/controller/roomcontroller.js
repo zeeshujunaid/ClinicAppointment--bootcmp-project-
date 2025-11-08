@@ -30,7 +30,6 @@ exports.createRoomSchedule = async (req, res) => {
     const end = new Date(start.getTime() + duration * 60000); // add duration
 
     const overlapping = await Room.findOne({
-      doctorId,
       roomNumber,
       date: new Date(date),
       $or: [
@@ -41,11 +40,9 @@ exports.createRoomSchedule = async (req, res) => {
     });
 
     if (overlapping) {
-      return res
-        .status(400)
-        .json({
-          message: "Overlapping slot exists for this doctor in this room",
-        });
+      return res.status(400).json({
+        message: "Overlapping slot exists for this doctor in this room",
+      });
     }
 
     // Save room slot

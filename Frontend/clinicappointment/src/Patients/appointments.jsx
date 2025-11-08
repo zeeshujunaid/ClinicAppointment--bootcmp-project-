@@ -10,37 +10,33 @@ export default function Appointment() {
 
   useEffect(() => {
     const fetchAppointments = async () => {
-      if (!user || !(user._id || user.id)) {
-        return;
-      }
+      if (!user || !(user._id || user.id)) return;
 
       const token = localStorage.getItem("token");
-      if (!token) {
-        return;
-      }
+      if (!token) return;
 
       try {
         setLoading(true);
         const userId = user._id || user.id;
-        const res = await fetch(`${baseurl}/api/appointment/user/${userId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const res = await fetch(`${baseurl}/api/appointment/user/${userId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         const data = await res.json();
         localStorage.setItem("appointments", JSON.stringify(data));
 
         if (res.ok) {
+          // Ensure array is set correctly
           setAppointments(Array.isArray(data) ? data : data.appointments || []);
         } else {
           setAppointments([]);
         }
       } catch (error) {
         setAppointments([]);
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -56,6 +52,16 @@ export default function Appointment() {
       </div>
     );
   }
+
+  const formatTime = (start, end) => {
+    return `${new Date(start).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    })} - ${new Date(end).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    })}`;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200">
@@ -85,22 +91,23 @@ export default function Appointment() {
                 <div className="flex items-center gap-4">
                   <img
                     src={
-                      appt.doctor?.profileImage ||
+                      appt.doctorId?.profileImage ||
                       "https://cdn-icons-png.flaticon.com/512/847/847969.png"
                     }
-                    alt="Doctor"
+                    alt={appt.doctorId?.fullname || "Doctor"}
                     className="w-20 h-20 rounded-full object-cover border-2 border-blue-400"
                   />
                   <div>
                     <h2 className="text-xl font-semibold text-gray-800">
-                      {appt.doctor?.fullname || "Unknown Doctor"}
+                      {appt.doctorId?.fullname || "Unknown Doctor"}
                     </h2>
                     <p className="text-gray-600 text-sm">
-                      {appt.doctor?.specialization || "N/A"}
+                      {appt.doctorId?.specialization || "N/A"}
                     </p>
                     <p className="text-gray-500 text-sm">
                       <i className="fas fa-calendar-alt text-blue-500 mr-2"></i>
-                      {new Date(appt.date).toLocaleDateString()} • {appt.time}
+                      {new Date(appt.date).toLocaleDateString()} •{" "}
+                      {formatTime(appt.startTime, appt.endTime)}
                     </p>
                   </div>
                 </div>
@@ -119,7 +126,7 @@ export default function Appointment() {
                     {appt.status}
                   </span>
                   <p className="text-gray-700">
-                    <strong>Fees:</strong> Rs. {appt.fees || "N/A"}
+                    <strong>Fees:</strong> Rs. {appt.doctorId?.fees || "N/A"}
                   </p>
                 </div>
               </div>

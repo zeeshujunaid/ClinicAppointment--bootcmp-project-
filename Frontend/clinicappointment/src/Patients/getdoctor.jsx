@@ -101,6 +101,7 @@ export default function Getdoctor() {
         body: JSON.stringify({
           patientId: userId,
           doctorId: selectedDoctor._id,
+          fees:selectedDoctor.fees,
           roomScheduleId: slot._id,
           reason: "General Checkup",
           age: form.age,
@@ -108,9 +109,9 @@ export default function Getdoctor() {
           address: form.address,
           phone: form.phone,
           emergencyContact: form.emergencyContact,
-          date: slot.date, // ✅ date from slot
-          startTime: slot.startTime, // ✅ startTime from slot
-          endTime: slot.endTime, // ✅ endTime from slot
+          date: slot.date, 
+          startTime: slot.startTime, 
+          endTime: slot.endTime, 
         }),
       });
 
