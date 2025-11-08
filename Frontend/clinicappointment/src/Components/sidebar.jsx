@@ -121,7 +121,7 @@ export default function Sidebar() {
             className="flex items-center space-x-3 hover:bg-green-500 p-2 rounded-lg transition-all w-full"
             onClick={() => {
               localStorage.clear();
-              navigate("/login");
+              navigate("/");
             }}
           >
             <i className="fas fa-sign-out-alt"></i>
