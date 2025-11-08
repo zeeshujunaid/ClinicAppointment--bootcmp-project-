@@ -27,7 +27,7 @@ exports.registerPatient = async (req, res) => {
       password,
       phone,
       profileImgurl,
-      role: "patient", // Fixed role
+      role: "patient", 
       age,
       gender,
       address,
@@ -59,7 +59,7 @@ exports.createUserByAdmin = async (req, res) => {
   }
 
   try {
-    // ✅ Only admin can create users
+    // Only admin can register doctor
     if (req.user.role !== "admin") {
       return res.status(403).json({ message: "Access denied. Only admin can create users." });
     }
@@ -76,11 +76,11 @@ exports.createUserByAdmin = async (req, res) => {
       password,
       phone,
       profileImgurl,
-      role, // can be doctor, staff, nurse, etc.
+      role, 
       specialization,
       experience,
       fees,
-      designation, // for staff or other roles
+      designation, 
     });
 
     res.status(201).json({
@@ -98,7 +98,7 @@ exports.createUserByAdmin = async (req, res) => {
 };
 
 
-// login for everyone (doctor,staff,patient)
+// login for everyone 
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -133,7 +133,7 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-// getting all user (doctor,patient,staff and filter on frontend)
+// fetching all users for admin 
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password").sort({ createdAt: -1 });
@@ -148,6 +148,7 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+// fetching only doctors 
 exports.getDoctors = async (req, res) => {
   try {
     const doctors = await User.find({ role: "doctor" });
@@ -158,6 +159,7 @@ exports.getDoctors = async (req, res) => {
   }
 };
 
+// fetching all patients
 exports.getPatients = async (req, res) => {
   try {
     const doctors = await User.find({ role: "patient" });
@@ -168,6 +170,7 @@ exports.getPatients = async (req, res) => {
   }
 };
 
+// fetching all staff
 exports.getStaff = async (req, res) => {
   try {
     const doctors = await User.find({ role: "staff" });
@@ -178,7 +181,7 @@ exports.getStaff = async (req, res) => {
   }
 };
 
-// ✅ Create Admin (for one-time setup)
+// admin create 
 exports.createAdmin = async (req, res) => {
   try {
     const { fullname, email, password, phone } = req.body;

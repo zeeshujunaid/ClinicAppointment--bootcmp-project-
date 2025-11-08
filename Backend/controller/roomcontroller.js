@@ -1,7 +1,7 @@
 const Room = require("../models/roomModels");
 const User = require("../models/user");
 
-// ✅ Staff create room + assign doctor + timing
+// staff create room for doctor with date and time
 exports.createRoomSchedule = async (req, res) => {
   try {
     const { doctorId, roomNumber, date, startTime, slotDuration } = req.body;
@@ -26,9 +26,10 @@ exports.createRoomSchedule = async (req, res) => {
       return res.status(400).json({ message: "Invalid start time" });
     }
 
-    const duration = Number(slotDuration) || 60; // default 60 min
-    const end = new Date(start.getTime() + duration * 60000); // add duration
+    const duration = Number(slotDuration) || 60;
+    const end = new Date(start.getTime() + duration * 60000);
 
+    // checking for overlaping
     const overlapping = await Room.findOne({
       roomNumber,
       date: new Date(date),
@@ -41,11 +42,11 @@ exports.createRoomSchedule = async (req, res) => {
 
     if (overlapping) {
       return res.status(400).json({
-        message: "Overlapping slot exists for this doctor in this room",
+        message: "room aleady assinged",
       });
     }
 
-    // Save room slot
+    // saving room slot
     const room = await Room.create({
       doctorId,
       roomNumber,
@@ -64,7 +65,7 @@ exports.createRoomSchedule = async (req, res) => {
   }
 };
 
-// ✅ Patient view available slots
+// getting room slot of doctor for patient
 exports.getRoomScheduleByDate = async (req, res) => {
   try {
     const { date } = req.params;
@@ -85,7 +86,7 @@ exports.getRoomScheduleByDate = async (req, res) => {
   }
 };
 
-// ✅ Patient book slot (atomic update)
+// patient bok room slot
 exports.bookRoomSlot = async (req, res) => {
   try {
     const { roomId } = req.body;
@@ -108,3 +109,4 @@ exports.bookRoomSlot = async (req, res) => {
       .json({ message: "Error booking slot", error: error.message });
   }
 };
+ 

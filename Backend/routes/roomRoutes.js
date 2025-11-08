@@ -8,13 +8,13 @@ const {
   bookRoomSlot
 } = require('../controller/roomcontroller');
 
-// Staff/Admin creates room schedule
+
 router.post('/create', protect, staffOnly, createRoomSchedule);
 
-// Patient views available slots for date
+
 router.get('/date/:date', protect, patientOnly, getRoomScheduleByDate);
 
-// Patient books a slot
+
 router.post('/book', protect, patientOnly, bookRoomSlot);
 
 module.exports = router;

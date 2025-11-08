@@ -4,7 +4,6 @@ const Appointment = require("../models/appointment");
 
 exports.createAppointment = async (req, res) => {
   try {
-    console.log("Request Body:", req.body);
     const {
       patientId,
       doctorId,
@@ -21,7 +20,7 @@ exports.createAppointment = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    // ✅ Fetch RoomSchedule
+    // fecthing room schema
     const roomSchedule = await Room.findById(roomScheduleId);
     if (!roomSchedule) {
       return res.status(404).json({ message: "Room schedule not found" });
@@ -74,7 +73,7 @@ exports.createAppointment = async (req, res) => {
       emergencyContact,
     });
 
-    // 🟡 Update RoomSchedule to booked
+    // room schedule booked
     roomSchedule.status = "booked";
     await roomSchedule.save();
 
@@ -91,20 +90,24 @@ exports.createAppointment = async (req, res) => {
 
 exports.getAllAppointments = async (req, res) => {
   try {
+    // blocking user to get all appointments
     if (
-      req.user.role !== "admin" &&
-      req.user.role !== "doctor" &&
-      req.user.role !== "staff"
+      req.user.role == "patient"
+      // req.user.role !== "admin" &&
+      // req.user.role !== "doctor" &&
+      // req.user.role !== "staff"
     ) {
       return res.status(403).json({
-        message: "Access denied. Only admin or doctor can view all appointments.",
+        message:
+          "Access denied. Only admin or doctor can view all appointments.",
       });
     }
 
+    // getting other data from other colletion 
     const appointments = await Appointment.find()
-      .populate("userId", "fullname email") // patient info
-      .populate("doctorId", "fullname specialization fees") // doctor info
-      .populate("roomScheduleId", "roomNumber"); // room info
+      .populate("userId", "fullname email")
+      .populate("doctorId", "fullname specialization fees")
+      .populate("roomScheduleId", "roomNumber"); 
 
     res.status(200).json({
       message: "All appointments fetched successfully",
@@ -118,20 +121,21 @@ exports.getAllAppointments = async (req, res) => {
   }
 };
 
-
-
 exports.getUserAppointments = async (req, res) => {
   try {
+    // getting id to get his appointments only
     const { id } = req.params;
     const role = req.user.role;
 
+
     let query = {};
     if (role === "doctor") {
-      query = { doctorId: id }; 
+      query = { doctorId: id };
     } else {
-      query = { userId: id }; 
+      query = { userId: id };
     }
 
+    // getting other info from other fields 
     const appointments = await Appointment.find(query)
       .populate("userId", "fullname email role")
       .populate("doctorId", "fullname specialization profileImage fees");
@@ -151,18 +155,20 @@ exports.getUserAppointments = async (req, res) => {
 
 exports.getPatientAndDoctorAppointments = async (req, res) => {
   try {
-    const { doctorId, date } = req.body; // frontend se ye ayega
-    if ( !doctorId || !date) {
+    // getting doctorid and data to fetch only this date appointments
+    const { doctorId, date } = req.body; 
+    if (!doctorId || !date) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    // 2️⃣ Doctor appointments for that day
+    //Doctor appointments for that day
     const startOfDay = new Date(date);
     startOfDay.setHours(0, 0, 0, 0);
 
     const endOfDay = new Date(date);
     endOfDay.setHours(23, 59, 59, 999);
 
+    // getting all required data
     const doctorAppointments = await Appointment.find({
       doctorId,
       date: { $gte: startOfDay, $lte: endOfDay },
@@ -171,7 +177,6 @@ exports.getPatientAndDoctorAppointments = async (req, res) => {
       .populate("roomScheduleId", "roomNumber");
 
     res.status(200).json({
-      // patient,
       doctorAppointments,
     });
   } catch (error) {
