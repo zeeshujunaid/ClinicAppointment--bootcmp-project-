@@ -75,7 +75,7 @@ export default function Allstaff() {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <div className="w-1/5 bg-green-500">
+      <div className="w-1/5 bg-gray-100">
         <Sidebar />
       </div>
 
