@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="w-full fixed top-0 left-0 bg-white shadow-md z-50">
@@ -32,6 +33,18 @@ export default function Navbar() {
           <a href="/profile" className="hover:text-blue-600 transition">
             Profile
           </a>
+          <div className="mt-auto">
+            <button
+              className="flex items-center space-x-3 hover:bg-green-500 p-2 rounded-lg transition-all w-full"
+              onClick={() => {
+                localStorage.clear();
+                navigate("/");
+              }}
+            >
+              <i className="fas fa-sign-out-alt"></i>
+              <span>Logout</span>
+            </button>
+          </div>
         </div>
 
         {/* Mobile Toggle Button */}

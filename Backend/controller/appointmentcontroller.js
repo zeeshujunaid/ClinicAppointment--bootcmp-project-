@@ -96,29 +96,29 @@ exports.getAllAppointments = async (req, res) => {
       req.user.role !== "doctor" &&
       req.user.role !== "staff"
     ) {
-      return res
-        .status(403)
-        .json({
-          message:
-            "Access denied. Only admin or doctor can view all appointments.",
-        });
+      return res.status(403).json({
+        message: "Access denied. Only admin or doctor can view all appointments.",
+      });
     }
 
-    const appointments = await Appointment.find().populate(
-      "userId",
-      "fullname email"
-    );
+    const appointments = await Appointment.find()
+      .populate("userId", "fullname email") // patient info
+      .populate("doctorId", "fullname specialization fees") // doctor info
+      .populate("roomScheduleId", "roomNumber"); // room info
 
     res.status(200).json({
       message: "All appointments fetched successfully",
       appointments,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error fetching appointments", error: error.message });
+    res.status(500).json({
+      message: "Error fetching appointments",
+      error: error.message,
+    });
   }
 };
+
+
 
 exports.getUserAppointments = async (req, res) => {
   try {

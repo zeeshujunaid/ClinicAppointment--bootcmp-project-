@@ -30,6 +30,7 @@ export default function Allappointments() {
         });
 
         const data = await res.json();
+        console.log(data);
         if (!res.ok)
           throw new Error(data.message || "Failed to fetch appointments");
 
@@ -60,7 +61,7 @@ export default function Allappointments() {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <div className="w-1/5 bg-green-500">
+      <div className="w-1/5 bg-gray-100">
         <Sidebar />
       </div>
 
@@ -110,7 +111,7 @@ export default function Allappointments() {
                       <th className="py-3 px-4 text-left">Patient</th>
                       <th className="py-3 px-4 text-left">Doctor</th>
                       <th className="py-3 px-4 text-left">Date</th>
-                      <th className="py-3 px-4 text-left">Time</th>
+                      <th className="py-3 px-4 text-left">Room</th>
                       <th className="py-3 px-4 text-left">Status</th>
                       <th className="py-3 px-4 text-left rounded-tr-lg">
                         Fees
@@ -127,15 +128,18 @@ export default function Allappointments() {
                       >
                         <td className="py-3 px-4">{i + 1}</td>
                         <td className="py-3 px-4">
-                          {a.patient?.fullname || "Unknown"}
+                          {a.userId?.fullname || "Unknown"}
                         </td>
                         <td className="py-3 px-4">
-                          {a.doctor?.fullname || "Unknown"}
+                          {a.doctorId?.fullname || "Unknown"}
                         </td>
                         <td className="py-3 px-4">
                           {new Date(a.date).toLocaleDateString()}
                         </td>
-                        <td className="py-3 px-4">{a.time || "-"}</td>
+                        <td className="py-3 px-4">
+                          Room {""}
+                          <strong>{a.roomScheduleId?.roomNumber}</strong>
+                        </td>
                         <td className="py-3 px-4">
                           <span
                             className={`px-3 py-1 rounded-full text-sm font-semibold ${
@@ -149,7 +153,9 @@ export default function Allappointments() {
                             {a.status}
                           </span>
                         </td>
-                        <td className="py-3 px-4">Rs {a.fee || 0}</td>
+                        <td className="py-3 px-4">
+                          Rs {a.doctorId?.fees || 0}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
