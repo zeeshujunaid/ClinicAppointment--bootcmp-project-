@@ -259,8 +259,8 @@ export default function Getdoctor() {
 
         {/* Modal */}
         {showModal && selectedDoctor && (
-          <div className="fixed inset-0 bg-white/30 backdrop-blur-sm flex justify-center items-center z-50">
-            <div className="bg-white rounded-xl p-6 sm:p-8 w-11/12 sm:w-96 shadow-xl relative">
+          <div className="fixed inset-0 bg-white/30 backdrop-blur-sm flex justify-center items-start pt-10 z-50">
+            <div className="bg-white rounded-xl p-6 sm:p-8 w-11/12 sm:w-[600px] shadow-xl relative max-h-[90vh] overflow-y-auto">
               <button
                 className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition"
                 onClick={closeModal}
@@ -268,6 +268,7 @@ export default function Getdoctor() {
                 ✖
               </button>
 
+              {/* Doctor Info */}
               <div className="mb-5 text-center">
                 <h2 className="text-2xl font-semibold text-gray-800">
                   {selectedDoctor.fullname}
@@ -276,81 +277,104 @@ export default function Getdoctor() {
                   {selectedDoctor.specialization}
                 </p>
                 <p className="text-gray-700 font-medium">
-                  Fees: {selectedDoctor.fees}
+                  Fees: Rs. {selectedDoctor.fees || "N/A"}
                 </p>
               </div>
 
-              {/* Patient Info Form */}
-              <div className="space-y-3 mb-4">
-                <label className="block text-sm font-medium text-gray-700">
-                  Age:
-                </label>
-                <input
-                  type="number"
-                  value={form.age}
-                  onChange={(e) => setForm({ ...form, age: e.target.value })}
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
+              {/* Patient Info Form - Flex 2-column */}
+              <div className="flex flex-wrap gap-4 mb-4">
+                <div className="flex-1 min-w-[45%]">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Age:
+                  </label>
+                  <input
+                    type="number"
+                    value={form.age}
+                    onChange={(e) => setForm({ ...form, age: e.target.value })}
+                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
 
-                <label className="block text-sm font-medium text-gray-700">
-                  Blood Group:
-                </label>
-                <input
-                  type="text"
-                  value={form.bloodGroup}
-                  onChange={(e) =>
-                    setForm({ ...form, bloodGroup: e.target.value })
-                  }
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
+                <div className="flex-1 min-w-[45%]">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Blood Group:
+                  </label>
+                  <select
+                    value={form.bloodGroup}
+                    onChange={(e) =>
+                      setForm({ ...form, bloodGroup: e.target.value })
+                    }
+                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  >
+                    <option value="">Select</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                  </select>
+                </div>
 
-                <label className="block text-sm font-medium text-gray-700">
-                  Address:
-                </label>
-                <input
-                  type="text"
-                  value={form.address}
-                  onChange={(e) =>
-                    setForm({ ...form, address: e.target.value })
-                  }
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
+                <div className="flex-1 min-w-[45%]">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Phone:
+                  </label>
+                  <input
+                    type="text"
+                    value={form.phone}
+                    onChange={(e) =>
+                      setForm({ ...form, phone: e.target.value })
+                    }
+                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
 
-                <label className="block text-sm font-medium text-gray-700">
-                  Phone:
-                </label>
-                <input
-                  type="text"
-                  value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
+                <div className="flex-1 min-w-[45%]">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Emergency Contact:
+                  </label>
+                  <input
+                    type="text"
+                    value={form.emergencyContact}
+                    onChange={(e) =>
+                      setForm({ ...form, emergencyContact: e.target.value })
+                    }
+                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
 
-                <label className="block text-sm font-medium text-gray-700">
-                  Emergency Contact:
-                </label>
-                <input
-                  type="text"
-                  value={form.emergencyContact}
-                  onChange={(e) =>
-                    setForm({ ...form, emergencyContact: e.target.value })
-                  }
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
+                <div className="w-full">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Address:
+                  </label>
+                  <input
+                    type="text"
+                    value={form.address}
+                    onChange={(e) =>
+                      setForm({ ...form, address: e.target.value })
+                    }
+                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
 
-                <label className="block text-sm font-medium text-gray-700">
-                  Select Date:
-                </label>
-                <input
-                  type="date"
-                  value={form.date}
-                  min={new Date().toISOString().split("T")[0]}
-                  onChange={(e) => {
-                    setForm({ ...form, date: e.target.value });
-                    fetchAvailableSlots(selectedDoctor._id, e.target.value);
-                  }}
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
+                <div className="w-full">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Select Date:
+                  </label>
+                  <input
+                    type="date"
+                    value={form.date}
+                    min={new Date().toISOString().split("T")[0]}
+                    onChange={(e) => {
+                      setForm({ ...form, date: e.target.value });
+                      fetchAvailableSlots(selectedDoctor._id, e.target.value);
+                    }}
+                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
               </div>
 
               {/* Available Slots */}
