@@ -16,6 +16,7 @@ import Staffallapointments from "./Staff/Allappointments";
 import Staffcreateroom from "./Staff/Createroomschedule";
 import Doctorallapointment from "./Doctor/ALLapointment";
 import Doctorallstaff from "./Doctor/Allstaff";
+import Doctornextappointment from "./Doctor/Homescreen";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           />
           <Route path="/Doctorallapointment" element={<Doctorallapointment/>}/>
           <Route path="/Doctorallstaff" element={<Doctorallstaff/>}/>
+          <Route path="/Doctornextappointment" element={<Doctornextappointment/>}/>
         </Routes>
       </BrowserRouter>
     </UserProvider>

@@ -3,6 +3,7 @@ const {
   createAppointment,
   getAllAppointments,
   getUserAppointments,
+  getPatientAndDoctorAppointments,
 } = require("../controller/appointmentcontroller");
 
 const { verifyUser, allowRoles } = require("../middelware/appointmentMiddelware");
@@ -16,5 +17,7 @@ router.post("/create", verifyUser, allowRoles("patient"), createAppointment);
 router.get("/all", verifyUser, allowRoles("admin", "doctor","staff"), getAllAppointments);
 
 router.get("/user/:id", verifyUser, allowRoles("admin", "doctor", "patient"), getUserAppointments);
+
+router.get("/getdoctortodayappointment" , verifyUser , allowRoles("admin", "doctor", "patient"), getPatientAndDoctorAppointments );
 
 module.exports = router;

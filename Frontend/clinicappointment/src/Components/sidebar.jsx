@@ -95,7 +95,7 @@ export default function Sidebar() {
 
         <div className="flex flex-col space-y-4">
           <button
-            onClick={() => navigate("/doctor/next-appointment")}
+            onClick={() => navigate("/Doctornextappointment")}
             className="hover:bg-green-500 p-2 rounded-lg flex items-center space-x-2"
           >
             <i className="fas fa-calendar-check"></i>{" "}

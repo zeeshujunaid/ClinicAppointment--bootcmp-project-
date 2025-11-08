@@ -1,6 +1,6 @@
-const Appointment = require("../models/appointment");
 const User = require("../models/user");
 const Room = require("../models/roomModels");
+const Appointment = require("../models/appointment");
 
 exports.createAppointment = async (req, res) => {
   try {
@@ -144,6 +144,47 @@ exports.getUserAppointments = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Error fetching user appointments",
+      error: error.message,
+    });
+  }
+};
+
+exports.getPatientAndDoctorAppointments = async (req, res) => {
+  try {
+    const { patientId, doctorId, date } = req.body; // frontend se ye ayega
+    if (!patientId || !doctorId || !date) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    // 1️⃣ Patient details
+    const patient = await User.findById(patientId).select(
+      "fullname email phone age bloodGroup address"
+    );
+    if (!patient) {
+      return res.status(404).json({ message: "Patient not found" });
+    }
+
+    // 2️⃣ Doctor appointments for that day
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const doctorAppointments = await Appointment.find({
+      doctorId,
+      date: { $gte: startOfDay, $lte: endOfDay },
+    })
+      .populate("userId", "fullname email phone")
+      .populate("roomScheduleId", "roomNumber");
+
+    res.status(200).json({
+      patient,
+      doctorAppointments,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching patient and doctor appointments",
       error: error.message,
     });
   }
