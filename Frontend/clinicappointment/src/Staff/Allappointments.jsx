@@ -39,7 +39,7 @@ export default function Allapointment() {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <div className="w-1/5 bg-green-600">
+      <div className="w-1/5 bg-gray-100 ">
         <Sidebar />
       </div>
 

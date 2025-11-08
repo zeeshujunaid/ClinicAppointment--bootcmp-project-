@@ -123,13 +123,13 @@ exports.getAllAppointments = async (req, res) => {
 exports.getUserAppointments = async (req, res) => {
   try {
     const { id } = req.params;
-    const role = req.user.role; // verifyUser middleware se user info
+    const role = req.user.role;
 
     let query = {};
     if (role === "doctor") {
-      query = { doctorId: id }; // doctor ke appointments
+      query = { doctorId: id }; 
     } else {
-      query = { userId: id }; // patient ke appointments
+      query = { userId: id }; 
     }
 
     const appointments = await Appointment.find(query)

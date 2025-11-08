@@ -63,7 +63,7 @@ export default function Sidebar() {
             className="flex items-center space-x-3 hover:bg-blue-500 p-2 rounded-lg transition-all w-full"
             onClick={() => {
               localStorage.clear();
-              navigate("/login");
+              navigate("/");
             }}
           >
             <i className="fas fa-sign-out-alt"></i>
@@ -172,7 +172,7 @@ export default function Sidebar() {
             className="flex items-center space-x-3 hover:bg-purple-500 p-2 rounded-lg transition-all w-full"
             onClick={() => {
               localStorage.clear();
-              navigate("/login");
+              navigate("/");
             }}
           >
             <i className="fas fa-sign-out-alt"></i>

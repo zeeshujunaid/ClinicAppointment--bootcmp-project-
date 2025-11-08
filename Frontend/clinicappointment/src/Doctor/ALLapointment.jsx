@@ -1,33 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import Sidebar from "../Components/sidebar"; // apni file path ke hisab se adjust karna
 import baseurl from "../service/config"; // yahan apna backend base URL import karna
+import { UserContext } from "../context/Authcontext";
 
 export default function Allappointment() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+    const { user } = useContext(UserContext);
+  
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         const token = localStorage.getItem("token");
-        const user = JSON.parse(localStorage.getItem("user")); // doctor info
-        if (!user || !user._id) {
+        console.log(token);
+        const userId = user._id || user.id;
+        console.log(userId);
+        if (!userId) {
           console.error("User not found in localStorage");
           setLoading(false);
           return;
         }
 
-        const res = await fetch(
-          `${baseurl}/api/appointments/user/${user._id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const res = await fetch(`${baseurl}/api/appointment/user/${userId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         const data = await res.json();
+        console.log(data);
 
         if (Array.isArray(data)) {
           setAppointments(data);
