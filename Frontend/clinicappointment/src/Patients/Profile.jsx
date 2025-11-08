@@ -58,15 +58,9 @@ export default function PatientProfile() {
                   </span>
                 </div>
                 <div className="flex justify-between border-b pb-2">
-                  <span className="text-gray-600">Gender:</span>
+                  <span className="text-gray-600">Email:</span>
                   <span className="font-medium text-gray-800">
-                    {user.gender || "N/A"}
-                  </span>
-                </div>
-                <div className="flex justify-between border-b pb-2">
-                  <span className="text-gray-600">Address:</span>
-                  <span className="font-medium text-gray-800">
-                    {user.address || "N/A"}
+                    {user.email || "N/A"}
                   </span>
                 </div>
               </div>
@@ -95,11 +89,10 @@ export default function PatientProfile() {
                 >
                   <div>
                     <p className="font-semibold text-gray-800">
-                      Doctor: {appt.doctorName || "N/A"}
+                      Doctor: {appt.doctorId?.fullname || "Unknown Doctor"}
                     </p>
                     <p className="text-sm text-gray-600">
-                      Date: {new Date(appt.date).toLocaleDateString()} • Time:{" "}
-                      {appt.time}
+                      Date: {new Date(appt.date).toLocaleDateString()}
                     </p>
                     <p className="text-sm text-gray-600">
                       Status:{" "}
@@ -118,7 +111,7 @@ export default function PatientProfile() {
                   </div>
                   <div className="text-right">
                     <p className="text-sm text-gray-500">
-                      Fees: Rs. {appt.fees || "N/A"}
+                      Fees: Rs. {appt.doctorId?.fees || "N/A"}
                     </p>
                   </div>
                 </div>
