@@ -50,16 +50,28 @@ exports.registerPatient = async (req, res) => {
   }
 };
 
-// doctor register from admin
 exports.createUserByAdmin = async (req, res) => {
-  const { fullname, email, password, phone, profileImgurl, role, specialization, experience, fees, designation } = req.body;
+  const {
+    fullname,
+    email,
+    password,
+    phone,
+    profileImgurl,
+    role,
+    specialization,
+    experience,
+    fees,
+    designation,
+    department,
+    shift,
+  } = req.body;
 
   if (!fullname || !email || !password || !phone || !role) {
     return res.status(400).json({ message: "Please fill all required fields" });
   }
 
   try {
-    // Only admin can register doctor
+    // Only admin can register users
     if (req.user.role !== "admin") {
       return res.status(403).json({ message: "Access denied. Only admin can create users." });
     }
@@ -69,18 +81,18 @@ exports.createUserByAdmin = async (req, res) => {
       return res.status(400).json({ message: "User with this email already exists" });
     }
 
-
     const newUser = await User.create({
       fullname,
       email,
       password,
       phone,
       profileImgurl,
-      role, 
+      role,
       specialization,
       experience,
       fees,
-      designation, 
+      department,
+      shift,
     });
 
     res.status(201).json({
@@ -93,9 +105,11 @@ exports.createUserByAdmin = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error("Server Error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 
 // login for everyone 
