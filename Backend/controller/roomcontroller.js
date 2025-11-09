@@ -17,27 +17,19 @@ exports.createRoomSchedule = async (req, res) => {
       return res.status(400).json({ message: "Doctor not found" });
     }
 
-    // Convert startTime to Date reliably
+    // Convert startTime to Date
     const [hours, minutes] = startTime.split(":").map(Number);
-    const start = new Date(date); // only date part
-    start.setHours(hours, minutes, 0, 0); // set hours and minutes
+    const start = new Date(date);
+    start.setHours(hours, minutes, 0, 0);
 
-    if (isNaN(start.getTime())) {
-      return res.status(400).json({ message: "Invalid start time" });
-    }
-
-    const duration = Number(slotDuration) || 60;
+    const duration = Number(slotDuration) || 10; // 10 min by default
     const end = new Date(start.getTime() + duration * 60000);
 
-    // checking for overlaping
+    // Find overlapping
     const overlapping = await Room.findOne({
       roomNumber,
       date: new Date(date),
-      $or: [
-        { startTime: { $lt: end, $gte: start } },
-        { endTime: { $gt: start, $lte: end } },
-        { startTime: { $lte: start }, endTime: { $gte: end } },
-      ],
+      $or: [{ startTime: { $lt: end }, endTime: { $gt: start } }],
     });
 
     if (overlapping) {
@@ -109,4 +101,3 @@ exports.bookRoomSlot = async (req, res) => {
       .json({ message: "Error booking slot", error: error.message });
   }
 };
- 

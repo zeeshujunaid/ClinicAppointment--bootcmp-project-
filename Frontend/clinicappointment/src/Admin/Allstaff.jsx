@@ -32,7 +32,6 @@ export default function Allstaff() {
         });
 
         const data = await res.json();
-        console.log(data);
         if (!res.ok) throw new Error(data.message || "Error fetching staff");
 
         setStaff(data.users || data);

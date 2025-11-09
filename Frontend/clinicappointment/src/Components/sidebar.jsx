@@ -16,7 +16,7 @@ export default function Sidebar() {
         <div className="flex items-center space-x-3 mb-10">
           <img
             src={
-              user.profileImage ||
+              user.image ||
               "https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
             }
             alt={user.fullname}
@@ -93,7 +93,7 @@ export default function Sidebar() {
         <div className="flex items-center space-x-3 mb-10">
           <img
             src={
-              user.profileImage ||
+              user.image ||
               "https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
             }
             alt={user.fullname}
@@ -151,7 +151,7 @@ export default function Sidebar() {
         <div className="flex items-center space-x-3 mb-10">
           <img
             src={
-              user.profileImage ||
+              user.image ||
               "https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
             }
             alt={user.fullname}

@@ -19,6 +19,7 @@ export default function Allapointment() {
         });
 
         const data = await res.json();
+        console.log(data);
 
         if (!res.ok) {
           throw new Error(data.message || "Error fetching appointments");
@@ -65,6 +66,7 @@ export default function Allapointment() {
                   <th className="p-3 text-left">#</th>
                   <th className="p-3 text-left">Patient Name</th>
                   <th className="p-3 text-left">Email</th>
+                  <th className="p-3 text-left">Room</th>
                   <th className="p-3 text-left">Date</th>
                   <th className="p-3 text-left">Time</th>
                   <th className="p-3 text-left">Status</th>
@@ -83,6 +85,9 @@ export default function Allapointment() {
                       {appt.userId?.fullname || "Unknown"}
                     </td>
                     <td className="p-3">{appt.userId?.email || "No email"}</td>
+                    <td className="p-3">
+                      {appt.roomScheduleId?.roomNumber || "No room"}
+                    </td>
                     <td className="p-3">
                       {new Date(appt.date).toLocaleDateString()}
                     </td>

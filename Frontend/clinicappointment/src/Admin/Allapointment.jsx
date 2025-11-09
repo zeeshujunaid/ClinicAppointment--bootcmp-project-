@@ -30,7 +30,6 @@ export default function Allappointments() {
         });
 
         const data = await res.json();
-        console.log(data);
         if (!res.ok)
           throw new Error(data.message || "Failed to fetch appointments");
 
