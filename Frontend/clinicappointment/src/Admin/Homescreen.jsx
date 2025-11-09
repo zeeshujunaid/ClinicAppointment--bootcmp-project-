@@ -29,7 +29,6 @@ export default function AdminDashboard() {
 
         if (!res.ok) throw new Error(data.message || "Error fetching users");
 
-        // Save all users in localStorage
         localStorage.setItem("allUsers", JSON.stringify(data.users));
 
         // Count roles
@@ -59,8 +58,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
-      <div className="w-1/5 bg-yellow-500">
+      <div className="w-1/5 bg-gray-100">
         <Sidebar />
       </div>
 
@@ -70,7 +68,6 @@ export default function AdminDashboard() {
           Welcome, Admin!
         </h1>
 
-        {/* Summary Cards */}
         <div className="grid grid-cols-3 gap-6 mb-8">
           <div className="bg-white rounded-xl p-6 shadow-md flex flex-col items-center">
             <p className="text-gray-500 font-medium">Total Patients</p>
@@ -110,49 +107,6 @@ export default function AdminDashboard() {
               <Tooltip />
             </PieChart>
           </ResponsiveContainer>
-        </div>
-
-        {/* Recent Appointments Table */}
-        <div className="bg-white rounded-xl p-6 shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Recent Appointments</h2>
-          <table className="w-full table-auto border-collapse">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="p-2 text-left border">Patient</th>
-                <th className="p-2 text-left border">Doctor</th>
-                <th className="p-2 text-left border">Date</th>
-                <th className="p-2 text-left border">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentAppointments.length > 0 ? (
-                recentAppointments.map((appt) => (
-                  <tr key={appt._id} className="border-b">
-                    <td className="p-2 border">{appt.patientName}</td>
-                    <td className="p-2 border">{appt.doctorName}</td>
-                    <td className="p-2 border">
-                      {new Date(appt.date).toLocaleDateString()}
-                    </td>
-                    <td
-                      className={`p-2 border ${
-                        appt.status === "Upcoming"
-                          ? "text-green-600"
-                          : "text-red-600"
-                      }`}
-                    >
-                      {appt.status}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="4" className="p-2 text-center text-gray-500">
-                    No recent appointments
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
