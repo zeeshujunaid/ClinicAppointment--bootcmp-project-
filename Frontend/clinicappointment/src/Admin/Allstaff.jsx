@@ -32,6 +32,7 @@ export default function Allstaff() {
         });
 
         const data = await res.json();
+        console.log(data);
         if (!res.ok) throw new Error(data.message || "Error fetching staff");
 
         setStaff(data.users || data);
@@ -151,7 +152,7 @@ export default function Allstaff() {
                   className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center w-72 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
                 >
                   <img
-                    src={stf.profileImage || "https://via.placeholder.com/150"}
+                    src={stf.image || "https://via.placeholder.com/150"}
                     alt={stf.fullname}
                     className="w-28 h-28 rounded-full object-cover mb-4 border-4 border-green-400 shadow-md"
                   />
@@ -172,7 +173,7 @@ export default function Allstaff() {
                     </p>
                     <p className="flex items-center gap-2">
                       <i className="fas fa-user text-green-600"></i>
-                      Gender: {stf.gender || "-"}
+                      Gender: {stf.gander || "-"}
                     </p>
                     <p className="flex items-center gap-2">
                       <i className="fas fa-calendar text-green-600"></i>

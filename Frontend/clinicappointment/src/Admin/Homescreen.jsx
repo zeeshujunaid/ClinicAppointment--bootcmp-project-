@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/sidebar";
 import baseurl from "../service/config";
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  RadialBarChart,
+  RadialBar,
+  Legend,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -10,9 +16,7 @@ export default function AdminDashboard() {
     totalStaff: 0,
   });
 
-  const [recentAppointments, setRecentAppointments] = useState([]);
-
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28"];
+  const COLORS = ["#3B82F6", "#10B981", "#F59E0B"];
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -29,9 +33,6 @@ export default function AdminDashboard() {
 
         if (!res.ok) throw new Error(data.message || "Error fetching users");
 
-        localStorage.setItem("allUsers", JSON.stringify(data.users));
-
-        // Count roles
         const totalPatients = data.users.filter(
           (u) => u.role === "patient"
         ).length;
@@ -49,11 +50,10 @@ export default function AdminDashboard() {
     fetchUsers();
   }, []);
 
-
   const pieData = [
-    { name: "Patients", value: stats.totalPatients },
-    { name: "Doctors", value: stats.totalDoctors },
-    { name: "Staff", value: stats.totalStaff },
+    { name: "Patients", value: stats.totalPatients, fill: COLORS[0] },
+    { name: "Doctors", value: stats.totalDoctors, fill: COLORS[1] },
+    { name: "Staff", value: stats.totalStaff, fill: COLORS[2] },
   ];
 
   return (
@@ -62,7 +62,6 @@ export default function AdminDashboard() {
         <Sidebar />
       </div>
 
-      {/* Main Content */}
       <div className="w-4/5 p-6 bg-gray-100 overflow-y-auto">
         <h1 className="text-3xl font-bold mb-6 text-blue-600">
           Welcome, Admin!
@@ -83,29 +82,32 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Pie Chart */}
-        <div className="bg-white rounded-xl p-6 shadow-md h-96 mb-8">
+        {/* ✅ Fixed Radial Chart */}
+        <div className="bg-white rounded-xl p-6 shadow-md h-96 mb-8 flex flex-col items-center justify-center">
           <h2 className="text-xl font-semibold mb-4">User Distribution</h2>
-          <ResponsiveContainer width="100%" height="80%">
-            <PieChart>
-              <Pie
-                data={pieData}
+          <ResponsiveContainer width="100%" height="100%">
+            <RadialBarChart
+              cx="50%"
+              cy="50%"
+              innerRadius="30%"
+              outerRadius="100%"
+              barSize={20}
+              data={pieData}
+            >
+              <RadialBar
+                background
                 dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                label
-              >
-                {pieData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
+                cornerRadius={10}
+                label={{ fill: "#111", position: "insideStart" }}
+              />
+              <Legend
+                iconSize={12}
+                layout="vertical"
+                verticalAlign="middle"
+                align="right"
+              />
               <Tooltip />
-            </PieChart>
+            </RadialBarChart>
           </ResponsiveContainer>
         </div>
       </div>

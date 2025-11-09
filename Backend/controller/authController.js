@@ -56,17 +56,17 @@ exports.createUserByAdmin = async (req, res) => {
     email,
     password,
     phone,
-    profileImgurl,
+    image,
+    gender,
     role,
     specialization,
     experience,
     fees,
-    designation,
     department,
     shift,
   } = req.body;
 
-  if (!fullname || !email || !password || !phone || !role) {
+  if (!fullname || !email || !password || !phone || !role || !image ||!gender) {
     return res.status(400).json({ message: "Please fill all required fields" });
   }
 
@@ -86,7 +86,8 @@ exports.createUserByAdmin = async (req, res) => {
       email,
       password,
       phone,
-      profileImgurl,
+      image,
+      gender,
       role,
       specialization,
       experience,

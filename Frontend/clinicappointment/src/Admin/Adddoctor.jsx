@@ -30,12 +30,12 @@ export default function AddDoctor() {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "your_upload_preset"); // 🔹 Replace this with your Cloudinary upload preset
-    formData.append("cloud_name", "your_cloud_name"); // 🔹 Replace with your Cloudinary cloud name
+    formData.append("upload_preset", "Clinicpics"); 
+    formData.append("cloud_name", "dudx3of1n");
 
     try {
       const res = await fetch(
-        "https://api.cloudinary.com/v1_1/your_cloud_name/image/upload",
+        "https://api.cloudinary.com/v1_1/dudx3of1n/image/upload",
         {
           method: "POST",
           body: formData,
@@ -52,7 +52,6 @@ export default function AddDoctor() {
     }
   };
 
-  // ✅ validation
   const validateForm = () => {
     if (!role) return "Please select a role.";
     if (!fullname || !email || !password || !gender)
@@ -95,6 +94,7 @@ export default function AddDoctor() {
         },
         body: JSON.stringify({
           fullname,
+          image,
           email,
           password,
           role,
@@ -212,6 +212,17 @@ export default function AddDoctor() {
             />
           </div>
 
+          <div className="mb-3">
+            <label className="block font-medium mb-1">Doctor Phone</label>
+            <input
+              type="number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg p-2"
+              placeholder="0876452939892"
+            />
+          </div>
+
           {/* Gender */}
           <div className="mb-3">
             <label className="block font-medium mb-1">Gender</label>
@@ -274,16 +285,6 @@ export default function AddDoctor() {
                   onChange={(e) => setFees(e.target.value)}
                   className="w-full border border-gray-300 rounded-lg p-2"
                   placeholder="e.g. 2000"
-                />
-              </div>
-              <div className="mb-3">
-                <label className="block font-medium mb-1">Doctor Phone</label>
-                <input
-                  type="number"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg p-2"
-                  placeholder="0876452939892"
                 />
               </div>
             </>

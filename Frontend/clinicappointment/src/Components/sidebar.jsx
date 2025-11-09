@@ -31,6 +31,12 @@ export default function Sidebar() {
         {/* Admin Nav */}
         <div className="flex flex-col space-y-4">
           <button
+            onClick={() => navigate("/Adminhomescreen")}
+            className="hover:bg-blue-500 p-2 rounded-lg flex items-center space-x-2"
+          >
+            <i className="fas fa-users"></i> <span>Home Screen</span>
+          </button>
+          <button
             onClick={() => navigate("/AdminAllpatients")}
             className="hover:bg-blue-500 p-2 rounded-lg flex items-center space-x-2"
           >

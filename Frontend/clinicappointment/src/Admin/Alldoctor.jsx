@@ -142,7 +142,7 @@ export default function AllDoctor() {
                   className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center w-72 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
                 >
                   <img
-                    src={doc.profileImage || "https://via.placeholder.com/150"}
+                    src={doc.image || "https://via.placeholder.com/150"}
                     alt={doc.fullname}
                     className="w-28 h-28 rounded-full object-cover mb-4 border-4 border-blue-400 shadow-md"
                   />

@@ -8,6 +8,7 @@ import Dashboards from "./pages/Dashboard";
 import Doctorscreen from "./Patients/getdoctor";
 import Profile from "./Patients/Profile";
 import Appointment from "./Patients/appointments";
+import Adminhomescreen from "./Admin/Homescreen";
 import Adminalldoctors from "./Admin/Alldoctor";
 import AdminAllpatients from "./Admin/Allpatients";
 import AdminAllstaff from "./Admin/Allstaff";
@@ -37,6 +38,7 @@ function App() {
           <Route path="/Adminallapointment" element={<Adminallapointment />} />
           <Route path="/Staffcreateroom" element={<Staffcreateroom />} />
           <Route path="/Adminaddstaff" element={<Adminaddstaff/>}/>
+          <Route path="Adminhomescreen" element={<Adminhomescreen/>}/>
           <Route
             path="/Staffallapointments"
             element={<Staffallapointments />}
