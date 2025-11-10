@@ -151,7 +151,7 @@ export default function Allstaff() {
                   className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center w-72 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
                 >
                   <img
-                    src={stf.profileImage || "https://via.placeholder.com/150"}
+                    src={stf.image || "https://via.placeholder.com/150"}
                     alt={stf.fullname}
                     className="w-28 h-28 rounded-full object-cover mb-4 border-4 border-green-400 shadow-md"
                   />

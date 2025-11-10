@@ -23,7 +23,7 @@ export default function Doctorlist() {
       name: "Dr. Ayesha Malik",
       specialty: "Pediatrician",
       experience: "6 Years",
-      img: "https://cdn-icons-png.flaticon.com/512/1995/1995574.png",
+      img: "/drayesha.jpeg",
     },
   ];
 

@@ -57,6 +57,22 @@ export default function AddDoctor() {
     if (!fullname || !email || !password || !gender)
       return "Full name, email, gender and password are required.";
 
+    // ✅ Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("Please enter a valid email address!");
+      return;
+    }
+
+    // ✅ Password validation regex (Minimum 8 chars, at least 1 uppercase, 1 lowercase, 1 number)
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      alert(
+        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number!"
+      );
+      return;
+    }
+
     if (!image) return "Please upload a profile picture.";
 
     if (role === "doctor") {
