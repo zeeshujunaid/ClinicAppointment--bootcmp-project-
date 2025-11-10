@@ -10,9 +10,7 @@ const appointmentroutes = require('./routes/appointmentRoutes');
 app.use(express.json());
 
 // Middleware to handle cors
-app.use(
-    cors()
-);
+app.use(cors());
 
 
 connectDB(); 
@@ -22,9 +20,15 @@ app.use("/api/appointment", appointmentroutes);
 app.use("/api/room", docroom);
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running locally at: http://localhost:${PORT}`);
+  });
+}
 
+export default app;
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+// });
