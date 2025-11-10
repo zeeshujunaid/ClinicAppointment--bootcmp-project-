@@ -67,7 +67,7 @@ export default function Appointment() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200">
       <Navbar />
 
-      <div className="max-w-5xl mx-auto px-6 py-12">
+      <div className="max-w-5xl mx-auto px-6 py-18">
         <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
           My Appointments
         </h1>
@@ -91,7 +91,7 @@ export default function Appointment() {
                 <div className="flex items-center gap-4">
                   <img
                     src={
-                      appt.doctorId?.profileImage ||
+                      appt.doctorId?.image ||
                       "https://cdn-icons-png.flaticon.com/512/847/847969.png"
                     }
                     alt={appt.doctorId?.fullname || "Doctor"}

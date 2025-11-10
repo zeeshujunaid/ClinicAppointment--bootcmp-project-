@@ -24,7 +24,6 @@ export default function Login() {
       });
 
       const data = await response.json();
-      console.log(data);
 
       if (!response.ok) {
         console.log("Login failed =>", data.message);
@@ -36,8 +35,7 @@ export default function Login() {
         token: data.token, 
       };
       localStorage.setItem("token", data.token)
-      saveUser(fullUser);
-      console.log(fullUser);
+      saveUser(fullUser ,"fulluser");
 
       navigate("/dashboard");
 

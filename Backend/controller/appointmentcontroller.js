@@ -8,11 +8,8 @@ exports.createAppointment = async (req, res) => {
       patientId,
       doctorId,
       roomScheduleId,
-      reason,
-      age,
       bloodGroup,
       address,
-      phone,
       emergencyContact,
     } = req.body;
 
@@ -65,11 +62,8 @@ exports.createAppointment = async (req, res) => {
       startTime: roomSchedule.startTime,
       endTime: roomSchedule.endTime,
       status: "Upcoming",
-      reason,
-      age,
       bloodGroup,
       address,
-      phone,
       emergencyContact,
     });
 
@@ -138,7 +132,7 @@ exports.getUserAppointments = async (req, res) => {
     // getting other info from other fields 
     const appointments = await Appointment.find(query)
       .populate("userId", "fullname email role")
-      .populate("doctorId", "fullname specialization profileImage fees");
+      .populate("doctorId", "fullname specialization image fees");
 
     if (!appointments || appointments.length === 0) {
       return res.status(200).json([]);

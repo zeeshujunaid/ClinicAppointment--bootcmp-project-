@@ -6,10 +6,8 @@ const appointmentSchema = new mongoose.Schema({
   roomScheduleId: { type: mongoose.Schema.Types.ObjectId, ref: "RoomSchedule", required: true },
 
   // Patient details (required)
-  age: { type: Number, required: true },
   bloodGroup: { type: String, required: true },
   address: { type: String, required: true },
-  phone: { type: String, required: true },
   medicalHistory: { type: String, default: "" },
   allergies: { type: String, default: "" },
   currentMedications: { type: String, default: "" },

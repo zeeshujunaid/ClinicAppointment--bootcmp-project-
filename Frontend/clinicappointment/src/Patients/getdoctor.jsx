@@ -13,10 +13,8 @@ export default function Getdoctor() {
   const { user } = useContext(UserContext);
 
   const [form, setForm] = useState({
-    age: "",
     bloodGroup: "",
     address: "",
-    phone: "",
     emergencyContact: "",
     date: "",
   });
@@ -35,6 +33,7 @@ export default function Getdoctor() {
         });
 
         const data = await response.json();
+        console.log(data);
         if (!response.ok) {
           console.log("Fetch failed =>", data.message);
           setDoctors([]);
@@ -103,11 +102,8 @@ export default function Getdoctor() {
           doctorId: selectedDoctor._id,
           fees:selectedDoctor.fees,
           roomScheduleId: slot._id,
-          reason: "General Checkup",
-          age: form.age,
           bloodGroup: form.bloodGroup,
           address: form.address,
-          phone: form.phone,
           emergencyContact: form.emergencyContact,
           date: slot.date, 
           startTime: slot.startTime, 
@@ -126,10 +122,8 @@ export default function Getdoctor() {
       alert("Appointment booked successfully!");
       setSlots(slots.filter((s) => s._id !== slot._id));
       setForm({
-        age: "",
         bloodGroup: "",
         address: "",
-        phone: "",
         emergencyContact: "",
         date: "",
       });
@@ -146,10 +140,8 @@ export default function Getdoctor() {
     setShowModal(true);
     setSlots([]);
     setForm({
-      age: "",
       bloodGroup: "",
       address: "",
-      phone: "",
       emergencyContact: "",
       date: "",
     });
@@ -159,10 +151,8 @@ export default function Getdoctor() {
     setShowModal(false);
     setSelectedDoctor(null);
     setForm({
-      age: "",
       bloodGroup: "",
       address: "",
-      phone: "",
       emergencyContact: "",
       date: "",
     });
@@ -216,7 +206,7 @@ export default function Getdoctor() {
                 className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center w-72 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
               >
                 <img
-                  src={doc.profileImgurl || "https://via.placeholder.com/150"}
+                  src={doc.image || "https://via.placeholder.com/150"}
                   alt={doc.fullname}
                   className="w-28 h-28 rounded-full object-cover mb-4 border-4 border-blue-400 shadow-md"
                 />
@@ -285,18 +275,6 @@ export default function Getdoctor() {
               <div className="flex flex-wrap gap-4 mb-4">
                 <div className="flex-1 min-w-[45%]">
                   <label className="block text-sm font-medium text-gray-700">
-                    Age:
-                  </label>
-                  <input
-                    type="number"
-                    value={form.age}
-                    onChange={(e) => setForm({ ...form, age: e.target.value })}
-                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  />
-                </div>
-
-                <div className="flex-1 min-w-[45%]">
-                  <label className="block text-sm font-medium text-gray-700">
                     Blood Group:
                   </label>
                   <select
@@ -316,20 +294,6 @@ export default function Getdoctor() {
                     <option value="O+">O+</option>
                     <option value="O-">O-</option>
                   </select>
-                </div>
-
-                <div className="flex-1 min-w-[45%]">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Phone:
-                  </label>
-                  <input
-                    type="text"
-                    value={form.phone}
-                    onChange={(e) =>
-                      setForm({ ...form, phone: e.target.value })
-                    }
-                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  />
                 </div>
 
                 <div className="flex-1 min-w-[45%]">

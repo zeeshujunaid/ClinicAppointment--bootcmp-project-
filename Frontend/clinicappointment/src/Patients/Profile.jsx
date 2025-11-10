@@ -7,6 +7,8 @@ export default function PatientProfile() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  console.log(user);
+
   useEffect(() => {
     const storedAppointments = localStorage.getItem("appointments");
     if (storedAppointments) {
@@ -32,7 +34,7 @@ export default function PatientProfile() {
               <div className="flex justify-center mb-4">
                 <img
                   src={
-                    user.profileImage ||
+                    user.image ||
                     "https://cdn-icons-png.flaticon.com/512/847/847969.png"
                   }
                   alt="Profile"

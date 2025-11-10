@@ -5,47 +5,77 @@ import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const navigate = useNavigate();
+  const [uploading, setUploading] = useState(false);
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
   const [fullname,setFullname] = useState("");
   const [age, setAge] = useState("");
-  const [profileImg ,setProfileImg] = useState(null)
+  const [gender,setGender]=useState("");
+  const [image, setImage] = useState("");
   const [phone, setPhone] = useState("");
   const [preview, setPreview] = useState(null);
 
-  const handleImageChange = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setProfileImg(file);
-      setPreview(URL.createObjectURL(file));
+    if (!file) return;
+
+    // Local preview
+    setPreview(URL.createObjectURL(file));
+
+    setUploading(true);
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "Clinicpics");
+    formData.append("cloud_name", "dudx3of1n");
+
+    try {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dudx3of1n/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await res.json();
+      setImage(data.secure_url);
+      alert("Image uploaded successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("Error uploading image");
+    } finally {
+      setUploading(false);
     }
   };
 
   const handelSignup = async (e) => {
     e.preventDefault();
-    if (!email || !password || !phone || !age || !fullname) {
+    if (!email || !password || !phone || !age || !fullname || !gender) {
       console.log("plz fill all required field");
       return;
     }
 
+    // ✅ Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("Please enter a valid email address!");
+      return;
+    }
+
+    // ✅ Password validation regex (Minimum 8 chars, at least 1 uppercase, 1 lowercase, 1 number)
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      alert(
+        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number!"
+      );
+      return;
+    }
+
+    if (!image) {
+      alert("Plz upload an image!");
+      return;
+    }
     try {
-
-      // const data = new FormData();
-      // data.append("file", profileImg);
-      // data.append("upload_preset", "Clinicpics");
-
-      // const cloudRes = await fetch(
-      //   "https://api.cloudinary.com/v1_1/dudx3of1n/image/upload",
-      //   {
-      //     method: "POST",
-      //     body: data,
-      //   }
-      // );
-
-      // const cloudData = await cloudRes.json();
-      // console.log("Cloudinary URL:", cloudData.secure_url);
-
-
       const response = await fetch(`${baseurl}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,21 +84,22 @@ export default function Signup() {
           password,
           fullname,
           age,
+          gender,
           phone,
-          // profileImgurl: cloudData.secure_url,
+          image,
         }),
       });
 
       const resdata = await response.json();
       console.log(resdata);
       console.log(resdata.token);
-      localStorage.setItem("token", resdata.token);
 
       if (!response.ok) {
         console.log("signup failed =>", resdata.message);
         return;
       }
 
+      localStorage.setItem("token", resdata.token);
       console.log("signup successful ✅");
 
       navigate("/");
@@ -129,7 +160,7 @@ export default function Signup() {
             id="profileImgInput"
             type="file"
             accept="image/*"
-            onChange={handleImageChange}
+            onChange={handleImageUpload}
             className="hidden"
           />
         </div>
@@ -218,6 +249,20 @@ export default function Signup() {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-sm"
               required
             />
+          </div>
+
+          <div className="mb-3">
+            <label className="block font-medium mb-1">Gender</label>
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
+            >
+              <option value="">-- Select Gender --</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
           </div>
 
           {/* Button */}
