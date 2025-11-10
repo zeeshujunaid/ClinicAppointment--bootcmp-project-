@@ -132,6 +132,7 @@ export default function AddDoctor() {
         alert(`${role} added successfully!`);
         setFullname("");
         setEmail("");
+        setPhone("");
         setPassword("");
         setSpecialization("");
         setExperience("");

@@ -172,7 +172,7 @@ export default function Allstaff() {
                     </p>
                     <p className="flex items-center gap-2">
                       <i className="fas fa-user text-green-600"></i>
-                      Gender: {stf.gander || "-"}
+                      Gender: {stf.gender || "-"}
                     </p>
                     <p className="flex items-center gap-2">
                       <i className="fas fa-calendar text-green-600"></i>
