@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/sidebar";
 import baseurl from "../service/config";
+import { toast } from "react-toastify";
 
 export default function Createroomschedule() {
   const [doctors, setDoctors] = useState([]);
@@ -24,7 +25,7 @@ export default function Createroomschedule() {
         const data = await res.json();
         setDoctors(data.users || data);
       } catch (err) {
-        console.error("Error fetching doctors:", err);
+        toast.error("Error fetching doctors:");
       }
     };
     fetchDoctors();
@@ -48,7 +49,7 @@ export default function Createroomschedule() {
 
       if (isNaN(dateObj.getTime())) {
         setMessage("Invalid date or time");
-        alert("Invalid date or time");
+        toast.error("Invalid date or time");
         setLoading(false);
         return;
       }
@@ -71,10 +72,10 @@ export default function Createroomschedule() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to create room");
+      if (!res.ok) throw new Error(toast.error("failed to add room"));
 
       setMessage("Room Schedule Created Successfully!");
-      alert("Room Schedule Created Successfully!");
+      toast.success("Room Schedule Created Successfully!");
       setFormData({
         doctorId: "",
         roomNumber: "",

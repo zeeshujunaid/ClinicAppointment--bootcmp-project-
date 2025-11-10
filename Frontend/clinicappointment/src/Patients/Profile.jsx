@@ -7,7 +7,6 @@ export default function PatientProfile() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  console.log(user);
 
   useEffect(() => {
     const storedAppointments = localStorage.getItem("appointments");

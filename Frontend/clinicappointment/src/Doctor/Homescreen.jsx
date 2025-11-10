@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import Sidebar from "../Components/sidebar";
 import baseurl from "../service/config";
 import { UserContext } from "../context/Authcontext";
+import { toast } from "react-toastify";
 
 export default function Homescreen() {
   const { user } = useContext(UserContext); 
@@ -64,9 +65,11 @@ export default function Homescreen() {
           });
 
           setPatients(uniquePatients);
+          toast.success("Today appointments")
         }
       } catch (err) {
         console.error("Error fetching appointments:", err);
+        toast.error("Error fetching appointments:");
       }
     };
 
@@ -108,7 +111,7 @@ export default function Homescreen() {
       const data = await res.json();
 
       if (!res.ok) {
-        return alert(data.message || "Error completing appointment");
+        return alert(toast.error("error completing appointment"));
       }
 
       setPatients((prev) =>
@@ -125,12 +128,12 @@ export default function Homescreen() {
         )
       );
 
-      alert("Appointment completed and medication added!");
+      toast.success("Appointment completed and medication added!");
       setNewMedication("");
       closeModal();
     } catch (err) {
       console.error(err);
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     }
   };
 

@@ -1,5 +1,7 @@
 import "./App.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { UserProvider } from "./context/Authcontext";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/Login";
@@ -25,6 +27,15 @@ function App() {
   return (
     <UserProvider>
       <BrowserRouter>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          pauseOnHover
+          theme="colored"
+        />
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
@@ -37,16 +48,22 @@ function App() {
           <Route path="/AdminAllstaff" element={<AdminAllstaff />} />
           <Route path="/Adminallapointment" element={<Adminallapointment />} />
           <Route path="/Staffcreateroom" element={<Staffcreateroom />} />
-          <Route path="/Adminaddstaff" element={<Adminaddstaff/>}/>
-          <Route path="Adminhomescreen" element={<Adminhomescreen/>}/>
+          <Route path="/Adminaddstaff" element={<Adminaddstaff />} />
+          <Route path="Adminhomescreen" element={<Adminhomescreen />} />
           <Route
             path="/Staffallapointments"
             element={<Staffallapointments />}
           />
-          <Route path="/StaffHomescreen" element={<StaffHomescreen/>}/>
-          <Route path="/Doctorallapointment" element={<Doctorallapointment/>}/>
-          <Route path="/Doctorallstaff" element={<Doctorallstaff/>}/>
-          <Route path="/Doctornextappointment" element={<Doctornextappointment/>}/>
+          <Route path="/StaffHomescreen" element={<StaffHomescreen />} />
+          <Route
+            path="/Doctorallapointment"
+            element={<Doctorallapointment />}
+          />
+          <Route path="/Doctorallstaff" element={<Doctorallstaff />} />
+          <Route
+            path="/Doctornextappointment"
+            element={<Doctornextappointment />}
+          />
         </Routes>
       </BrowserRouter>
     </UserProvider>

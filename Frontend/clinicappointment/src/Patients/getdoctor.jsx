@@ -2,6 +2,7 @@ import React, { useState, useEffect ,useContext} from "react";
 import baseurl from "../service/config";
 import Navbar from "../components/Navbar";
 import { UserContext } from "../context/Authcontext";
+import { toast } from "react-toastify";
 
 export default function Getdoctor() {
   const [doctors, setDoctors] = useState([]);
@@ -32,14 +33,14 @@ export default function Getdoctor() {
         });
 
         const data = await response.json();
-        console.log(data);
         if (!response.ok) {
-          console.log("Fetch failed =>", data.message);
+          toast.error("getting doctor failed")
           setDoctors([]);
           return;
         }
 
         setDoctors(data);
+        toast.success("doctor fetched successfully")
       } catch (error) {
         console.log("Error fetching doctors:", error);
         setDoctors([]);
@@ -63,7 +64,7 @@ export default function Getdoctor() {
 
       const data = await res.json();
       if (!res.ok) {
-        alert(data.message || "Error fetching slots");
+        toast.error("error fetching slots");
         setSlots([]);
         return;
       }
@@ -73,9 +74,10 @@ export default function Getdoctor() {
       );
 
       setSlots(filteredSlots || []);
+      toast.success("slot fetched succesfully")
     } catch (error) {
       console.error(error);
-      alert("Failed to load slots");
+      toast.error("failed to load slots")
     } finally {
       setLoadingSlots(false);
     }
@@ -85,7 +87,7 @@ export default function Getdoctor() {
     const userId = user._id || user.id;
     try {
       const token = localStorage.getItem("token");
-      if (!token) return alert("Please login first");
+      if (!token) return toast.error("plz login first");
 
       const res = await fetch(`${baseurl}/api/appointment/create`, {
         method: "POST",
@@ -108,14 +110,13 @@ export default function Getdoctor() {
       });
 
       const data = await res.json();
-      console.log(data);
 
       if (!res.ok) {
-        alert(data.message || "Error booking appointment");
+        toast.error("Error booking appointment");
         return;
       }
 
-      alert("Appointment booked successfully!");
+      toast.success("Appointment booked successfully!");
       setSlots(slots.filter((s) => s._id !== slot._id));
       setForm({
         bloodGroup: "",
@@ -126,7 +127,7 @@ export default function Getdoctor() {
       setShowModal(false);
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     }
   };
 

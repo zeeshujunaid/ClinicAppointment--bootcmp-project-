@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/sidebar";
 import baseurl from "../service/config";
+import { toast } from "react-toastify";
 
 export default function Allapointment() {
   const [appointments, setAppointments] = useState([]);
@@ -20,13 +21,14 @@ export default function Allapointment() {
 
         const data = await res.json();
         if (!res.ok) {
-          throw new Error(data.message || "Error fetching appointments");
+          throw new Error(toast.error("error fetching"));
         }
 
         setAppointments(data.appointments || []);
+        toast.success("Appointment fetched succesfully")
       } catch (err) {
         console.error("Error fetching appointments:", err);
-        alert("Error fetching appointments:");
+        toast.error("Error fetching appointments:");
         setAppointments([]);
       } finally {
         setLoading(false);

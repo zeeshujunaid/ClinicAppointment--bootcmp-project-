@@ -14,6 +14,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { toast } from "react-toastify";
 
 export default function Allstaff() {
   const [staff, setStaff] = useState([]);
@@ -32,12 +33,13 @@ export default function Allstaff() {
         });
 
         const data = await res.json();
-        if (!res.ok) throw new Error(data.message || "Error fetching staff");
+        if (!res.ok) throw new Error(toast.error("error fetching staff"));
 
         setStaff(data.users || data);
+        toast.success("staff fetched sucessfully")
       } catch (err) {
         console.error("Fetch Staff Error:", err);
-        alert("Fetch Staff Error:");
+        toast.error("error fetching staff")
         setStaff([]);
       } finally {
         setLoading(false);

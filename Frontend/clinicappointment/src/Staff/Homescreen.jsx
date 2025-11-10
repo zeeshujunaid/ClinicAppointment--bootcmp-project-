@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/sidebar";
 import baseurl from "../service/config";
+import { toast } from "react-toastify";
 
 export default function Homescreen() {
   const [appointments, setAppointments] = useState([]);
@@ -20,7 +21,7 @@ export default function Homescreen() {
 
         const data = await res.json();
         if (!res.ok){
-          throw new Error(data.message || "Error fetching appointments");
+          throw new Error(toast.error("error fetching"));
         }
 
         const today = new Date();
@@ -38,8 +39,10 @@ export default function Homescreen() {
         );
 
         setAppointments(todaysAppointments);
+        toast.success("appointment fetched succesfully")
       } catch (err) {
         console.error("Error fetching appointments:", err);
+        toast.error("Error fetching appointments:");
         setAppointments([]);
       } finally {
         setLoading(false);

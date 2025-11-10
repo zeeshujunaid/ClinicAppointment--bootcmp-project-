@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import baseurl from "../service/config";
 import { useUser } from "../context/Authcontext";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -13,7 +14,7 @@ export default function Login() {
     e.preventDefault(); 
     if (!email || !password) {
       console.log("Please fill in all fields");
-      alert("plz fill all requierd fields")
+      toast.error("plz fill all requierd fields");
       return;
     }
 
@@ -28,7 +29,7 @@ export default function Login() {
 
       if (!response.ok) {
         console.log("Login failed =>", data.message);
-        alert("login failed");
+        toast.error("login failed");
         return;
       }
 
@@ -40,10 +41,10 @@ export default function Login() {
       saveUser(fullUser ,"fulluser");
 
       navigate("/dashboard");
-      alert("login sucessfully")
+      toast.success("login sucessfully");
 
     } catch (error) {
-      console.log("Error during login:", error);
+      toast.error("Error during login");
     }
   };
 

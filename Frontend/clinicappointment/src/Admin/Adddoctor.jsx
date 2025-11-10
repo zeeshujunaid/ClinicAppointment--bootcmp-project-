@@ -2,6 +2,8 @@ import { useState, useContext } from "react";
 import Sidebar from "../Components/sidebar";
 import { UserContext } from "../context/Authcontext";
 import baseurl from "../service/config";
+import { toast } from "react-toastify";
+
 
 export default function AddDoctor() {
   const [role, setRole] = useState("");
@@ -42,46 +44,43 @@ export default function AddDoctor() {
       );
       const data = await res.json();
       setImage(data.secure_url);
-      alert("Image uploaded successfully!");
+      toast.success("image upload succesfully")
     } catch (err) {
       console.error(err);
-      alert("Error uploading image");
+      toast.error("something went wrong")
     } finally {
       setUploading(false);
     }
   };
 
   const validateForm = () => {
-    if (!role) return "Please select a role.";
+    if (!role) return toast.error("plz select a role");
     if (!fullname || !email || !password || !gender)
-      return "Full name, email, gender and password are required.";
+      return toast.error("plz fill all required fields");
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      alert("Please enter a valid email address!");
+      toast.error("plz enter correct email")
       return;
     }
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (!passwordRegex.test(password)) {
-      alert(
-        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number!"
-      );
+      toast.success("Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number!")
       return;
     }
 
-    if (!image) return "Please upload a profile picture.";
+    if (!image) return toast.error("plz enter an image")
 
     if (role === "doctor") {
       if (!specialization || !experience || !fees || !phone)
-        return "Doctor details missing: Please fill specialization, experience, phone, and fees.";
+        return toast.error("Doctor details missing: Please fill specialization, experience, phone, and fees.");
     }
 
     if (role === "staff") {
       if (!department || !shift)
-        return "Staff details missing: Please fill department and shift.";
+        return toast.error("Staff details missing: Please fill department and shift.");
     }
-
     return null;
   };
 
@@ -125,7 +124,7 @@ export default function AddDoctor() {
       const data = await response.json();
 
       if (response.ok) {
-        alert(`${role} added successfully!`);
+        toast.success(`${role} added successfully!`);
         setFullname("");
         setEmail("");
         setPhone("");
@@ -139,11 +138,11 @@ export default function AddDoctor() {
         setGender("");
         setImage("");
       } else {
-        alert(data.message || "Something went wrong");
+        toast.error("Something went wrong");
       }
     } catch (err) {
       console.error(err);
-      alert("Error adding user");
+      toast.error("error adding user")
     } finally {
       setLoading(false);
     }

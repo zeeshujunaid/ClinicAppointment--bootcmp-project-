@@ -8,7 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-
+import { toast } from "react-toastify";
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
     totalPatients: 0,
@@ -31,7 +31,7 @@ export default function AdminDashboard() {
 
         const data = await res.json();
 
-        if (!res.ok) throw new Error(data.message || "Error fetching users");
+        if (!res.ok) throw new Error(toast.error("error fetching users"));
 
         const totalPatients = data.users.filter(
           (u) => u.role === "patient"
@@ -44,6 +44,7 @@ export default function AdminDashboard() {
         setStats({ totalPatients, totalDoctors, totalStaff });
       } catch (err) {
         console.error("Fetch Users Error:", err);
+        toast.error("fetching user error")
       }
     };
 

@@ -1,6 +1,7 @@
 import React, { useState } from "react"; 
 import baseurl from "../service/config";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 export default function Signup() {
@@ -38,10 +39,10 @@ export default function Signup() {
       );
       const data = await res.json();
       setImage(data.secure_url);
-      alert("Image uploaded successfully!");
+      toast.success("Image uploaded successfully!");
     } catch (err) {
       console.error(err);
-      alert("Error uploading image");
+      toast.error("Error uploading image");
     } finally {
       setUploading(false);
     }
@@ -50,26 +51,25 @@ export default function Signup() {
   const handelSignup = async (e) => {
     e.preventDefault();
     if (!email || !password || !phone || !age || !fullname || !gender) {
-      console.log("plz fill all required field");
+      toast.error("plz fill all required field");
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      alert("Please enter a valid email address!");
+      toast.error("Please enter a valid email address!");
       return;
     }
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (!passwordRegex.test(password)) {
-      alert(
-        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number!"
-      );
+      toast.error(
+        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number!");
       return;
     }
 
     if (!image) {
-      alert("Plz upload an image!");
+      toast.error("Plz upload an image!");
       return;
     }
     try {
@@ -88,20 +88,19 @@ export default function Signup() {
       });
 
       const resdata = await response.json();
-      console.log(resdata);
-      console.log(resdata.token);
 
       if (!response.ok) {
         console.log("signup failed =>", resdata.message);
+        toast.error("signup failed")
         return;
       }
 
       localStorage.setItem("token", resdata.token);
-      console.log("signup successful");
+      toast.success("signup successful");
 
       navigate("/");
     } catch (error) {
-      console.log("Error during login:", error);
+      toast.error("Error during login:");
     }
   };
 

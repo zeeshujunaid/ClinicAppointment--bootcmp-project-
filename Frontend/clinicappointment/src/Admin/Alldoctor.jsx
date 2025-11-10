@@ -14,7 +14,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-
+import { toast } from "react-toastify";
 export default function AllDoctor() {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,8 +32,7 @@ export default function AllDoctor() {
         });
 
         const data = await res.json();
-        if (!res.ok) throw new Error(data.message || "Error fetching doctors");
-
+        if (!res.ok) throw new toast.error("Error fetching doctors");
         setDoctors(data.users || data);
       } catch (err) {
         console.error("Fetch Doctors Error:", err);

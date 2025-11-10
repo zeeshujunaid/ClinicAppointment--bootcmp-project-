@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import baseurl from "../service/config";
+import { toast } from "react-toastify";
 
 export default function AdminAllpatients() {
   const [patients, setPatients] = useState([]);
@@ -33,8 +34,9 @@ export default function AdminAllpatients() {
         } else if (data.patients) {
           setPatients(data.patients);
         }
+        toast.success("patient fech successfully")
       } catch (error) {
-        console.error("Error fetching patients:", error);
+        toast.error("error fetching patients")
       } finally {
         setLoading(false);
       }

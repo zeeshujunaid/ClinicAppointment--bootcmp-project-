@@ -11,6 +11,8 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { toast } from "react-toastify";
+
 
 export default function Allappointments() {
   const [appointments, setAppointments] = useState([]);
@@ -30,14 +32,13 @@ export default function Allappointments() {
         });
 
         const data = await res.json();
-        if (!res.ok)
-          throw new Error(data.message || "Failed to fetch appointments");
+        if (!res.ok) throw new error (toast.error("Failed to fetch appointments"));
 
         setAppointments(data.appointments || data);
-        alert("appointment fetched sucessfully");
+        toast.success("appointment fetched sucessfully")
       } catch (error) {
         console.error("Error fetching appointments:", error);
-        alert("error something went wrong")
+        toast.error("error something went wrong");
         setAppointments([]);
       } finally {
         setLoading(false);

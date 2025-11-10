@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import Sidebar from "../Components/sidebar"; 
 import baseurl from "../service/config";
 import { UserContext } from "../context/Authcontext";
+import { toast } from "react-toastify";
 
 export default function Allappointment() {
   const [appointments, setAppointments] = useState([]);
@@ -32,8 +33,9 @@ export default function Allappointment() {
         } else if (data.appointments) {
           setAppointments(data.appointments);
         }
+        toast.success("Appointment fetched successfully")
       } catch (error) {
-        console.error("Error fetching doctor appointments:", error);
+        toast.error("Error fetching doctor appointments:");
       } finally {
         setLoading(false);
       }

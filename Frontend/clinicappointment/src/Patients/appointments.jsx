@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Navbar from "../components/Navbar";
 import { UserContext } from "../context/Authcontext";
 import baseurl from "../service/config";
+import { toast } from "react-toastify";
 
 export default function Appointment() {
   const [appointments, setAppointments] = useState([]);
@@ -26,7 +27,6 @@ export default function Appointment() {
         });
 
         const data = await res.json();
-        console.log(data);
         localStorage.setItem("appointments", JSON.stringify(data));
 
         if (res.ok) {
@@ -34,9 +34,10 @@ export default function Appointment() {
         } else {
           setAppointments([]);
         }
+        toast.success("appointment succesfull")
       } catch (error) {
         setAppointments([]);
-        console.error(error);
+        toast.error("error fetching appointment")
       } finally {
         setLoading(false);
       }
