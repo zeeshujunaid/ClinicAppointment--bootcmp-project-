@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
-import Sidebar from "../Components/sidebar"; // apni file path ke hisab se adjust karna
-import baseurl from "../service/config"; // yahan apna backend base URL import karna
+import Sidebar from "../Components/sidebar"; 
+import baseurl from "../service/config";
 import { UserContext } from "../context/Authcontext";
 
 export default function Allappointment() {
@@ -49,10 +49,8 @@ export default function Allappointment() {
 
   return (
     <div className="flex">
-      {/* Sidebar */}
       <Sidebar />
 
-      {/* Main Content */}
       <div className="flex-1 p-6 bg-gray-50 min-h-screen">
         <h1 className="text-2xl font-bold mb-6 text-gray-800">
           My Appointments

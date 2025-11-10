@@ -21,7 +21,6 @@ export default function AddDoctor() {
 
   const { user } = useContext(UserContext);
 
-  // ✅ upload image to cloudinary
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -57,14 +56,12 @@ export default function AddDoctor() {
     if (!fullname || !email || !password || !gender)
       return "Full name, email, gender and password are required.";
 
-    // ✅ Email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       alert("Please enter a valid email address!");
       return;
     }
 
-    // ✅ Password validation regex (Minimum 8 chars, at least 1 uppercase, 1 lowercase, 1 number)
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (!passwordRegex.test(password)) {
       alert(
@@ -88,7 +85,6 @@ export default function AddDoctor() {
     return null;
   };
 
-  // ✅ handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     const error = validateForm();
@@ -168,7 +164,6 @@ export default function AddDoctor() {
             Add {role ? role.charAt(0).toUpperCase() + role.slice(1) : "User"}
           </h2>
 
-          {/* ✅ Image Upload Section */}
           <div className="flex flex-col items-center mb-4">
             {image ? (
               <img
@@ -193,7 +188,6 @@ export default function AddDoctor() {
             </label>
           </div>
 
-          {/* Role */}
           <div className="mb-4">
             <label className="block font-medium mb-1">Select Role</label>
             <select
@@ -207,7 +201,6 @@ export default function AddDoctor() {
             </select>
           </div>
 
-          {/* Common Fields */}
           <div className="mb-3">
             <label className="block font-medium mb-1">Full Name</label>
             <input
@@ -240,7 +233,6 @@ export default function AddDoctor() {
             />
           </div>
 
-          {/* Gender */}
           <div className="mb-3">
             <label className="block font-medium mb-1">Gender</label>
             <select
@@ -266,7 +258,6 @@ export default function AddDoctor() {
             />
           </div>
 
-          {/* Doctor Fields */}
           {role === "doctor" && (
             <>
               <div className="mb-3">
@@ -307,7 +298,6 @@ export default function AddDoctor() {
             </>
           )}
 
-          {/* Staff Fields */}
           {role === "staff" && (
             <>
               <div className="mb-3">

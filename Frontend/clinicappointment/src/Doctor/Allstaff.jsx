@@ -46,7 +46,6 @@ export default function Allstaff() {
     fetchStaff();
   }, []);
 
-  // 📊 Chart 1: Staff by Department
   const departmentData = staff.reduce((acc, stf) => {
     const dept = stf.department || "General";
     acc[dept] = (acc[dept] || 0) + 1;
@@ -58,7 +57,6 @@ export default function Allstaff() {
     count,
   }));
 
-  // 📊 Chart 2: Gender Distribution
   const genderData = staff.reduce((acc, stf) => {
     const g = stf.gender?.toLowerCase() || "unknown";
     acc[g] = (acc[g] || 0) + 1;
@@ -74,12 +72,10 @@ export default function Allstaff() {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <div className="w-1/5 bg-gray-100">
         <Sidebar />
       </div>
 
-      {/* Main Content */}
       <div className="w-4/5 p-6 bg-gray-100 overflow-y-auto">
         <h1 className="text-3xl font-bold mb-6 text-green-600 text-center">
           All Staff Members
@@ -91,9 +87,7 @@ export default function Allstaff() {
           <p className="text-center text-gray-500 text-lg">No staff found</p>
         ) : (
           <>
-            {/* Charts */}
             <div className="grid grid-cols-2 gap-6 mb-8">
-              {/* Bar Chart: Department */}
               <div className="bg-white rounded-2xl shadow-md p-6">
                 <h2 className="text-xl font-semibold text-gray-700 mb-3">
                   Staff by Department
@@ -113,7 +107,6 @@ export default function Allstaff() {
                 </ResponsiveContainer>
               </div>
 
-              {/* Pie Chart: Gender */}
               <div className="bg-white rounded-2xl shadow-md p-6">
                 <h2 className="text-xl font-semibold text-gray-700 mb-3">
                   Gender Distribution
@@ -143,7 +136,6 @@ export default function Allstaff() {
               </div>
             </div>
 
-            {/* Staff Cards */}
             <div className="flex flex-wrap justify-center gap-8">
               {staff.map((stf) => (
                 <div

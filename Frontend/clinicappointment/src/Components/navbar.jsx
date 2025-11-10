@@ -7,7 +7,6 @@ export default function Navbar() {
   return (
     <div className="w-full fixed top-0 left-0 bg-white shadow-md z-50">
       <div className="flex items-center justify-between px-6 py-3">
-        {/* Logo Section */}
         <div className="flex items-center gap-2">
           <img
             src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png"
@@ -19,7 +18,6 @@ export default function Navbar() {
           </h1>
         </div>
 
-        {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-6 text-gray-700 font-medium">
           <a href="/dashboard" className="hover:text-blue-600 transition">
             Home
@@ -47,7 +45,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Toggle Button */}
         <div className="md:hidden">
           <button
             onClick={() => setOpen(!open)}
@@ -58,7 +55,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {open && (
         <div className="flex flex-col items-center bg-white py-4 border-t border-gray-200 shadow-md md:hidden">
           <a

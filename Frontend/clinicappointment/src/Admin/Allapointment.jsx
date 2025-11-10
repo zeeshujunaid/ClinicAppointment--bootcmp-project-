@@ -45,7 +45,6 @@ export default function Allappointments() {
     fetchAppointments();
   }, []);
 
-  // 📊 Chart Data — Count per Day
   const dailyCounts = appointments.reduce((acc, app) => {
     const date = new Date(app.date).toLocaleDateString();
     acc[date] = (acc[date] || 0) + 1;
@@ -59,12 +58,10 @@ export default function Allappointments() {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <div className="w-1/5 bg-gray-100">
         <Sidebar />
       </div>
 
-      {/* Main Content */}
       <div className="w-4/5 bg-gray-100 p-6 overflow-y-auto">
         <h1 className="text-3xl font-bold text-green-600 text-center mb-8">
           All Appointments
@@ -80,7 +77,6 @@ export default function Allappointments() {
           </p>
         ) : (
           <>
-            {/* Chart Section */}
             <div className="bg-white rounded-2xl shadow-md p-6 mb-8">
               <h2 className="text-xl font-semibold mb-4 text-gray-700">
                 Appointments per Day
@@ -97,7 +93,6 @@ export default function Allappointments() {
               </ResponsiveContainer>
             </div>
 
-            {/* Appointment Table */}
             <div className="bg-white rounded-2xl shadow-md p-6">
               <h2 className="text-xl font-semibold text-gray-700 mb-4">
                 Appointment Details

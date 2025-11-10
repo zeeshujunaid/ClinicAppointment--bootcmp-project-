@@ -62,16 +62,13 @@ export default function AdminAllpatients() {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <div className="w-1/5 bg-blue-600">
         <Sidebar />
       </div>
 
-      {/* Main Content */}
       <div className="w-4/5 bg-gray-100 p-6 overflow-y-auto">
         <h1 className="text-3xl font-bold mb-4 text-blue-600">All Patients</h1>
 
-        {/* Summary Cards */}
         {!loading && (
           <div className="grid grid-cols-3 gap-6 mb-8">
             <div className="bg-white rounded-xl shadow-md p-5 text-center">
@@ -95,7 +92,6 @@ export default function AdminAllpatients() {
           </div>
         )}
 
-        {/* Chart Section */}
         {!loading && (
           <div className="bg-white rounded-xl shadow-md p-6 mb-8">
             <h2 className="text-xl font-semibold mb-4 text-gray-700">
@@ -131,7 +127,6 @@ export default function AdminAllpatients() {
           </div>
         )}
 
-        {/* Patients Table */}
         {loading ? (
           <p>Loading patients...</p>
         ) : patients.length === 0 ? (

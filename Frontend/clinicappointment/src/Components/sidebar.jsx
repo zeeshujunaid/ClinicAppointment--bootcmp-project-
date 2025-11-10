@@ -8,7 +8,7 @@ export default function Sidebar() {
 
   if (!user) return null;
 
-  // 🔹 ADMIN SIDEBAR
+// role=admin 
   if (user.role === "admin") {
     return (
       <div className="flex flex-col h-screen w-64 bg-blue-600 text-white p-6">
@@ -28,7 +28,6 @@ export default function Sidebar() {
           </div>
         </div>
 
-        {/* Admin Nav */}
         <div className="flex flex-col space-y-4">
           <button
             onClick={() => navigate("/Adminhomescreen")}
@@ -69,8 +68,7 @@ export default function Sidebar() {
           </button>
         </div>
 
-        {/* Logout */}
-        <div className="mt-auto">
+\        <div className="mt-auto">
           <button
             className="flex items-center space-x-3 hover:bg-blue-500 p-2 rounded-lg transition-all w-full"
             onClick={() => {
@@ -85,8 +83,7 @@ export default function Sidebar() {
       </div>
     );
   }
-
-  // 🔹 DOCTOR SIDEBAR
+// role=doctor
   else if (user.role === "doctor") {
     return (
       <div className="flex flex-col h-screen w-64 bg-green-600 text-white p-6">
@@ -143,8 +140,7 @@ export default function Sidebar() {
       </div>
     );
   }
-
-  // 🔹 STAFF SIDEBAR
+// role = staff
   else if (user.role === "staff") {
     return (
       <div className="flex flex-col h-screen w-64 bg-purple-600 text-white p-6">
@@ -200,7 +196,5 @@ export default function Sidebar() {
       </div>
     );
   }
-
-  // 🔹 DEFAULT (in case role missing)
   return <div>No Sidebar Available</div>;
 }

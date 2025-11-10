@@ -9,7 +9,6 @@ export default function Homescreen() {
     <>
       <Navbar />
 
-      {/* Hero Section */}
       <section className="flex flex-col md:flex-row items-center justify-center px-10 md:px-16 py-20 bg-gradient-to-br from-blue-50 via-white to-cyan-100">
         <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-5">
           <h1 className="text-4xl md:text-5xl font-extrabold text-blue-700">
@@ -32,7 +31,6 @@ export default function Homescreen() {
         </div>
       </section>
 
-      {/* About Section */}
       <section className="flex flex-col items-center justify-center bg-white py-16 px-10">
         <h2 className="text-3xl font-bold text-blue-700 mb-10">
           Why Choose ClinicCare?
@@ -86,22 +84,18 @@ export default function Homescreen() {
         </div>
       </section>
 
-      {/* Recent Articles */}
       <section className="flex flex-col items-center justify-center bg-gray-50 py-16 px-10">
         <Recentarticle />
       </section>
 
-      {/* FAQ Section */}
       <section className="flex flex-col items-center justify-center bg-white py-16 px-10">
         <FrequentlyQuestion />
       </section>
 
-      {/* Doctor List */}
       <section className="flex flex-col items-center justify-center bg-gray-50 py-16 px-10">
         <Doctorlist />
       </section>
 
-      {/* Footer */}
       <footer className="bg-blue-700 text-white text-center py-6 mt-10">
         <p className="text-sm">
           © {new Date().getFullYear()} ClinicCare — All Rights Reserved

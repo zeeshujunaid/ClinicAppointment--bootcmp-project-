@@ -29,7 +29,6 @@ export default function Recentarticle() {
         🩺 Recent Health Articles
       </h2>
 
-      {/* Articles Section */}
       <div className="flex flex-wrap justify-center gap-8">
         {articles.map((article) => (
           <div

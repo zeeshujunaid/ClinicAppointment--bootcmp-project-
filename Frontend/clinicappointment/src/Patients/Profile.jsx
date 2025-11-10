@@ -22,7 +22,6 @@ export default function PatientProfile() {
       <Navbar />
 
       <div className="flex flex-col items-center py-12 px-4">
-        {/* User Card */}
         <div className="bg-white shadow-lg rounded-2xl w-full max-w-md p-8 text-center mb-8">
           {!user ? (
             <div className="flex flex-col items-center justify-center h-60">
@@ -70,7 +69,6 @@ export default function PatientProfile() {
           )}
         </div>
 
-        {/* Appointments Section */}
         <div className="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
             🗓️ Your Appointments

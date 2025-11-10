@@ -9,12 +9,11 @@ export default function Createroomschedule() {
     roomNumber: "",
     date: "",
     startTime: "",
-    slotDuration: 60, // default duration in minutes
+    slotDuration: 30, 
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // ✅ Fetch all doctors
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
@@ -31,12 +30,10 @@ export default function Createroomschedule() {
     fetchDoctors();
   }, []);
 
-  // ✅ Handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ✅ Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -50,7 +47,7 @@ export default function Createroomschedule() {
       dateObj.setHours(hours, minutes, 0, 0);
 
       if (isNaN(dateObj.getTime())) {
-        setMessage("❌ Invalid date or time");
+        setMessage("Invalid date or time");
         setLoading(false);
         return;
       }
@@ -75,7 +72,7 @@ export default function Createroomschedule() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to create room");
 
-      setMessage("✅ Room Schedule Created Successfully!");
+      setMessage("Room Schedule Created Successfully!");
       setFormData({
         doctorId: "",
         roomNumber: "",
@@ -84,7 +81,7 @@ export default function Createroomschedule() {
         slotDuration: 60,
       });
     } catch (err) {
-      setMessage(`❌ ${err.message}`);
+      setMessage(`${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -105,7 +102,6 @@ export default function Createroomschedule() {
           onSubmit={handleSubmit}
           className="bg-white shadow-md rounded-2xl p-6 max-w-lg mx-auto space-y-5"
         >
-          {/* Doctor Selection */}
           <div>
             <label className="block text-gray-700 font-semibold mb-2">
               Select Doctor
@@ -126,7 +122,6 @@ export default function Createroomschedule() {
             </select>
           </div>
 
-          {/* Room Number Dropdown */}
           <div>
             <label className="block text-gray-700 font-semibold mb-2">
               Room Number
@@ -147,7 +142,6 @@ export default function Createroomschedule() {
             </select>
           </div>
 
-          {/* Date */}
           <div>
             <label className="block text-gray-700 font-semibold mb-2">
               Date
@@ -162,7 +156,6 @@ export default function Createroomschedule() {
             />
           </div>
 
-          {/* Start Time */}
           <div>
             <label className="block text-gray-700 font-semibold mb-2">
               Start Time
@@ -177,7 +170,6 @@ export default function Createroomschedule() {
             />
           </div>
 
-          {/* Slot Duration Dropdown */}
           <div>
             <label className="block text-gray-700 font-semibold mb-2">
               Slot Duration (minutes)
@@ -207,16 +199,6 @@ export default function Createroomschedule() {
           >
             {loading ? "Creating..." : "Create Schedule"}
           </button>
-
-          {message && (
-            <p
-              className={`text-center mt-3 font-semibold ${
-                message.includes("✅") ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              {message}
-            </p>
-          )}
         </form>
       </div>
     </div>

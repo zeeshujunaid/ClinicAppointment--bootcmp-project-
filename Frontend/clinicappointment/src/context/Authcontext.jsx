@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
-export const UserContext = createContext(); // 👈 ye export zaroor hona chahiye
+export const UserContext = createContext(); 
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
@@ -25,5 +25,4 @@ export const UserProvider = ({ children }) => {
   );
 };
 
-// 👇 aur ye hook bhi export karo
 export const useUser = () => useContext(UserContext);

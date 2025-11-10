@@ -22,7 +22,6 @@ export default function Homescreen() {
         if (!res.ok)
           throw new Error(data.message || "Error fetching appointments");
 
-        // Filter today's appointments
         const today = new Date();
         const isToday = (date) => {
           const d = new Date(date);
@@ -51,18 +50,15 @@ export default function Homescreen() {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <div className="w-1/5 bg-gray-100">
         <Sidebar />
       </div>
 
-      {/* Main Content */}
       <div className="w-4/5 bg-gray-100 p-8 overflow-y-auto flex flex-col">
         <h1 className="text-3xl font-bold text-blue-700 mb-6 text-center">
           Staff Dashboard
         </h1>
 
-        {/* Top Cards */}
         <div className="flex flex-col md:flex-row justify-between mb-8 space-y-4 md:space-y-0 md:space-x-4">
           <div className="flex-1 bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
             <i className="fas fa-calendar-check text-blue-500 text-4xl mb-3"></i>
@@ -95,7 +91,6 @@ export default function Homescreen() {
           </div>
         </div>
 
-        {/* Appointments Table */}
         <div className="bg-white p-6 rounded-2xl shadow-md flex flex-col">
           <h1 className="text-3xl font-bold mb-6 text-green-700 text-center">
             Today's Appointments

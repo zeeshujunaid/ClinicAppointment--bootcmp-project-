@@ -19,7 +19,6 @@ export default function Getdoctor() {
     date: "",
   });
 
-  // 🧩 Fetch All Doctors
   useEffect(() => {
     const fetchDoctors = async () => {
       setLoading(true);
@@ -52,7 +51,6 @@ export default function Getdoctor() {
     fetchDoctors();
   }, []);
 
-  // 🧩 Fetch Available Slots by Doctor + Date
   const fetchAvailableSlots = async (doctorId, date) => {
     try {
       setLoadingSlots(true);
@@ -70,7 +68,6 @@ export default function Getdoctor() {
         return;
       }
 
-      // Filter by selected doctor
       const filteredSlots = data.slots.filter(
         (slot) => slot.doctorId._id === doctorId
       );
@@ -84,7 +81,6 @@ export default function Getdoctor() {
     }
   };
 
-  // 🧩 Book Selected Slot
   const handleBookSlot = async (slot) => {
     const userId = user._id || user.id;
     try {
@@ -134,7 +130,6 @@ export default function Getdoctor() {
     }
   };
 
-  // 🧩 Handle Modal Open/Close
   const handleBookClick = (doctor) => {
     setSelectedDoctor(doctor);
     setShowModal(true);
@@ -159,7 +154,6 @@ export default function Getdoctor() {
     setSlots([]);
   };
 
-  // 🧩 Format time
   const formatTime = (dateStr) => {
     return new Date(dateStr).toLocaleTimeString([], {
       hour: "2-digit",
@@ -171,7 +165,6 @@ export default function Getdoctor() {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
 
-      {/* Clinic Timing Info */}
       <div className="mt-16 bg-gradient-to-r from-blue-100 to-blue-200 py-6 shadow-lg">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center">
           <h2 className="text-2xl font-bold text-blue-800 mb-2 sm:mb-0 flex items-center gap-2">
@@ -186,7 +179,6 @@ export default function Getdoctor() {
         </div>
       </div>
 
-      {/* Page Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">
           Our Doctors
@@ -247,7 +239,6 @@ export default function Getdoctor() {
           </div>
         )}
 
-        {/* Modal */}
         {showModal && selectedDoctor && (
           <div className="fixed inset-0 bg-white/30 backdrop-blur-sm flex justify-center items-start pt-10 z-50">
             <div className="bg-white rounded-xl p-6 sm:p-8 w-11/12 sm:w-[600px] shadow-xl relative max-h-[90vh] overflow-y-auto">
@@ -258,7 +249,6 @@ export default function Getdoctor() {
                 ✖
               </button>
 
-              {/* Doctor Info */}
               <div className="mb-5 text-center">
                 <h2 className="text-2xl font-semibold text-gray-800">
                   {selectedDoctor.fullname}
@@ -271,7 +261,6 @@ export default function Getdoctor() {
                 </p>
               </div>
 
-              {/* Patient Info Form - Flex 2-column */}
               <div className="flex flex-wrap gap-4 mb-4">
                 <div className="flex-1 min-w-[45%]">
                   <label className="block text-sm font-medium text-gray-700">
@@ -341,7 +330,6 @@ export default function Getdoctor() {
                 </div>
               </div>
 
-              {/* Available Slots */}
               <div className="mb-5">
                 <h3 className="text-lg font-semibold mb-2 text-gray-700">
                   Available Slots

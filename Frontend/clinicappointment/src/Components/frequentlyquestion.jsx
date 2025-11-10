@@ -24,7 +24,6 @@ export default function FrequentlyQuestion() {
       </h2>
 
       <div className="flex flex-col md:flex-row items-center justify-center gap-10">
-        {/* Left Side - Doctor Image */}
         <div className="flex justify-center">
           <img
             src="/questiondoc.jpeg"
@@ -33,7 +32,6 @@ export default function FrequentlyQuestion() {
           />
         </div>
 
-        {/* Right Side - FAQs */}
         <div className="flex flex-col gap-6 max-w-lg">
           {faqs.map((faq, index) => (
             <div

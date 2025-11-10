@@ -112,7 +112,6 @@ export default function Appointment() {
                   </div>
                 </div>
 
-                {/* Right Info */}
                 <div className="flex flex-col sm:items-end mt-4 sm:mt-0">
                   <span
                     className={`px-3 py-1 rounded-full text-sm font-medium mb-2 ${

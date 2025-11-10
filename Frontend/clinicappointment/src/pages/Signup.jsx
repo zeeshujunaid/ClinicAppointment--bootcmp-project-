@@ -19,7 +19,6 @@ export default function Signup() {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Local preview
     setPreview(URL.createObjectURL(file));
 
     setUploading(true);
@@ -55,14 +54,12 @@ export default function Signup() {
       return;
     }
 
-    // ✅ Email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       alert("Please enter a valid email address!");
       return;
     }
 
-    // ✅ Password validation regex (Minimum 8 chars, at least 1 uppercase, 1 lowercase, 1 number)
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (!passwordRegex.test(password)) {
       alert(
@@ -100,7 +97,7 @@ export default function Signup() {
       }
 
       localStorage.setItem("token", resdata.token);
-      console.log("signup successful ✅");
+      console.log("signup successful");
 
       navigate("/");
     } catch (error) {

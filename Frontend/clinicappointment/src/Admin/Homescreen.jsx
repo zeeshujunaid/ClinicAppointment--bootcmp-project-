@@ -82,7 +82,6 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* ✅ Fixed Radial Chart */}
         <div className="bg-white rounded-xl p-6 shadow-md h-96 mb-8 flex flex-col items-center justify-center">
           <h2 className="text-xl font-semibold mb-4">User Distribution</h2>
           <ResponsiveContainer width="100%" height="100%">

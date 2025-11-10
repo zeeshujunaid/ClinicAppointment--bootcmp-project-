@@ -39,12 +39,10 @@ export default function Allapointment() {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <div className="w-1/5 bg-gray-100 ">
         <Sidebar />
       </div>
 
-      {/* Main Content */}
       <div className="w-4/5 p-6 bg-gray-100 overflow-y-auto">
         <h1 className="text-3xl font-bold mb-6 text-green-700 text-center">
           All Appointments

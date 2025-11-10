@@ -34,7 +34,7 @@ export default function AllDoctor() {
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Error fetching doctors");
 
-        setDoctors(data.users || data); // API response may vary
+        setDoctors(data.users || data);
       } catch (err) {
         console.error("Fetch Doctors Error:", err);
         setDoctors([]);
@@ -46,7 +46,6 @@ export default function AllDoctor() {
     fetchDoctors();
   }, []);
 
-  // 📊 Chart Data — specialization wise count
   const specializationData = doctors.reduce((acc, doc) => {
     const spec = doc.specialization || "Unknown";
     acc[spec] = (acc[spec] || 0) + 1;
@@ -58,17 +57,14 @@ export default function AllDoctor() {
     count,
   }));
 
-  // 🎨 Pie Chart Color Palette
   const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6"];
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <div className="w-1/5 bg-gray-100">
         <Sidebar />
       </div>
 
-      {/* Main Content */}
       <div className="w-4/5 p-6 bg-gray-100 overflow-y-auto">
         <h1 className="text-3xl font-bold mb-6 text-blue-600 text-center">
           All Doctors
@@ -82,9 +78,7 @@ export default function AllDoctor() {
           <p className="text-center text-gray-500 text-lg">No doctors found</p>
         ) : (
           <>
-            {/* Charts Section */}
             <div className="grid grid-cols-2 gap-6 mb-8">
-              {/* Bar Chart */}
               <div className="bg-white rounded-2xl shadow-md p-6">
                 <h2 className="text-xl font-semibold text-gray-700 mb-3">
                   Doctors by Specialization
@@ -103,8 +97,6 @@ export default function AllDoctor() {
                   </BarChart>
                 </ResponsiveContainer>
               </div>
-
-              {/* Pie Chart */}
               <div className="bg-white rounded-2xl shadow-md p-6">
                 <h2 className="text-xl font-semibold text-gray-700 mb-3">
                   Specialization Distribution
@@ -134,7 +126,6 @@ export default function AllDoctor() {
               </div>
             </div>
 
-            {/* Doctor Cards */}
             <div className="flex flex-wrap justify-center gap-8">
               {doctors.map((doc) => (
                 <div

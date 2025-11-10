@@ -24,7 +24,6 @@ export default function Dashboard() {
   }, [user]);
 
   if (loading) {
-    // 👇 Loader UI (centered logo)
     return (
       <div className="w-screen h-screen flex flex-col items-center justify-center bg-gray-100">
         <img

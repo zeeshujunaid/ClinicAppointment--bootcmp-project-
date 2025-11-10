@@ -10,7 +10,6 @@ export default function Homescreen() {
   const [showModal, setShowModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
-  // Fetch doctor's today's appointments
   useEffect(() => {
     const fetchAppointments = async () => {
       const token = localStorage.getItem("token");
@@ -115,7 +114,6 @@ export default function Homescreen() {
         return alert(data.message || "Error completing appointment");
       }
 
-      // Update local state
       setPatients((prev) =>
         prev.map((p) =>
           p._id === selectedPatient._id
@@ -142,12 +140,10 @@ export default function Homescreen() {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <div className="flex-none w-[20%] bg-gray-100">
         <Sidebar />
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 bg-gray-100 p-6 overflow-y-auto flex flex-col">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-blue-600">Welcome, Doctor!</h1>
@@ -156,7 +152,6 @@ export default function Homescreen() {
           </p>
         </div>
 
-        {/* Patient Cards */}
         <div className="flex flex-wrap gap-6">
           {patients.map((patient) => (
             <div
@@ -169,7 +164,6 @@ export default function Homescreen() {
                 <p className="text-gray-500">{patient.phone}</p>
               </div>
 
-              {/* Buttons Row */}
               <div className="flex gap-2 mt-4">
                 {patient.status === "Completed" ? (
                   <button
@@ -192,7 +186,6 @@ export default function Homescreen() {
         </div>
       </div>
 
-      {/* Patient Modal */}
       {showModal && selectedPatient && (
         <div className="fixed inset-0 flex justify-center items-center z-50 bg-black/30">
           <div className="flex flex-col bg-white rounded-xl p-6 w-11/12 sm:w-96 shadow-lg max-h-[90vh] overflow-y-auto">
