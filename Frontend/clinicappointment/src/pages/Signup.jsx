@@ -108,7 +108,6 @@ export default function Signup() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-cyan-100">
       <div className="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-4 border border-blue-100">
-        {/* Header */}
         <div className="text-center mb-2">
           <img
             src="https://img.freepik.com/premium-vector/professional-medical-logo-design-modern-healthcare-clinic-hospital-logo-template_1290800-258.jpg"
@@ -123,13 +122,11 @@ export default function Signup() {
           </p>
         </div>
 
-        {/* Profile Image Picker (Clickable Circle Only) */}
         <div className="flex flex-col items-center mb-6">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Profile Picture
           </label>
 
-          {/* Clickable Circle */}
           <label
             htmlFor="profileImgInput"
             className="cursor-pointer relative group"
@@ -146,13 +143,11 @@ export default function Signup() {
               </div>
             )}
 
-            {/* Small overlay hint on hover */}
             <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/30 opacity-0 group-hover:opacity-100 transition-all duration-300">
               <span className="text-white text-xs font-medium">Change</span>
             </div>
           </label>
 
-          {/* Hidden File Input */}
           <input
             id="profileImgInput"
             type="file"
@@ -162,12 +157,10 @@ export default function Signup() {
           />
         </div>
 
-        {/* Form */}
         <form
           className="grid grid-cols-1 md:grid-cols-2 gap-4"
           onSubmit={handelSignup}
         >
-          {/* Full Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Full Name
@@ -183,7 +176,6 @@ export default function Signup() {
             />
           </div>
 
-          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email
@@ -199,7 +191,6 @@ export default function Signup() {
             />
           </div>
 
-          {/* Password */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
@@ -215,7 +206,6 @@ export default function Signup() {
             />
           </div>
 
-          {/* Phone */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Phone
@@ -231,7 +221,6 @@ export default function Signup() {
             />
           </div>
 
-          {/* Age */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Age
@@ -261,8 +250,6 @@ export default function Signup() {
               <option value="other">Other</option>
             </select>
           </div>
-
-          {/* Button */}
           <div className="md:col-span-2 mt-2">
             <button
               type="submit"

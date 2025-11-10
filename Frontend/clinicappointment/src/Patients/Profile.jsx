@@ -71,9 +71,8 @@ export default function PatientProfile() {
 
         <div className="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
-            🗓️ Your Appointments
+            Your Appointments
           </h2>
-
           {loading ? (
             <div className="text-center text-gray-500">
               Loading appointments...

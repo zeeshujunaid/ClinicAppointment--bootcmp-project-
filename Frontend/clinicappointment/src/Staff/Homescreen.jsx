@@ -19,8 +19,9 @@ export default function Homescreen() {
         });
 
         const data = await res.json();
-        if (!res.ok)
+        if (!res.ok){
           throw new Error(data.message || "Error fetching appointments");
+        }
 
         const today = new Date();
         const isToday = (date) => {

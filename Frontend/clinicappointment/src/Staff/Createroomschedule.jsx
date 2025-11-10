@@ -48,6 +48,7 @@ export default function Createroomschedule() {
 
       if (isNaN(dateObj.getTime())) {
         setMessage("Invalid date or time");
+        alert("Invalid date or time");
         setLoading(false);
         return;
       }
@@ -73,6 +74,7 @@ export default function Createroomschedule() {
       if (!res.ok) throw new Error(data.message || "Failed to create room");
 
       setMessage("Room Schedule Created Successfully!");
+      alert("Room Schedule Created Successfully!");
       setFormData({
         doctorId: "",
         roomNumber: "",
@@ -81,7 +83,7 @@ export default function Createroomschedule() {
         slotDuration: 60,
       });
     } catch (err) {
-      setMessage(`${err.message}`);
+      alert(err);
     } finally {
       setLoading(false);
     }

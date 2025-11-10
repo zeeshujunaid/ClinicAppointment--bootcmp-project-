@@ -37,6 +37,7 @@ export default function Allstaff() {
         setStaff(data.users || data);
       } catch (err) {
         console.error("Fetch Staff Error:", err);
+        alert("Fetch Staff Error:");
         setStaff([]);
       } finally {
         setLoading(false);

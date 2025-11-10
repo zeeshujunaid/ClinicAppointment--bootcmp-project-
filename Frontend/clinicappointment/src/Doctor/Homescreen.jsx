@@ -33,9 +33,6 @@ export default function Homescreen() {
         );
 
         const data = await res.json();
-        console.log("API Response:", data);
-
-
 
         if (data.doctorAppointments && data.doctorAppointments.length > 0) {
           const uniquePatients = [];

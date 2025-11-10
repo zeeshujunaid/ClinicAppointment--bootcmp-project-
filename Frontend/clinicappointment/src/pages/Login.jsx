@@ -13,6 +13,7 @@ export default function Login() {
     e.preventDefault(); 
     if (!email || !password) {
       console.log("Please fill in all fields");
+      alert("plz fill all requierd fields")
       return;
     }
 
@@ -27,6 +28,7 @@ export default function Login() {
 
       if (!response.ok) {
         console.log("Login failed =>", data.message);
+        alert("login failed");
         return;
       }
 
@@ -38,6 +40,7 @@ export default function Login() {
       saveUser(fullUser ,"fulluser");
 
       navigate("/dashboard");
+      alert("login sucessfully")
 
     } catch (error) {
       console.log("Error during login:", error);

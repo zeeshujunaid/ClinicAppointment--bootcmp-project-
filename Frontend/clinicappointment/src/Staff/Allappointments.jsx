@@ -19,8 +19,6 @@ export default function Allapointment() {
         });
 
         const data = await res.json();
-        console.log(data);
-
         if (!res.ok) {
           throw new Error(data.message || "Error fetching appointments");
         }
@@ -28,6 +26,7 @@ export default function Allapointment() {
         setAppointments(data.appointments || []);
       } catch (err) {
         console.error("Error fetching appointments:", err);
+        alert("Error fetching appointments:");
         setAppointments([]);
       } finally {
         setLoading(false);

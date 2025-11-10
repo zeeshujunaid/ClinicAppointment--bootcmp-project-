@@ -29,7 +29,7 @@ export default function AddDoctor() {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "Clinicpics"); 
+    formData.append("upload_preset", "Clinicpics");
     formData.append("cloud_name", "dudx3of1n");
 
     try {

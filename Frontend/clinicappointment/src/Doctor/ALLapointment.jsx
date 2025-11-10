@@ -12,9 +12,7 @@ export default function Allappointment() {
     const fetchAppointments = async () => {
       try {
         const token = localStorage.getItem("token");
-        console.log(token);
         const userId = user._id || user.id;
-        console.log(userId);
         if (!userId) {
           console.error("User not found in localStorage");
           setLoading(false);
@@ -29,8 +27,6 @@ export default function Allappointment() {
         });
 
         const data = await res.json();
-        console.log(data);
-
         if (Array.isArray(data)) {
           setAppointments(data);
         } else if (data.appointments) {

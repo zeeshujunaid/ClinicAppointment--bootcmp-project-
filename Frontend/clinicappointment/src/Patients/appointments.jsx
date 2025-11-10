@@ -87,7 +87,6 @@ export default function Appointment() {
                 key={appt._id}
                 className="bg-white rounded-2xl shadow-md p-6 flex flex-col sm:flex-row justify-between items-center border border-gray-200 hover:shadow-lg transition-all duration-300"
               >
-                {/* Left Info */}
                 <div className="flex items-center gap-4">
                   <img
                     src={

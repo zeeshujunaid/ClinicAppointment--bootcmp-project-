@@ -34,8 +34,10 @@ export default function Allappointments() {
           throw new Error(data.message || "Failed to fetch appointments");
 
         setAppointments(data.appointments || data);
+        alert("appointment fetched sucessfully");
       } catch (error) {
         console.error("Error fetching appointments:", error);
+        alert("error something went wrong")
         setAppointments([]);
       } finally {
         setLoading(false);
