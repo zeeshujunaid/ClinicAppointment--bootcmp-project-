@@ -167,7 +167,7 @@ exports.getPatientAndDoctorAppointments = async (req, res) => {
       doctorId,
       date: { $gte: startOfDay, $lte: endOfDay },
     })
-      .populate("userId", "fullname email phone")
+      .populate("userId", "fullname email phone age")
       .populate("roomScheduleId", "roomNumber");
 
     res.status(200).json({
@@ -180,3 +180,39 @@ exports.getPatientAndDoctorAppointments = async (req, res) => {
     });
   }
 };
+
+
+exports.completeAppointment = async (req, res) => {
+  try {
+    const { appointmentId, newMedication } = req.body;
+
+    const appointment = await Appointment.findById(appointmentId).populate(
+      "userId"
+    );
+    if (!appointment) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+
+    appointment.status = "Completed";
+    await appointment.save();
+
+    const patient = appointment.userId;
+    if (newMedication && newMedication.trim() !== "") {
+      if (!patient.currentMedications) {
+        patient.currentMedications = [];
+      }
+      patient.currentMedications.push(newMedication);
+      await patient.save();
+    }
+
+    res.json({
+      message: "Appointment completed and medication added successfully",
+      updatedAppointment: appointment,
+      updatedPatient: patient,
+    });
+  } catch (error) {
+    console.error("Error completing appointment:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+

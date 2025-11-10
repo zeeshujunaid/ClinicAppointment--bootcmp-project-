@@ -77,7 +77,7 @@ export default function Homescreen() {
           <div className="flex-1 bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
             <i className="fas fa-user-injured text-green-500 text-4xl mb-3"></i>
             <h3 className="text-lg font-semibold text-gray-800">
-              Total Patients
+              Today's Patients
             </h3>
             <p className="text-2xl font-bold text-green-600 mt-2">
               {appointments.filter((a) => a.userId).length}
@@ -87,7 +87,7 @@ export default function Homescreen() {
           <div className="flex-1 bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
             <i className="fas fa-user-md text-yellow-500 text-4xl mb-3"></i>
             <h3 className="text-lg font-semibold text-gray-800">
-              Total Doctors
+              Today's Doctors
             </h3>
             <p className="text-2xl font-bold text-yellow-600 mt-2">
               {appointments.filter((a) => a.doctorId).length}

@@ -4,7 +4,8 @@ import baseurl from "../service/config";
 import { UserContext } from "../context/Authcontext";
 
 export default function Homescreen() {
-  const { user } = useContext(UserContext); // logged-in doctor
+  const { user } = useContext(UserContext); 
+  const [newMedication, setNewMedication] = useState("");
   const [patients, setPatients] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
@@ -14,8 +15,6 @@ export default function Homescreen() {
     const fetchAppointments = async () => {
       const token = localStorage.getItem("token");
       const userId = user._id || user.id;
-      console.log(userId);
-      console.log("token=>from", token);
       const today = new Date().toISOString().split("T")[0];
 
       try {
@@ -37,6 +36,8 @@ export default function Homescreen() {
         const data = await res.json();
         console.log("API Response:", data);
 
+
+
         if (data.doctorAppointments && data.doctorAppointments.length > 0) {
           const uniquePatients = [];
           const map = new Map();
@@ -51,17 +52,17 @@ export default function Homescreen() {
                 _id: patientId,
                 name: apt.userId.fullname,
                 email: apt.userId.email,
-                phone: apt.phone || "N/A",
-                age: apt.age,
+                phone: apt.userId?.phone || "N/A",
+                age: apt.userId?.age,
                 bloodGroup: apt.bloodGroup,
                 address: apt.address,
                 emergencyContact: apt.emergencyContact,
                 medicalHistory: apt.medicalHistory,
-                allergies: apt.allergies,
                 currentMedications: apt.currentMedications
                   ? [apt.currentMedications]
                   : [],
                 appointmentId: apt._id,
+                status:apt.status,
               });
             }
           });
@@ -85,6 +86,59 @@ export default function Homescreen() {
     setSelectedPatient(null);
     setShowModal(false);
   };
+
+
+  const handleSaveMedication = async () => {
+    if (!newMedication.trim()) return alert("Please enter medication");
+
+    const token = localStorage.getItem("token");
+
+    try {
+      const res = await fetch(
+        `${baseurl}/api/appointment/appointment/complete`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            appointmentId: selectedPatient.appointmentId,
+            newMedication: newMedication.trim(),
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return alert(data.message || "Error completing appointment");
+      }
+
+      // Update local state
+      setPatients((prev) =>
+        prev.map((p) =>
+          p._id === selectedPatient._id
+            ? {
+                ...p,
+                currentMedications: [
+                  ...p.currentMedications,
+                  newMedication.trim(),
+                ],
+              }
+            : p
+        )
+      );
+
+      alert("Appointment completed and medication added!");
+      setNewMedication("");
+      closeModal();
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
+    }
+  };
+
 
   return (
     <div className="flex h-screen">
@@ -117,24 +171,21 @@ export default function Homescreen() {
 
               {/* Buttons Row */}
               <div className="flex gap-2 mt-4">
-                <button
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded"
-                  onClick={() => openModal(patient)}
-                >
-                  Check Patient
-                </button>
-                <button
-                  className="flex-1 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded"
-                  onClick={() => alert("Complete Appointment clicked")}
-                >
-                  Complete
-                </button>
-                <button
-                  className="flex-1 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded"
-                  onClick={() => alert("Cancel Appointment clicked")}
-                >
-                  Cancel
-                </button>
+                {patient.status === "Completed" ? (
+                  <button
+                    className="flex-1 bg-green-400 text-white px-3 py-2 rounded cursor-not-allowed"
+                    disabled
+                  >
+                    Completed
+                  </button>
+                ) : (
+                  <button
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded"
+                    onClick={() => openModal(patient)}
+                  >
+                    Check Patient
+                  </button>
+                )}
               </div>
             </div>
           ))}
@@ -167,9 +218,6 @@ export default function Homescreen() {
                 Emergency Contact: {selectedPatient.emergencyContact}
               </p>
               <p className="text-gray-600">
-                Allergies: {selectedPatient.allergies || "N/A"}
-              </p>
-              <p className="text-gray-600">
                 Medical History: {selectedPatient.medicalHistory || "N/A"}
               </p>
 
@@ -187,13 +235,15 @@ export default function Homescreen() {
                 <input
                   type="text"
                   placeholder="Enter medication description"
+                  value={newMedication}
+                  onChange={(e) => setNewMedication(e.target.value)}
                   className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
 
               <button
                 className="mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full"
-                onClick={closeModal}
+                onClick={handleSaveMedication}
               >
                 Save
               </button>

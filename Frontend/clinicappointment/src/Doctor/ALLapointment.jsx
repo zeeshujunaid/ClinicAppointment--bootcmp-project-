@@ -1,4 +1,4 @@
-import { useEffect, useState,useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import Sidebar from "../Components/sidebar"; // apni file path ke hisab se adjust karna
 import baseurl from "../service/config"; // yahan apna backend base URL import karna
 import { UserContext } from "../context/Authcontext";
@@ -6,8 +6,7 @@ import { UserContext } from "../context/Authcontext";
 export default function Allappointment() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
-    const { user } = useContext(UserContext);
-  
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -47,13 +46,6 @@ export default function Allappointment() {
     fetchAppointments();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen text-lg font-semibold">
-        Loading appointments...
-      </div>
-    );
-  }
 
   return (
     <div className="flex">
@@ -65,8 +57,11 @@ export default function Allappointment() {
         <h1 className="text-2xl font-bold mb-6 text-gray-800">
           My Appointments
         </h1>
-
-        {appointments.length === 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center h-20 text-lg font-semibold">
+            Loading appointments...
+          </div>
+        ) : appointments.length === 0 ? (
           <p className="text-gray-600">No appointments found.</p>
         ) : (
           <div className="overflow-x-auto bg-white shadow rounded-lg">
