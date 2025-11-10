@@ -18,6 +18,9 @@ connectDB();
 app.use("/api/auth", authroutes);
 app.use("/api/appointment", appointmentroutes);
 app.use("/api/room", docroom);
+app.get("/" , (req,res)=>{
+    console.log("hello world")
+})
 
 
 const PORT = process.env.PORT || 8080;
