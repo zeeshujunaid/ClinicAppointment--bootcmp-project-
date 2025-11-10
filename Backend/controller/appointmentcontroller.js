@@ -27,7 +27,7 @@ exports.createAppointment = async (req, res) => {
       return res.status(400).json({ message: "Slot already booked" });
     }
 
-    // 🩺 Double-check doctor overlap
+    //Double-check doctor overlap
     const conflict = await Appointment.findOne({
       doctorId,
       date: roomSchedule.date,

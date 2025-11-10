@@ -9,7 +9,6 @@ const generateToken = (id, fullname, email, role) => {
   });
 };
 
-// patients signup
 exports.registerPatient = async (req, res) => {
   const { fullname, email, password, phone, image, age, gender } = req.body;
 
@@ -131,7 +130,6 @@ exports.createUserByAdmin = async (req, res) => {
   }
 };
 
-// login for everyone
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -169,7 +167,6 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-// fetching all users for admin
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password").sort({ createdAt: -1 });
@@ -184,7 +181,6 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// fetching only doctors
 exports.getDoctors = async (req, res) => {
   try {
     const doctors = await User.find({ role: "doctor" });
@@ -195,7 +191,6 @@ exports.getDoctors = async (req, res) => {
   }
 };
 
-// fetching all patients
 exports.getPatients = async (req, res) => {
   try {
     const doctors = await User.find({ role: "patient" });
@@ -206,7 +201,6 @@ exports.getPatients = async (req, res) => {
   }
 };
 
-// fetching all staff
 exports.getStaff = async (req, res) => {
   try {
     const doctors = await User.find({ role: "staff" });

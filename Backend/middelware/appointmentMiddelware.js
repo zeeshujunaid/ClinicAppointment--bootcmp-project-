@@ -32,7 +32,7 @@ exports.verifyUser = async (req, res, next) => {
   }
 };
 
-// ✅ Role-based permission for appointment routes
+// Role-based permission for appointment routes
 exports.allowRoles = (...roles) => {
   return (req, res, next) => {
     if (!req.user || !roles.includes(req.user.role)) {

@@ -13,7 +13,7 @@ const appointmentSchema = new mongoose.Schema({
     required: true,
   },
 
-  // Patient details (required)
+  // Patient details
   bloodGroup: { type: String, required: true },
   address: { type: String, required: true },
   medicalHistory: { type: String, default: "" },
@@ -23,7 +23,7 @@ const appointmentSchema = new mongoose.Schema({
   },
   emergencyContact: { type: String, required: true },
 
-  // Appointment info
+
   date: { type: Date, required: true },
   startTime: { type: Date, required: true },
   endTime: { type: Date, required: true },

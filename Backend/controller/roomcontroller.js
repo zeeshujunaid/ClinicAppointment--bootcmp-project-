@@ -1,7 +1,7 @@
 const Room = require("../models/roomModels");
 const User = require("../models/user");
 
-// staff create room for doctor with date and time
+
 exports.createRoomSchedule = async (req, res) => {
   try {
     const { doctorId, roomNumber, date, startTime, slotDuration } = req.body;
@@ -22,7 +22,7 @@ exports.createRoomSchedule = async (req, res) => {
     const start = new Date(date);
     start.setHours(hours, minutes, 0, 0);
 
-    const duration = Number(slotDuration) || 10; // 10 min by default
+    const duration = Number(slotDuration) || 10; 
     const end = new Date(start.getTime() + duration * 60000);
 
     // Find overlapping
@@ -38,7 +38,6 @@ exports.createRoomSchedule = async (req, res) => {
       });
     }
 
-    // saving room slot
     const room = await Room.create({
       doctorId,
       roomNumber,
@@ -57,7 +56,7 @@ exports.createRoomSchedule = async (req, res) => {
   }
 };
 
-// getting room slot of doctor for patient
+
 exports.getRoomScheduleByDate = async (req, res) => {
   try {
     const { date } = req.params;
@@ -78,7 +77,7 @@ exports.getRoomScheduleByDate = async (req, res) => {
   }
 };
 
-// patient bok room slot
+
 exports.bookRoomSlot = async (req, res) => {
   try {
     const { roomId } = req.body;
