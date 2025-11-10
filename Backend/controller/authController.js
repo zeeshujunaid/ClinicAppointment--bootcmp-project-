@@ -199,9 +199,9 @@ exports.getStaff = async (req, res) => {
 // admin create 
 exports.createAdmin = async (req, res) => {
   try {
-    const { fullname, email, password, phone } = req.body;
+    const { fullname, email, password, phone ,image } = req.body;
 
-    if (!fullname || !email || !password || !phone) {
+    if (!fullname || !email || !password || !phone || !image) {
       return res.status(400).json({ message: "Please fill all required fields" });
     }
 
@@ -218,7 +218,8 @@ exports.createAdmin = async (req, res) => {
       email,
       password,
       phone,
-      role: "admin", // Fixed role
+      image,
+      role: "admin", 
     });
 
     res.status(201).json({
