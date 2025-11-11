@@ -1,6 +1,6 @@
 import React, { useState, useEffect ,useContext} from "react";
 import baseurl from "../service/config";
-import Navbar from "../components/Navbar";
+import Navbar from "../Components/navbar";
 import { UserContext } from "../context/Authcontext";
 import { toast } from "react-toastify";
 
