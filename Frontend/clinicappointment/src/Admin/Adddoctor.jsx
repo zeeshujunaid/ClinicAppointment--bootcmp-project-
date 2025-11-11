@@ -58,18 +58,21 @@ export default function AddDoctor() {
     if (!fullname || !email || !password || !gender)
       return toast.error("plz fill all required fields");
 
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      toast.error("plz enter correct email")
+      toast.error("Please enter a valid email address!");
       return;
     }
 
+   
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (!passwordRegex.test(password)) {
-      toast.success("Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number!")
-      return;
+      toast.error(
+        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number!"
+      );
+      return; 
     }
-
     if (!image) return toast.error("plz enter an image")
 
     if (role === "doctor") {
@@ -221,11 +224,14 @@ export default function AddDoctor() {
           </div>
 
           <div className="mb-3">
-            <label className="block font-medium mb-1">Doctor Phone</label>
+            <label className="block font-medium mb-1">Phone</label>
             <input
-              type="number"
+              type="text"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, "");
+                setPhone(value);
+              }}
               className="w-full border border-gray-300 rounded-lg p-2"
               placeholder="0876452939892"
             />
@@ -286,9 +292,12 @@ export default function AddDoctor() {
                   Consultation Fee
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   value={fees}
-                  onChange={(e) => setFees(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, "");
+                    setFees(value);
+                  }}
                   className="w-full border border-gray-300 rounded-lg p-2"
                   placeholder="e.g. 2000"
                 />

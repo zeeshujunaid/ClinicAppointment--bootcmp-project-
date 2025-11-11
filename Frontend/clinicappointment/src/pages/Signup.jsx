@@ -54,20 +54,21 @@ export default function Signup() {
       toast.error("plz fill all required field");
       return;
     }
-
+ 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       toast.error("Please enter a valid email address!");
-      return;
+      return; 
     }
+
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (!passwordRegex.test(password)) {
       toast.error(
-        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number!");
+        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number!"
+      );
       return;
     }
-
     if (!image) {
       toast.error("Plz upload an image!");
       return;
@@ -91,7 +92,7 @@ export default function Signup() {
 
       if (!response.ok) {
         console.log("signup failed =>", resdata.message);
-        toast.error("signup failed")
+        toast.error("signup failed");
         return;
       }
 
