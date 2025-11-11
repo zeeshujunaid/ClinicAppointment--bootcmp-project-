@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const Appointment = require("../models/appointment");
 
 // Generate Token
 const generateToken = (id, fullname, email, role) => {
@@ -190,6 +191,42 @@ exports.getDoctors = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const { userId } = req.params; // frontend se :userId ayega
+
+    // Step 1: Find user
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Step 2: If role = patient, delete their appointments too
+    if (user.role === "patient") {
+      await Appointment.deleteMany({ patientId: user._id });
+      console.log(`Deleted appointments for patient ${user.fullname}`);
+    }
+
+    if (user.role === "doctor") {
+      await Appointment.deleteMany({ doctorId: user._id });
+    }
+
+    // Step 3: Delete user
+    await User.findByIdAndDelete(userId);
+
+    res.status(200).json({
+      message:
+        user.role === "patient"
+          ? "Patient and their appointments deleted successfully"
+          : `${user.role} deleted successfully`,
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 
 exports.getPatients = async (req, res) => {
   try {

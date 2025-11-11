@@ -8,7 +8,8 @@ const {
   getDoctors,
   getPatients,
   getStaff,
-} = require('../controller/authController');
+  deleteUser,
+} = require("../controller/authController");
 const { protect, adminOnly } = require('../middelware/authmiddelware');
 
 
@@ -30,6 +31,8 @@ router.post('/create',protect, adminOnly,createUserByAdmin );
 router.get('/getUser',protect, getAllUsers);
 
 router.post('/createadmin', createAdmin)
+
+router.delete("/delete/:userId", deleteUser);
 
 
 module.exports = router;

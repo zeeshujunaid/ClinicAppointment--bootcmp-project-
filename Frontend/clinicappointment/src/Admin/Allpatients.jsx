@@ -34,7 +34,7 @@ export default function AdminAllpatients() {
         } else if (data.patients) {
           setPatients(data.patients);
         }
-        toast.success("patient fech successfully")
+        toast.success("patient fech successfully");
       } catch (error) {
         toast.error("error fetching patients")
       } finally {
@@ -59,6 +59,30 @@ export default function AdminAllpatients() {
       ).length,
     },
   ];
+
+  const handleDelete = async (userId) => {
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${baseurl}/api/auth/delete/${userId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message || "Failed to delete user");
+
+      toast.success(data.message);
+setPatients((prev) => prev.filter((p) => p._id !== userId));
+    } catch (error) {
+      console.error("Delete Error:", error);
+      toast.error(error.message);
+    }
+  };
 
   const COLORS = ["#3B82F6", "#F472B6", "#FBBF24"];
 
@@ -142,6 +166,7 @@ export default function AdminAllpatients() {
                 <th className="p-3 text-left">Phone</th>
                 <th className="p-3 text-left">Age</th>
                 <th className="p-3 text-left">Gender</th>
+                <th className="p-3 text-left">Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -152,6 +177,11 @@ export default function AdminAllpatients() {
                   <td className="p-3">{patient.phone || "N/A"}</td>
                   <td className="p-3">{patient.age || "-"}</td>
                   <td className="p-3 capitalize">{patient.gender || "-"}</td>
+                  <td className="p-3 capitalize bg-red-600">
+                    <button onClick={() => handleDelete(patient._id)}>
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

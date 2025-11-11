@@ -52,6 +52,30 @@ export default function Allstaff() {
     return acc;
   }, {});
 
+  const handleDelete = async (userId) => {
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${baseurl}/api/auth/delete/${userId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message || "Failed to delete user");
+
+      toast.success(data.message);
+      setStaff((prev) => prev.filter((p) => p._id !== userId));
+    } catch (error) {
+      console.error("Delete Error:", error);
+      toast.error(error.message);
+    }
+  };
+
   const deptChartData = Object.entries(departmentData).map(([name, count]) => ({
     name,
     count,
@@ -172,6 +196,7 @@ export default function Allstaff() {
                         : "-"}
                     </p>
                   </div>
+                  <button onClick={() => handleDelete(stf._id)}>Delete</button>
                 </div>
               ))}
             </div>

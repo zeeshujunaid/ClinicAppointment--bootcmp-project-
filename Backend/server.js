@@ -18,20 +18,19 @@ connectDB();
 app.use("/api/auth", authroutes);
 app.use("/api/appointment", appointmentroutes);
 app.use("/api/room", docroom);
-app.get("/" , (req,res)=>{
-    console.log("hello world")
-})
+// app.get("/" , (req,res)=>{
+//     console.log("hello world")
+// })
 
 
 const PORT = process.env.PORT || 8080;
-if (process.env.NODE_ENV !== "production") {
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running locally at: http://localhost:${PORT}`);
-  });
-}
+// if (process.env.NODE_ENV !== "production") {
+//   app.listen(PORT, () => {
+//     console.log(`🚀 Server running locally at: http://localhost:${PORT}`);
+//   });
+// }
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 
-export default app;
-
-// app.listen(PORT, () => {
-//     console.log(`Server is running on port ${PORT}`);
-// });
+// export default app;

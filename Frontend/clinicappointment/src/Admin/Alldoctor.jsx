@@ -45,6 +45,35 @@ export default function AllDoctor() {
     fetchDoctors();
   }, []);
 
+
+ const handleDelete = async (userId) => {
+   if (!window.confirm("Are you sure you want to delete this user?")) return;
+
+   try {
+     const token = localStorage.getItem("token");
+     const res = await fetch(`${baseurl}/api/auth/delete/${userId}`, {
+       method: "DELETE",
+       headers: {
+         Authorization: `Bearer ${token}`,
+       },
+     });
+
+     const data = await res.json();
+
+     if (!res.ok) throw new Error(data.message || "Failed to delete user");
+
+     toast.success(data.message);
+     setDoctors((prev) => prev.filter((doc) => doc._id !== userId));
+   } catch (error) {
+     console.error("Delete Error:", error);
+     toast.error(error.message);
+   }
+ };
+
+
+
+
+
   const specializationData = doctors.reduce((acc, doc) => {
     const spec = doc.specialization || "Unknown";
     acc[spec] = (acc[spec] || 0) + 1;
@@ -163,6 +192,12 @@ export default function AllDoctor() {
                         : "-"}
                     </p>
                   </div>
+                  <button
+                    onClick={() => handleDelete(doc._id)}
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-all duration-300"
+                  >
+                    Remove Doctor
+                  </button>
                 </div>
               ))}
             </div>

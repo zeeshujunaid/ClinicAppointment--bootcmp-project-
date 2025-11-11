@@ -293,9 +293,13 @@ export default function Getdoctor() {
                   <input
                     type="text"
                     value={form.emergencyContact}
-                    onChange={(e) =>
-                      setForm({ ...form, emergencyContact: e.target.value })
-                    }
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^\d*$/.test(value)) {
+                        setForm({ ...form, emergencyContact: value });
+                      }
+                    }}
+                    maxLength={11}
                     className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />
                 </div>
