@@ -105,7 +105,6 @@ export default function AddDoctor() {
         },
         body: JSON.stringify({
           fullname,
-          image,
           email,
           password,
           role,
