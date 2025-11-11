@@ -77,6 +77,38 @@ exports.getRoomScheduleByDate = async (req, res) => {
   }
 };
 
+exports.getAllRoomSlots = async (req, res) => {
+  try {
+    const { date } = req.query;
+
+    let query = {};
+
+    if (date) {
+      const dayStart = new Date(date);
+      dayStart.setHours(0, 0, 0, 0);
+      const dayEnd = new Date(date);
+      dayEnd.setHours(23, 59, 59, 999);
+
+      query.date = { $gte: dayStart, $lte: dayEnd };
+    }
+
+    const rooms = await Room.find(query)
+      .populate("doctorId", "fullname specialization role")
+
+    res.status(200).json({
+      message: "All room slots fetched successfully",
+      count: rooms.length,
+      rooms,
+    });
+  } catch (error) {
+    console.error("Error fetching all rooms:", error);
+    res.status(500).json({
+      message: "Error fetching all rooms",
+      error: error.message,
+    });
+  }
+};
+
 
 exports.bookRoomSlot = async (req, res) => {
   try {

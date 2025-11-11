@@ -179,6 +179,12 @@ export default function Sidebar() {
           >
             <i className="fas fa-hospital"></i> <span>Manage Room</span>
           </button>
+          <button
+            onClick={() => navigate("/DoctorRoomschedule")}
+            className="hover:bg-purple-500 p-2 rounded-lg flex items-center space-x-2"
+          >
+            <i className="fas fa-hospital"></i> <span>Room Schedule</span>
+          </button>
         </div>
 
         <div className="mt-auto">
