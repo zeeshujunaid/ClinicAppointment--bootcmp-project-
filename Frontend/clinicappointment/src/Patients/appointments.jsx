@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../Components/navbar";
 import { UserContext } from "../context/Authcontext";
 import baseurl from "../service/config";
 import { toast } from "react-toastify";
