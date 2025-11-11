@@ -68,7 +68,7 @@ export default function Sidebar() {
           </button>
         </div>
 
-\        <div className="mt-auto">
+        <div className="mt-auto">
           <button
             className="flex items-center space-x-3 hover:bg-blue-500 p-2 rounded-lg transition-all w-full"
             onClick={() => {

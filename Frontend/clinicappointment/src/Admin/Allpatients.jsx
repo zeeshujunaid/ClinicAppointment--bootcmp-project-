@@ -178,8 +178,11 @@ setPatients((prev) => prev.filter((p) => p._id !== userId));
                   <td className="p-3">{patient.age || "-"}</td>
                   <td className="p-3 capitalize">{patient.gender || "-"}</td>
                   <td className="p-3 capitalize bg-red-600">
-                    <button onClick={() => handleDelete(patient._id)}>
-                      Delete
+                    <button
+                      onClick={() => handleDelete(patient._id)}
+                      className="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded transition-colors duration-200"
+                    >
+                      Remove Patient
                     </button>
                   </td>
                 </tr>

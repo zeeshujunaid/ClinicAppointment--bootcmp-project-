@@ -196,7 +196,12 @@ export default function Allstaff() {
                         : "-"}
                     </p>
                   </div>
-                  <button onClick={() => handleDelete(stf._id)}>Delete</button>
+                  <button
+                    onClick={() => handleDelete(stf._id)}
+                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded transition-colors duration-200"
+                  >
+                    Remove Staff
+                  </button>
                 </div>
               ))}
             </div>
