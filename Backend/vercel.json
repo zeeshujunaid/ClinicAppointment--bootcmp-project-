@@ -1,9 +1,7 @@
 {
   "version": 2,
   "functions": {
-    "backend/api/*.js": {
-      "runtime": "nodejs22.x"
-    }
+    "backend/api/*.js": {}
   },
   "rewrites": [
     {
