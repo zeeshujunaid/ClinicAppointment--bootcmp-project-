@@ -5,12 +5,12 @@ const {
   getUserAppointments,
   getPatientAndDoctorAppointments,
   completeAppointment,
-} = require("../../controller/appointmentcontroller");
+} = require("../controller/appointmentcontroller");
 
 const {
   verifyUser,
   allowRoles,
-} = require("../middelware/appointmentMiddelware");
+} = require("../middelware/authmiddelware");
 
 const router = express.Router();
 

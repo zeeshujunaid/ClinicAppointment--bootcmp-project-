@@ -9,7 +9,7 @@ const {
   getPatients,
   getStaff,
   deleteUser,
-} = require("../../controller/authController");
+} = require("../controller/authController");
 const { protect, adminOnly } = require("../middelware/authmiddelware");
 
 const router = express.Router();
