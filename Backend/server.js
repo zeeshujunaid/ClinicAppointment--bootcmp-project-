@@ -13,20 +13,14 @@ app.use(cors());
 
 connectDB();
 
+// Routes
 app.use("/api/auth", authroutes);
 app.use("/api/appointment", appointmentroutes);
 app.use("/api/room", docroom);
 
 app.get("/", (req, res) => {
-  console.log("hello world");
   res.send("Hello World");
 });
 
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 8080;
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running locally at: http://localhost:${PORT}`);
-  });
-}
-
+// Vercel ke liye module export
 module.exports = app;
