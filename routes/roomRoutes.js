@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { protect } = require("../middelware/authmiddelware");
-const { staffOnly, patientOnly } = require("../middelware/authmiddelware");
+const {
+  protect,
+} = require("../middelware/authmiddelware");
+const { patientOnly, staffOnly } = require("../middelware/roomMiddelware");
 const {
   createRoomSchedule,
   getRoomScheduleByDate,
