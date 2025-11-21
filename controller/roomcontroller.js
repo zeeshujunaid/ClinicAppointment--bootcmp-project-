@@ -1,7 +1,6 @@
 const Room = require("../models/roomModels");
 const User = require("../models/user");
 
-
 exports.createRoomSchedule = async (req, res) => {
   try {
     const { doctorId, roomNumber, date, startTime, slotDuration } = req.body;
@@ -22,7 +21,7 @@ exports.createRoomSchedule = async (req, res) => {
     const start = new Date(date);
     start.setHours(hours, minutes, 0, 0);
 
-    const duration = Number(slotDuration) || 10; 
+    const duration = Number(slotDuration) || 10;
     const end = new Date(start.getTime() + duration * 60000);
 
     // Find overlapping
@@ -55,7 +54,6 @@ exports.createRoomSchedule = async (req, res) => {
       .json({ message: "Error creating room slot", error: error.message });
   }
 };
-
 
 exports.getRoomScheduleByDate = async (req, res) => {
   try {
@@ -92,8 +90,10 @@ exports.getAllRoomSlots = async (req, res) => {
       query.date = { $gte: dayStart, $lte: dayEnd };
     }
 
-    const rooms = await Room.find(query)
-      .populate("doctorId", "fullname specialization role")
+    const rooms = await Room.find(query).populate(
+      "doctorId",
+      "fullname specialization role"
+    );
 
     res.status(200).json({
       message: "All room slots fetched successfully",
@@ -108,7 +108,6 @@ exports.getAllRoomSlots = async (req, res) => {
     });
   }
 };
-
 
 exports.bookRoomSlot = async (req, res) => {
   try {

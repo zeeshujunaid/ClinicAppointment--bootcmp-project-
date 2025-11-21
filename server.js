@@ -1,9 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./Config/db");
-const authroutes = require("./routes/authRoutes");
-const docroom = require("./routes/roomRoutes");
-const appointmentroutes = require("./routes/appointmentRoutes");
+const authroutes = require("./Backend/routes/authRoutes");
+const docroom = require("./Backend/routes/roomRoutes");
+const appointmentroutes = require("./Backend/routes/appointmentRoutes");
 
 const app = express();
 app.use(express.json());
