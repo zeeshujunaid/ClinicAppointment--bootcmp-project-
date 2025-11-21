@@ -1,4 +1,5 @@
-const serverless = require("serverless-http");
-const app = require("../Backend/server"); // yaha server.js ka path
+const app = require("../server");
 
-module.exports.handler = serverless(app);
+module.exports = (req, res) => {
+  app(req, res);
+};
