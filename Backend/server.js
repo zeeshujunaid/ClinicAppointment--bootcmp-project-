@@ -22,7 +22,6 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-// Local development server
 if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 8080;
   app.listen(PORT, () => {
