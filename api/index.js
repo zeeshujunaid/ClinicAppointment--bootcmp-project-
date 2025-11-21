@@ -1,5 +1,4 @@
-const app = require("../server");
+const serverless = require("serverless-http");
+const app = require("../server"); // adjust path if needed
 
-module.exports = (req, res) => {
-  app(req, res);
-};
+module.exports.handler = serverless(app);
