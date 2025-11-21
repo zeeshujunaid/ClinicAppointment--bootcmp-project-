@@ -1,7 +1,9 @@
 {
   "version": 2,
   "functions": {
-    "backend/api/*.js": {}
+    "backend/api/*.js": {
+      "maxDuration": 10
+    }
   },
   "rewrites": [
     {
