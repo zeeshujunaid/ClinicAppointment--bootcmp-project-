@@ -26,7 +26,7 @@ router.get("/staff", protect, getStaff);
 
 router.post("/create", protect, adminOnly, createUserByAdmin);
 
-router.get("/getUser", protect, getAllUsers);
+router.get("/getUser", getAllUsers);
 
 router.post("/createadmin", createAdmin);
 
