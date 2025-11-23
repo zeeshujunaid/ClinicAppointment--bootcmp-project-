@@ -7,8 +7,10 @@ const {
   completeAppointment,
 } = require("../controller/appointmentcontroller");
 
-const {verifyUser} = require("../middelware/appointmentMiddelware");
-const { allowRoles } = require("../middelware/roomMiddelware");
+const {
+  verifyUser,
+  allowRoles,
+} = require("../middelware/appointmentMiddelware");
 
 const router = express.Router();
 
