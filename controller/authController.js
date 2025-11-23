@@ -13,7 +13,7 @@ const generateToken = (id, fullname, email, role) => {
 exports.registerPatient = async (req, res) => {
   const { fullname, email, password, phone, image, age, gender } = req.body;
 
-  if (!fullname || !email || !password || !phone || !age || !gender || !image) {
+  if (!fullname || !email || !password || !phone || !image) {
     return res.status(400).json({ message: "Please fill all required fields" });
   }
 
