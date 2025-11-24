@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./Config/db");
@@ -18,4 +19,7 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
+});
 module.exports = app;
